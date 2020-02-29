@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>为什么我们如此喜爱魂系列 - Nostalgia</title>
+    
+    <meta name="description" content="
+“人类最古老、最强烈的恐惧，是对未知的恐惧”
+">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">为什么我们如此喜爱魂系列</h1>
+    <div class="post-meta">February 12, 2020</div>
+  </header>
+  <div class="post-content"><blockquote>
+<p>“人类最古老、最强烈的恐惧，是对未知的恐惧”</p>
+</blockquote>
+<p>高三毕业后，就急忙在附近的电脑城买了PS4和Sony电视，当时候对游戏还一无所知，从店家拿了几盘碟子，分别是神秘海域4、GTA5、血源诅咒，被神海4的画面表现能力震撼到了，PS4不愧是次世代主机，但血源这是尼玛什么游戏？</p>
+<p>大学期间，有一次想把PS4卖掉好好学习（，在冰岩的一个小程序上挂出了，然后有个计算机的学长来找我（埋下伏笔），他说他是做游戏的（就是东明），也没说啥就先借给他玩了，后来也没卖出去我就自己用了，但和他聊了不少，他说血源是个不错的游戏（我：？）</p>
+<p>过了将近一年，血源加入了PSN的免费游戏，我又下载下来玩了。。</p>
+<p>结果深陷其中不可自拔，每当踏入那迷人而又恐怖的世界，整个人都不好了</p>
+<p>卡的我最久的一个boss是前期的渴血兽，死了一百多次才过，那种感觉很奇妙，从手忙脚乱的萌新到见着拆招的高玩，人的心境也会发生变化，但战斗带给我的远比不上世界观背景带来的吸引力，血腥、魔幻、恐惧、充满陷阱但又渴望探寻真相，这种环境在dlc中渲染地更加凄迷，仿佛置身于一个永远醒不来的噩梦。</p>
+<p>不久就通关了，但我根本不知道这个游戏讲了什么，在网上搜索资料后才发现这个故事是如此的令人着迷，而我在游玩过程中却丝毫未察觉到，就像克苏鲁神话中的，人类是如此的渺小而一无所知，后续我又看了不少克苏鲁神话小说，渐渐揭开它神秘的面纱。从网上了解到这个游戏的剧情是如此的具有深度，在我50小时白金的过程中，它叙述了一个完整而又残缺的故事，让人浮想联翩，即使在5年后的现在，还有不断的新内容被挖掘出来，可以说是PS4最优秀的独占了，可惜15年TGA上面对的对手是巫师3，但在我心目是永远的神作。</p>
+<p>从此成为魂系列和宫崎英高的忠实粉丝，之后又开始接触黑暗之魂，陆续白金了魂系列三部和只狼，甚至买来PS3玩魂系列的首作&mdash;-恶魔之魂，但是被卖家坑了，美版机器的按键和亚洲版相反，实在不习惯就放弃了</p>
+<h2 id="孤独">孤独</h2>
+<p>不知道为什么，这是我第一次在游戏中感受到深深的孤独。</p>
+<p>在其他游戏，有人给你指引、帮助</p>
+<p>但在黑魂中，你前方是充满陷阱的未知恐怖的领域，身边是一个个陆续死去的npc，他们无力、徒劳、绝望、失去理智、充满嘲讽、无法被救赎、英雄迟暮</p>
+<p>最初的传火祭祀场，是一片孤寂，没有传送点，你只能只身前进，你不知道等待你的是什么，也不知道前方的道路有多长，也看不清脚下布满的陷阱</p>
+<p>最终，你选择遵从命运，但也是徒劳</p>
+<h2 id="真实">真实</h2>
+<p>使用游戏本身叙事，让玩家体验到的是一个完整的世界，而不是简单的关卡堆砌</p>
+<p>每个人、每件物品都有它的故事，它们的出现地点、方式都是线索</p>
+<p>这是一场真实的冒险，完全的沉浸式体验，没有任何出戏的地方</p>
+<p>主角和你一样，没有过去的记忆，只能从环境本身和角色的只言片语中推测出事情的发展</p>
+<p>没有旁白、没有暂停、没有存档、没有传送、没有家的归宿</p>
+<p>这就是黑暗之魂</p>
+<p>它不是所谓的开发世界，但能处处感受到这个世界本身，这来源于高明的关卡设计。</p>
+<p>雾门是一个天才的设计，因为在最初的恶魔之魂中，大陆是被浓雾笼罩的，它还可以提示玩家新区域，以及用来转场上的技术优化，这点在后续的作品中也被沿用。</p>
+<p>不死人/灵魂状态也是一个天才的设计，现在几乎没有玩家和设计者关心“复活”这个机制了，游戏中死亡理应复活，但黑魂从游戏背景上解释了为什么玩家可以复活，甚至为什么会回到上一个存档点，在恶魔之魂中，玩家的肉身被禁锢在楔之神殿，复活的是玩家的灵魂，甚至传送点“拱心石”也使用了宗教中的“灵魂回归”概念。</p>
+<p>多人联机是一个更天才的设计，与上面一样，如何使游戏拥有不朽的生命力，那便是加入联机系统，它是如何融入到黑暗之魂世界观的呢？那便是多元时空的概念，玩家处于的是平行世界，你可以画符召唤另一个世界的“灵体”，在另一个世界留下或善或恶的记号，在大大提游戏性的同时，也为这孤独残酷的世界注入一丝慰藉。</p>
+<h2 id="改变">改变</h2>
+<p>恭喜只狼获得2019TGA最佳游戏，宫崎英高登上神坛</p>
+<p>作为（理性）魂系列粉丝，本来我认为应该大乱斗拿的，它是一个集大成的作品，任天堂厉害在可以很好地平衡游戏性，让所有玩家都可以获得很好的游戏体验。</p>
+<p>而只狼是一个另类的游戏，宫崎英高跳出来以前的框架，开创了一个全新的游戏类型。从血源到魂3到只狼，看得出难度逐渐下降，游戏节奏逐渐加快，更迎合大众的喜好，也收获了更多了粉丝，但只狼的硬伤也很多，流程短，多周目可玩性差，人物养成性弱，没有dlc，我觉得它夹带了一些试水的成分，但不影响它成为优秀的游戏。</p>
+<p>听说《权游》作者马丁与老贼合作，非常期待</p>
+<h2 id="其他">其他</h2>
+<p>魂系列有太多东西可以说了</p>
+<p>这里给出几个优秀的up主</p>
+<h1 id="进入游戏领域">进入游戏领域</h1>
+<p>魂系列是我的启蒙作，之后也接触了不少优秀的作品，如God of War 、ICO、The Last of Us、ever17等，改变了我对游戏的认知，让我惊叹于游戏的表达能力，以及周围一些游戏爱好者，促使我进入游戏领域</p>
+<p>大学刚开始不务正业，有一年的时间在搞摄影、剪辑、设计、互联网产品啥啥的，后来觉得不太行，转专业去了软件工程</p>
+<p>大一的时候专业课的时候使用MFC/C++做了一个坦克大战，惨不忍睹，后来再看的时候甚至放弃重写了，看到别人用Unity做的精美游戏非常羡慕，于是就在暑假学习了一下</p>
+<p>大二开学时尝试去报名了冰岩的游戏组，可能是由于我表达能力或技术能力还不行把，面试的时候没有过，有点难过</p>
+<p>这时候神奇的事情就发生了</p>
+<p>时隔一年，我又找到了东明，跟他说了我的想法，得到了继续面试的机会，要在7天内做出一个游戏demo，但当时已经定好和女朋友去旅游，于是开始了白天玩晚上肝的生活，经常在景点排队的时候冒出一些灵感，期间东明给了我很多帮助，当时内容是复刻神作Celeste，他告诉我游戏要注重细节，花了很多时间调试手感，一个看似简单的平台跳跃游戏背后有很多需要考虑的地方，在这期间我学到了很多，最后幸运地通过了，进入了游戏开发领域（一系列巧合引起的蝴蝶效应）</p>
+<p>最大的收获就是让我看到了更大的世界， 互联网上有无数有趣的领域有待探索，无数优秀的项目与贡献者，与此相比课堂上的内容是如此的脱离实际，而且国内的互联网环境太糟糕了，学好英语是必要的，不能做井底之蛙。</p>
+<p>到了大二下学期开始考虑自己的人生规划，成绩还不错，但放弃了保研，一是不想继续待在这个学校/城市；二是不想学课内无聊的东西，工作的话可能只能成为普通的螺丝钉，而且也讨厌国内的游戏市场环境，一番权衡后决定去日本留学，看看外面的世界，技术方向也逐渐转向当下流行的机器学习（图形学太难了），之后还要准备英语、日语、实习、申请、入学考试等等的，毕竟做这一行是需要终生学习的，跳出自己的舒适圈，勇敢接受挑战</p></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

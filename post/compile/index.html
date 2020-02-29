@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>理解编译器优化 - Nostalgia</title>
+    
+    <meta name="description" content="来自《深入理解计算机系统》第五、六章，推荐学习《编译原理》">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">理解编译器优化</h1>
+    <div class="post-meta">February 10, 2018</div>
+  </header>
+  <div class="post-content"><p>来自《深入理解计算机系统》第五、六章，推荐学习《编译原理》</p>
+<h2 id="如何编写出高效的程序">如何编写出高效的程序</h2>
+<ul>
+<li>选取适当的算法和数据结构</li>
+<li>编写编译器能够有效优化的源代码</li>
+</ul>
+<p>这里讨论如何理解编译器的能力和局限性,首先需要理解处理器和存储器的运作方式，研究汇编代码是一种好办法,我们将会发现，对源代码进行非常微小的修改会对程序性能产生很大的影响</p>
+<h2 id="编译器只使用安全的优化">编译器只使用安全的优化</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">twiddle1</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>xp<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>yp)
+{
+	xp <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#f92672">*</span>yp;
+	xp <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#f92672">*</span>yp;
+}
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">twiddle2</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>xp<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>yp)
+{
+	xp <span style="color:#f92672">+</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span> <span style="color:#f92672">*</span>yp;
+}
+</code></pre></div><ul>
+<li>
+<p>似乎这两个函数具有相同的行为，但是twiddle1需要6次内存引用(2次读xp，2次读yp，2次写、xp)，而twiddle2只需要3次(读xp，读yp，写xp)显然函数twiddle2()的效率高一些.因此，我们希望编译器在编译twiddle1时，基于twiddle2会产生更有效的代码</p>
+</li>
+<li>
+<p>然而，当xp和yp指向的是同一个对象时，两个函数的运算结果不同，编译器必须考虑到这点而不产生其优化版本，这造成了一个主要的<strong>妨碍优化的因素</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>可以使用内联函数替换以优化函数调用
+内联函数(inline)类似于C中的宏(联想到汇编中的宏展开与函数跳转)
+此时，函数调用将替换为函数体，编译器可以产生一个优化版本，但要慎重使用.</p>
+</blockquote>
+<h2 id="一个简单的程序">一个简单的程序</h2>
+<blockquote>
+<p>我们引入度量标准**每元素的周期数(Cycles Per Element， CPE)**来表示程序性能.</p>
+<p>对于某一特定参考机器(原文使用的是i7 Haswell)，我们可以得到CPE的基本界限</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">界限</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">延迟</td>
+<td align="center">1.00</td>
+<td align="center">3.00</td>
+<td align="center">3.00</td>
+<td align="center">5.00</td>
+</tr>
+<tr>
+<td align="left">吞吐量</td>
+<td align="center">0.50</td>
+<td align="center">1.00</td>
+<td align="center">1.00</td>
+<td align="center">0.50</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>延迟界限为一个运算功能单元进行一次运算的时钟周期，多个运算单元可以同时工作，但都需要从内存读取数据，所以造成了吞吐量界限.</p>
+<p>延迟界限给出了任何必须按照<strong>严格顺序</strong>完成合并运算的函数所需要的最小CPE值</p>
+<p>吞吐量界限给出了CPE的<strong>最小界限</strong></p>
+</blockquote>
+<p>接下的例子将展示如何突破延迟界限以接近吞吐量界限，我们会惊讶的发现，最终的程序比原始的快了20倍</p>
+<ul>
+<li>给定一个数据类型为data_t的抽象链表vec_rec(C++中的vector，Java中的ArrayList)，其头指针为*vec_ptr，我们要做的是对其所有数据进行求和以及求积</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"> <span style="color:#960050;background-color:#1e0010">定</span><span style="color:#960050;background-color:#1e0010">义</span><span style="color:#960050;background-color:#1e0010">常</span><span style="color:#960050;background-color:#1e0010">量</span><span style="color:#f92672">:</span>
+ 
+ <span style="color:#960050;background-color:#1e0010">对</span><span style="color:#960050;background-color:#1e0010">于</span><span style="color:#960050;background-color:#1e0010">求</span><span style="color:#960050;background-color:#1e0010">和</span> 
+ <span style="color:#960050;background-color:#1e0010">#</span>define IDENT <span style="color:#ae81ff">0</span>
+ <span style="color:#75715e">#</span><span style="color:#75715e">define OP +</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span> <span style="color:#960050;background-color:#1e0010">对</span><span style="color:#960050;background-color:#1e0010">于</span><span style="color:#960050;background-color:#1e0010">求</span><span style="color:#960050;background-color:#1e0010">积</span>
+ <span style="color:#75715e">#</span><span style="color:#75715e">define IDENT 1</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span> <span style="color:#75715e">#</span><span style="color:#75715e">define OP *</span><span style="color:#75715e">
+</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine1</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t<span style="color:#f92672">*</span> dest)
+{
+	<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> IDENT;
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> vec_length(v);i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
+	{
+		<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>dest OP get_element(i)
+	}
+}
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine1</td>
+<td align="left">未优化的</td>
+<td align="center">22</td>
+<td align="center">20</td>
+<td align="center">20</td>
+<td align="center">20</td>
+</tr>
+<tr>
+<td align="left">combine1</td>
+<td align="left">-O1优化的</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">11</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>以命令行选项“-Og”调用GCC，会让GCC使用一组基本的优化.以选项“-O1”或更高，可以使用更大量的优化</p>
+<p>ps:这里偷懒省去了小数点后两位</p>
+</blockquote>
+<h3 id="消除不必要的循环">消除不必要的循环</h3>
+<p>让我们看下combine1有什么可以改进的呢(要知道这个可是最慢的!)
+发现每次循环时都需要调用vec_length检查边界，我们用一个局部变量length进行存储，将函数调用移出循环，时间复杂度从O(n^2)变为O(n).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine2</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t<span style="color:#f92672">*</span> dest)
+{
+	<span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
+	<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> IDENT;
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
+	{
+		<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>dest OP get_element(i)
+	}
+}
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine1</td>
+<td align="left">-O1优化的</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">10</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="left">combine2</td>
+<td align="left">移动vec_length()</td>
+<td align="center">7</td>
+<td align="center">9</td>
+<td align="center">9</td>
+<td align="center">11</td>
+</tr>
+</tbody>
+</table>
+<p>这是一类常见的优化例子，称为<strong>代码移动</strong>，编译器会尝试进行，但不幸的是编译器对此非常小心，如果vec_length()有某种副作用，会产生不同的行为，程序员必须帮助编译器进行显式的优化.</p>
+<h3 id="减少过程调用">减少过程调用</h3>
+<p>之前我们从循环里移除了vec_length()，但是我们发现循环中依然存在函数调用:get_element(i)获取下一个元素，这个函数要把索引与数据边界进行比较，但在for的条件判断中已经限制了数组的边界范围，我们考虑将它移出循环，通过下标直接访问数组.</p>
+<blockquote>
+<p>这并不一定是一个好方法，因为破坏了数据抽象</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine3</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest)
+{
+	<span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
+	<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> IDENT;
+	data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v);
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
+	{
+		<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>dest OP data[i]
+	}
+}
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine2</td>
+<td align="left">移动vec_length()</td>
+<td align="center">7</td>
+<td align="center">9</td>
+<td align="center">9</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="left">combine3</td>
+<td align="left">直接数据访问</td>
+<td align="center">7</td>
+<td align="center">9</td>
+<td align="center">9</td>
+<td align="center">11</td>
+</tr>
+</tbody>
+</table>
+<p>然而性能没有明显的提升，显然是循环中的其他操作形成了瓶颈，后面会提到，这个修改我们先保留.</p>
+<h3 id="消除不必要的内存引用">消除不必要的内存引用</h3>
+<p>一直以来我们将累计值存储在指针dest指定的位置，我们检查combine3编译出的汇编代码</p>
+<blockquote>
+<p>原文的汇编代码与所学的80x86不同，在此是我简化后的</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">	L17:
+	mov (<span style="color:#f92672">%</span>bx)<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">%</span>xm				<span style="color:#960050;background-color:#1e0010">将</span><span style="color:#960050;background-color:#1e0010">寄</span><span style="color:#960050;background-color:#1e0010">存</span><span style="color:#960050;background-color:#1e0010">器</span>bx存储的dest值给临时变量寄存器xm
+	mul (<span style="color:#f92672">%</span>dx) <span style="color:#f92672">*</span> <span style="color:#f92672">%</span>xm <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">%</span>xm		<span style="color:#960050;background-color:#1e0010">将</span>xm与寄存器dx中 <span style="color:#960050;background-color:#1e0010">的</span>data[i]<span style="color:#960050;background-color:#1e0010">相</span><span style="color:#960050;background-color:#1e0010">乘</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#960050;background-color:#1e0010">结</span><span style="color:#960050;background-color:#1e0010">果</span><span style="color:#960050;background-color:#1e0010">赋</span><span style="color:#960050;background-color:#1e0010">给</span>xm
+	mov <span style="color:#f92672">%</span>xm <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> (<span style="color:#f92672">%</span>bx)				<span style="color:#960050;background-color:#1e0010">将</span>xm的值重新赋值给寄存器bx存储的dest 
+									<span style="color:#960050;background-color:#1e0010">因</span><span style="color:#960050;background-color:#1e0010">为</span><span style="color:#960050;background-color:#1e0010">寄</span><span style="color:#960050;background-color:#1e0010">存</span><span style="color:#960050;background-color:#1e0010">器</span><span style="color:#960050;background-color:#1e0010">不</span><span style="color:#960050;background-color:#1e0010">能</span><span style="color:#960050;background-color:#1e0010">直</span><span style="color:#960050;background-color:#1e0010">接</span><span style="color:#960050;background-color:#1e0010">参</span><span style="color:#960050;background-color:#1e0010">与</span><span style="color:#960050;background-color:#1e0010">运</span><span style="color:#960050;background-color:#1e0010">算</span> 
+									<span style="color:#960050;background-color:#1e0010">以</span><span style="color:#960050;background-color:#1e0010">上</span><span style="color:#960050;background-color:#1e0010">代</span><span style="color:#960050;background-color:#1e0010">码</span><span style="color:#960050;background-color:#1e0010">作</span><span style="color:#960050;background-color:#1e0010">用</span><span style="color:#960050;background-color:#1e0010">为</span> <span style="color:#f92672">*</span>dest<span style="color:#f92672">=</span><span style="color:#f92672">*</span>dest OP data[i]	
+	add <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">%</span>dx					<span style="color:#960050;background-color:#1e0010">指</span><span style="color:#960050;background-color:#1e0010">针</span><span style="color:#960050;background-color:#1e0010">移</span><span style="color:#960050;background-color:#1e0010">动</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#ae81ff">8</span><span style="color:#960050;background-color:#1e0010">为</span>double的字长
+	cmp <span style="color:#f92672">%</span>dx <span style="color:#f92672">+</span> length<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#f92672">%</span>dx 		<span style="color:#960050;background-color:#1e0010">循</span><span style="color:#960050;background-color:#1e0010">环</span><span style="color:#960050;background-color:#1e0010">结</span><span style="color:#960050;background-color:#1e0010">束</span><span style="color:#960050;background-color:#1e0010">判</span><span style="color:#960050;background-color:#1e0010">断</span>
+	jmp L17 
+</code></pre></div><p>每次迭代时，累积变量的数值(*dest)都要从内存中读入再写入，这样很浪费，因为每次迭代开始时读的值就是上次迭代写入的值
+为了消除这种不必要的内存读写，我们引入一个临时变量acc</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine4</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest)
+{
+	<span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
+	data_t acc <span style="color:#f92672">=</span> IDENT;
+	data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v);
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
+	{
+		acc <span style="color:#f92672">=</span> acc OP data[i]
+	}
+	<span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> acc;
+}
+</code></pre></div><p>对应的汇编</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">	L25:
+	mul (<span style="color:#f92672">%</span>dx) <span style="color:#f92672">*</span> <span style="color:#f92672">%</span>xm <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">%</span>xm
+	add <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">%</span>dx
+	cmp <span style="color:#f92672">%</span>dx <span style="color:#f92672">+</span> length<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#f92672">%</span>dx
+	jmp L25
+</code></pre></div><p>与之前的循环相比，每次迭代的内存操作从两次读和一次写减少到一次写</p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine3</td>
+<td align="left">直接数据访问</td>
+<td align="center">7</td>
+<td align="center">9</td>
+<td align="center">9</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="left">combine4</td>
+<td align="left">临时变量</td>
+<td align="center">1.2</td>
+<td align="center">3</td>
+<td align="center">3</td>
+<td align="center">5</td>
+</tr>
+</tbody>
+</table>
+<p>结果令人惊讶，已经接近延迟界限了，我们再次希望编译器能够自动将其优化成临时变量的版本，但遗憾的是，当dest指向的是data[i]时，两个函数会产生不同的结果.</p>
+<h3 id="理解处理器的工作流程">理解处理器的工作流程</h3>
+<p>combie4抽象后的数据流图:</p>
+<p><img src="https://uploader.shimo.im/f/zSrMDeGlodc7GIDS!thumbnail" alt="图片"></p>
+<p>简化后:</p>
+<p><img src="https://uploader.shimo.im/f/GziZJqEzgrM0NHjr!thumbnail" alt="图片"></p>
+<p>左边的链为浮点乘法，延迟为5个周期，右边的链为整数加法，延迟为1个周期
+程序关键路径是由对acc的连续读写(左边的链)造成的，这是限制程序性能的主要因素</p>
+<h3 id="循环展开">循环展开</h3>
+<p>通过增加每次迭代计算元素的数量，减少循环次数</p>
+<p>我们称之为2x1展开</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine5</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest)
+{
+	<span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
+    <span style="color:#66d9ef">long</span> acc <span style="color:#f92672">=</span> IDENT;
+	data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v);
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)<span style="color:#75715e">//为了表示方便，假设长度为偶数
+</span><span style="color:#75715e"></span>	{
+		acc <span style="color:#f92672">=</span> (acc OP data[i]) OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>];
+	}
+    <span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> acc;
+}
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine4</td>
+<td align="left">无展开</td>
+<td align="center">1.27</td>
+<td align="center">3.01</td>
+<td align="center">3.01</td>
+<td align="center">5.01</td>
+</tr>
+<tr>
+<td align="left">combine5</td>
+<td align="left">2x1展开</td>
+<td align="center">1..01</td>
+<td align="center">3.01</td>
+<td align="center">3.01</td>
+<td align="center">5.01</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">3x1展开</td>
+<td align="center">1..01</td>
+<td align="center">3.01</td>
+<td align="center">3.01</td>
+<td align="center">5.01</td>
+</tr>
+</tbody>
+</table>
+<p>几乎达到了延迟界限，让我们再看看数据流图</p>
+<p><img src="https://uploader.shimo.im/f/Mc96LLcmQ4UzzKNt!thumbnail" alt="图片"></p>
+<p>迭代次数减半了，并减少了一个整数加操作，但每个迭代中还是有两个<strong>顺序</strong>的乘法操作.
+这个关键路径仍是性能制约因素.</p>
+<h3 id="提高并行性">提高并行性</h3>
+<p>指令级并行:在实际的处理器中，同时对多条指令求值</p>
+<p>但在顺序操作中，处理器需要等待上一个运算的结果才能进行下一个运算</p>
+<p>我们加入一点分治的思想：使用多个累计变量
+称之为2 x 2展开</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine6</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest)
+{
+	<span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
+    <span style="color:#66d9ef">long</span> acc0 <span style="color:#f92672">=</span> IDENT;
+    <span style="color:#66d9ef">long</span> acc1 <span style="color:#f92672">=</span> IDENT;
+	data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v);
+	<span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)<span style="color:#75715e">//为了表示方便，假设长度为偶数
+</span><span style="color:#75715e"></span>	{
+		acc0 <span style="color:#f92672">=</span> acc0 OP data[i];
+	}
+    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">+</span><span style="color:#f92672">+</span>)
+	{
+		acc1 <span style="color:#f92672">=</span> acc1 OP data[i];
+	}
+
+    <span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> acc0 OP acc1;
+}
+</code></pre></div><blockquote>
+<p>值得考虑的是运算是否具有可交换性和可结合性，
+此外，浮点运算可能产生的溢出和舍去也会造成影响</p>
+</blockquote>
+<p><img src="https://uploader.shimo.im/f/Cjow1YJe3Q8ugu5l!thumbnail" alt="图片">
+现在有两个互相独立关键路径，每条路径只包含n/2个操作，我们成功的将CPE降为1/2，但整数加法还有太多但循环开销，无法达到理论吞吐量界限0.50.</p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine5</td>
+<td align="left">2x1展开</td>
+<td align="center">1..01</td>
+<td align="center">3.01</td>
+<td align="center">3.01</td>
+<td align="center">5.01</td>
+</tr>
+<tr>
+<td align="left">combine6</td>
+<td align="left">2x2展开</td>
+<td align="center">0.81</td>
+<td align="center">1.51</td>
+<td align="center">1.51</td>
+<td align="center">2.51</td>
+</tr>
+</tbody>
+</table>
+<p>使用k x k 循环展开
+<img src="https://uploader.shimo.im/f/yGmY5hq54p4LHGAq!thumbnail" alt="图片">
+所有CPE都有所改进，.接近其吞吐量界限.</p>
+<p>现在，我们通过另一种方式提高并行性：重新结合变换
+称之为2 x 1a展开</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">acc <span style="color:#f92672">=</span> (acc OP data[i]) OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>];
+<span style="color:#960050;background-color:#1e0010">修</span><span style="color:#960050;background-color:#1e0010">改</span><span style="color:#960050;background-color:#1e0010">为</span>
+acc <span style="color:#f92672">=</span> acc OP (data[i] OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]);
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine5</td>
+<td align="left">2x1展开</td>
+<td align="center">1..01</td>
+<td align="center">3.01</td>
+<td align="center">3.01</td>
+<td align="center">5.01</td>
+</tr>
+<tr>
+<td align="left">combine7</td>
+<td align="left">2x1a展开</td>
+<td align="center">1.01</td>
+<td align="center">1.51</td>
+<td align="center">1.51</td>
+<td align="center">2.51</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://uploader.shimo.im/f/DsRE3YxUNysio245!thumbnail" alt="图片">
+关键路径上只有n/2个操作，每次迭代内的第一个乘法都不需要等待前一次迭代的累计值就可以执行.因此，最小的CPE减少的2倍</p>
+<p>使用k x 1a 展开<img src="https://uploader.shimo.im/f/VZ9AIXY3EM8yLv69!thumbnail" alt="图片">
+所有的CPE都几乎达到了吞吐量界限</p>
+<blockquote>
+<p>大多数编译器不会尝试对浮点运算做重新结合，因为不能保证运算是可结合的
+GCC会对整数运算执行重新结合，但不是总有好的效果</p>
+</blockquote>
+<p>我们发现循环展开和并行地积累在多个值中，是提高程序性能的更可靠的办法.</p>
+<h3 id="小结">小结</h3>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">方法</th>
+<th align="center">整数</th>
+<th align="center"></th>
+<th align="center">浮点数</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="center">+</td>
+<td align="center">*</td>
+<td align="center">+</td>
+<td align="center">*</td>
+</tr>
+<tr>
+<td align="left">combine1</td>
+<td align="left">-O1优化的</td>
+<td align="center">10.12</td>
+<td align="center">10.12</td>
+<td align="center">10.17</td>
+<td align="center">11.14</td>
+</tr>
+<tr>
+<td align="left">combine6</td>
+<td align="left">10 x 10 循环展开</td>
+<td align="center">0.55</td>
+<td align="center">1.00</td>
+<td align="center">1.01</td>
+<td align="center">0.52</td>
+</tr>
+<tr>
+<td align="left">延迟界限</td>
+<td align="left"></td>
+<td align="center">1.00</td>
+<td align="center">3.00</td>
+<td align="center">3.00</td>
+<td align="center">5.00</td>
+</tr>
+<tr>
+<td align="left">吞吐量界限</td>
+<td align="left"></td>
+<td align="center">0.50</td>
+<td align="center">1.00</td>
+<td align="center">1.00</td>
+<td align="center">0.50</td>
+</tr>
+</tbody>
+</table>
+<p>不可思议!
+想想我们使用了哪些优化技术(不妨看一看目录)，使得CPE接近吞吐量界限，只受限于功能单元的容量.
+我们只使用普通的C代码和标准编译器就获得了所有的这些改进.这说明现代处理器有相当的计算能力，但是我们可能需要按非常程式化的方式来编写程序以便将这些能力诱发出来.</p>
+<h3 id="其他">其他</h3>
+<ul>
+<li>寄存器溢出</li>
+<li>分支预测与预测错误惩罚</li>
+<li>SIMD与AVX</li>
+</ul>
+<h2 id="理解存储器层次结构">理解存储器层次结构</h2>
+<h3 id="高速缓存cache">高速缓存(cache)</h3>
+<ul>
+<li>缓存命中与不命中惩罚</li>
+</ul>
+<h3 id="局部性">局部性</h3>
+<ul>
+<li>时间局部性</li>
+<li>空间局部性</li>
+</ul>
+<h3 id="编写高速缓存友好的代码">编写高速缓存友好的代码</h3>
+<ul>
+<li>ECS</li>
+</ul></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

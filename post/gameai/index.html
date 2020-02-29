@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>游戏人工智能 - Nostalgia</title>
+    
+    <meta name="description" content="解决方案
+
+编码 Code
+规划 Plan
+学习 Learn
+">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">游戏人工智能</h1>
+    <div class="post-meta">October 17, 2019</div>
+  </header>
+  <div class="post-content"><p>解决方案</p>
+<ol>
+<li>编码 Code</li>
+<li>规划 Plan</li>
+<li>学习 Learn</li>
+</ol>
+<h2 id="编码hard-code">编码(Hard Code)</h2>
+<p>每个逻辑节点对应一个确定的动作(可选: 模糊逻辑)</p>
+<p>你需要：向机器解释如何实现其目标, 完全控制但工作量大</p>
+<ul>
+<li>Finite State Machine</li>
+<li>Behavior</li>
+</ul>
+<p>Unity Asset: <a href="https://assetstore.unity.com/packages/tools/visual-scripting/playmaker-368">Play Maker</a>, <a href="https://assetstore.unity.com/packages/tools/visual-scripting/behavior-designer-behavior-trees-for-everyone-15277">Behavior Designer</a></p>
+<h2 id="规划plan">规划(Plan)</h2>
+<p>建立问题的数学模型，让机器求解</p>
+<p>你需要： 制定行为间的关系</p>
+<ul>
+<li>A* 寻路</li>
+<li>GOAP</li>
+</ul>
+<p>Unity(2019.2) Package: <a href="https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html">AI Planner (preview)</a></p>
+<h2 id="学习learn">学习(Learn)</h2>
+<p>制定游戏规则，让AI在大量训练中找到最佳解</p>
+<ul>
+<li>强化学习</li>
+<li>模仿学习</li>
+</ul>
+<p>你需要：</p>
+<p>(强化学习)设置观察量和奖励，让机器在不断试错中找到最佳方法</p>
+<p>(模仿学习)作出正确的选择让AI进行模仿</p>
+<p>Unity Package: <a href="https://github.com/Unity-Technologies/ml-agents">ML-Agents Toolkit(v2.0 beta)</a></p>
+<h2 id="当下通常的解决方案">当下通常的解决方案：</h2>
+<p>组成部分</p>
+<ol>
+<li>世界 World</li>
+<li>认知 Observation</li>
+<li>行为 Behavior</li>
+<li>组件 Animation</li>
+</ol>
+<pre><code class="language-flow" data-lang="flow">```flow
+1=&gt;operation: 行为（编码）
+2=&gt;operation: 导航（规划）
+3=&gt;operation: 动画系统（编码）
+1-&gt;2-&gt;3-&gt;e
+```
+</code></pre><h1 id="ml-agents">ML-Agents</h1>
+<p>使用<a href="https://openai.com/blog/openai-baselines-ppo/">PPO</a>算法，通过TensorFlow进行训练，使用Python API与Unity环境进行交互</p>
+<h2 id="academy">Academy</h2>
+<p>全局环境，控制场景中训练的对象和学习策略</p>
+<h2 id="brain">Brain</h2>
+<p>用来观测并进行决策，每个GameObject上可以有多个Brain控制不同的行为决策，多个GameObect可以使用同一个Brain进行自我博弈</p>
+<h2 id="agent">Agent</h2>
+<p>相当于一个AI物体，需要添加Brain，可以有自身的观察环境（第一人称相机），需要定义在训练中进行的行为</p>
+<p>一般情况下我们只需要定义以下参数</p>
+<ol>
+<li>
+<p>观测向量(Vector Observation Space)</p>
+<p>从环境中观察到的信息,向量存储于键-值对(key-value)中,</p>
+<ul>
+<li>连续(Continuous) eg: transform, rotation</li>
+<li>离散(Discrete) eg: jump action</li>
+</ul>
+</li>
+<li>
+<p>行为向量(Vector Action Space)</p>
+<p>经过计算预计得到的向量，这里不需要定义向量的具体含义，并在之后定义根据该向量采取的具体动作,</p>
+<ul>
+<li>连续(Continuous)</li>
+<li>离散(Discrete)</li>
+</ul>
+</li>
+<li>
+<p>定义行为对应的奖励</p>
+<p>float类型 一般 -1.0~+1.0</p>
+</li>
+<li>
+<p>训练参数 eg: max step, learning rate, time scale, layers</p>
+<p>修改config.yaml</p>
+</li>
+</ol>
+<h2 id="训练">训练</h2>
+<p>使用jupyter进行交互</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">jupyter notebook
+</code></pre></div><p>使用trainer_config中的参数进行训练</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mlagents-learn &lt;config-path&gt; --env<span style="color:#f92672">=</span>&lt;env-name&gt; --run-id<span style="color:#f92672">=</span>&lt;run-identifier&gt; --train
+</code></pre></div><p>使用tensorboard进行观测</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tensorboard --logdir<span style="color:#f92672">=</span>summaries
+</code></pre></div><p>ML-Agents Toolkit提供的更多训练方式</p>
+<ul>
+<li>使用硬编码或玩家控制器下的角色与AI控制下的角色进行对比训练</li>
+<li>Visual Observation也就是观察空间摄像机(pixel)</li>
+<li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-SAC.md"> Soft Actor-Critic</a>有记忆的学习</li>
+<li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-Curriculum-Learning.md">Curriculum Learning</a>阶段性学习，逐次增加训练难度</li>
+<li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-Imitation-Learning.md">Imitation Learning</a>模仿学习，AI根据玩家行为进行学习</li>
+<li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Feature-Monitor.md">Monitor</a>监视器，随时在UI上显示环境参数</li>
+<li>Unity Editor, Excutable, Command Line</li>
+</ul></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>日本行 - Nostalgia</title>
+    
+    <meta name="description" content="大二暑假报名了一个日本的访学(旅游)项目，记录一下有趣的事情。
+图片挂了,之后有时间再补&hellip;&hellip;.">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">日本行</h1>
+    <div class="post-meta">September 5, 2019</div>
+  </header>
+  <div class="post-content"><p>大二暑假报名了一个日本的访学(旅游)项目，记录一下有趣的事情。</p>
+<p>图片挂了,之后有时间再补&hellip;&hellip;.</p>
+<ul>
+<li>7.31	秋叶原 台场 涩谷 歌舞伎町</li>
+<li>8.1	东京大学 东京塔</li>
+<li>8.2	早稻田大学 浴衣茶道</li>
+<li>8.3	花火大会</li>
+<li>8.4	奥特莱斯 温泉酒店</li>
+<li>8.5	日出 丰田会馆 东大寺 奈良公园</li>
+<li>8.6	京都 同志社大学 手握寿司 清水寺</li>
+<li>8.7	京友禅 坐禅</li>
+<li>8.8	朝日啤酒 心斋桥 大板烧 晚会</li>
+<li>8.9	环球影城</li>
+<li>8.10	返回</li>
+</ul>
+<h2 id="东京大学">东京大学</h2>
+<p>{% asset_img IMG_5498.jpeg %}</p>
+<h2 id="迷惑行为">迷惑行为</h2>
+<p>{% asset_img IMG_5503.jpeg %}</p>
+<h2 id="秋叶原">秋叶原</h2>
+<p>很多很多的游戏、电器、动漫、手办，不愧是御宅圣地
+{% asset_img IMG_5508.jpeg %}
+{% asset_img IMG_5509.jpg %}</p>
+<p>女仆咖啡馆
+{% asset_img IMG_5511.jpg %}
+要和小姐姐一起做羞羞的动作，最后会一起拍照，就是不太听得懂(日语白学了)</p>
+<p>少儿不宜
+{% asset_img IMG_5591.jpeg %}</p>
+<p>漫画店，超级多
+{% asset_img IMG_5602.jpg %}
+{% asset_img IMG_5605.jpeg %}</p>
+<h2 id="台场高达基地">台场高达基地</h2>
+<p>很多精美的高达模型和获奖作品，如果不是不方便带回去我就买了
+{% asset_img IMG_5519.jpeg %}
+{% asset_img IMG_5521.jpeg %}</p>
+<p>台场标志性的巨型独角兽，每隔一段时间还会变形
+{% asset_img IMG_5543.jpeg %}
+{% asset_img IMG_5545.jpeg %}</p>
+<h2 id="东京">东京</h2>
+<p>东京的夜生活要开始了
+{% asset_img IMG_5680.jpeg %}</p>
+<p>歌舞伎町，著名的红灯区
+{% asset_img IMG_5685.jpeg %}
+{% asset_img IMG_5687.jpeg %}
+里面很多’无料案内所‘，也就是免费帮你介绍的，外面拉客的人能准确分辨你是哪里人，会说各种语言(比如东北话)</p>
+<h2 id="花火大会">花火大会</h2>
+<p>{% asset_img IMG_5785.jpeg %}</p>
+<p>去的时候坐电车跟国内春运差不多，但人们素质都很高，路上也超多人，提前半小时已经没位置了</p>
+<p>开始了嗷
+{% asset_img IMG_5829.jpeg %}
+{% asset_img IMG_6175.jpg %}</p>
+<p>整个过程会持续一个半小时左右，烟花表演因地区而各不相同，我们坐在河岸边的草地上，很多日本人会穿和服，带上零食饮料和家人一起来看，烟花在船上发射，种类很多，非常绚丽，整片天空都被点亮了</p>
+<h2 id="温泉酒店看日出">温泉酒店看日出</h2>
+<p>{% asset_img IMG_6235.jpg %}
+可以边泡温泉边看，日本人泡温泉是不穿衣服的</p>
+<h2 id="奈良见">奈良见🦌</h2>
+<p>鹿飞出⚠️注意！
+{% asset_img IMG_6465.jpg %}</p>
+<p>有意思的是在你喂它吃鹿饼前它会先跟你鞠躬(不然就不给它)，然后它会一直跟着你，还会咬你衣服，很粘人，喂了要赶紧溜
+{% asset_img IMG_6531.jpeg %}</p>
+<h2 id="环球影城">环球影城</h2>
+<p>哈利波特禁忌之旅，里面用各种体感方式还原电影中的场景，来到魁地奇那一部分真的很刺激，回去发现b站上有版权了又看了一遍
+{% asset_img IMG_6718.jpeg %}</p>
+<p>进击的巨人表演，包括真人在内的各种表演手段还原第二季part2的剧情，也很震撼
+{% asset_img IMG_6723.jpeg %}</p>
+<h2 id="出行">出行</h2>
+<p>小企鹅交通卡，日本的电车还是很方便的，但比国内要贵不少
+{% asset_img IMG_6189.jpg %}</p>
+<h2 id="恰饭">恰饭</h2>
+<p>{% asset_img IMG_6634.jpeg %}
+{% asset_img IMG_6460.jpeg %}
+{% asset_img IMG_5760.jpeg %}
+{% asset_img IMG_5713.jpeg %}
+{% asset_img IMG_6181.jpg %}
+{% asset_img IMG_5672.jpeg %}
+{% asset_img IMG_6554.jpeg %}
+{% asset_img IMG_6607.jpeg %}
+{% asset_img IMG_5700.jpeg %}</p>
+<p>还有好多有趣的东西之后再补上</p></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>协程实现的状态机框架 - Nostalgia</title>
+    
+    <meta name="description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">协程实现的状态机框架</h1>
+    <div class="post-meta">April 10, 2019</div>
+  </header>
+  <div class="post-content"><p><a href="https://docs.unity3d.com/Manual/Coroutines.html">协程(Cotroutines)</a>是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，<a href="https://docs.unity3d.com/Manual/ExecutionOrder.html">执行顺序</a>主要在Update()之后，LateUpdate()之前。</p>
+<p>使用协程的优点</p>
+<ul>
+<li>简洁、直观</li>
+<li><strong>将变量限制在最小的作用域内</strong>,并且能够非常方便按需通过快速的声明或传参将其提升至更大的作用域中。</li>
+<li>相较于一般函数基本没有更大开销</li>
+</ul>
+<p>注意</p>
+<ol>
+<li>多个协程可用同时运行,它们会根据各自的启动顺序来更新</li>
+<li>协程不是多线程,即某一时刻<strong>只有一个</strong>运行着的协程</li>
+<li>协程可以<strong>互相嵌套</strong></li>
+</ol>
+<p>这是一个协程实现的简单状态机:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">
+IEnumerator State()
+	{
+		
+		<span style="color:#75715e">//local variable
+</span><span style="color:#75715e"></span>		
+		<span style="color:#75715e">//State.Enter
+</span><span style="color:#75715e"></span>		
+		<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
+		{
+			
+			<span style="color:#75715e">//State.Update
+</span><span style="color:#75715e"></span>			
+			<span style="color:#75715e">/*每个Update更新*/</span>
+			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+			<span style="color:#75715e">/*一定时间更新*/</span>
+			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitForXX();
+			<span style="color:#75715e">/*判断条件更新*/</span>
+			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitWhile();
+			
+			<span style="color:#75715e">/*判断条件,结束当前状态*/</span>
+			<span style="color:#66d9ef">break</span>;
+			
+		}
+		
+		<span style="color:#75715e">//State.Exit
+</span><span style="color:#75715e"></span>		
+		<span style="color:#75715e">/*开启新的状态*/</span>
+		<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> StartCoroutine(<span style="color:#66d9ef">new</span> Cortoutine(NextState()));
+		
+</code></pre></div><p>最近在<a href="https://indienova.com/indie-game-development/logic-over-time-jean/">indienova</a>上看到了一个更为完整的使用协/程实现的状态机框架,一共有两篇文章,原文为<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160128/264083/Logic_Over_Time.php">Logic Over Time</a>和<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160310/267441/Beyond_the_State_Machine.php">Beyond the State Machine</a>,<a href="https://github.com/jeansimonet/Coroutines">demo</a>去掉跨平台部分代码就能运行.</p>
+<p>这套框架更类似行为树,一个基本的协程图节点可以实现如下几点功能:</p>
+<p><img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Runtime%20Graph%20(1).png" alt=""></p>
+<ul>
+<li><strong>能够被更新</strong></li>
+<li><strong>能够指示它何时应当运行</strong>或中止，这个值可以用于决定是否返回到父协程节点。</li>
+<li><strong>能够被重置</strong>，不管出现任何情况都能重置回默认的状态。</li>
+<li><strong>能够被移除</strong>，这一点尤为关键，当这些节点完成其功能，我们需要它们以一种可预测的方式被移除。拥有这样的功能也能让节点池系统的实现变得更加容易，因为我们清楚直到不再使用的节点就会被自动删除掉。</li>
+</ul>
+<h2 id="实例">实例</h2>
+<p>一个搜寻敌人并发射子弹的炮塔</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Turret</span>
+  : MonoBehaviour
+{
+<span style="color:#a6e22e">  [...]</span> <span style="color:#75715e">// 检查器配置变量
+</span><span style="color:#75715e"></span>
+  <span style="color:#75715e">// 唯一的状态是根协程节点
+</span><span style="color:#75715e"></span>  Coroutines.Corountine _Main;
+
+  <span style="color:#75715e">// 初始化
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> Start()
+  {
+    _Main = <span style="color:#66d9ef">new</span> coroutines.Corountine(Main());
+  }
+
+  <span style="color:#75715e">// 每帧调用一次
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> Update()
+  {
+    <span style="color:#75715e">// 更新根节点
+</span><span style="color:#75715e"></span>    _Main.Update();
+  }
+
+  <span style="color:#75715e">// 根协程节点
+</span><span style="color:#75715e"></span>  IEnumerable Main()
+  {
+    <span style="color:#75715e">// 存储默认的炮塔朝向，我们将会把该变量传入炮塔空闲时执行的协程
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> startYAngle = transform.rotation.eulerAngles.y;
+
+    <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>)
+    {
+      <span style="color:#75715e">// 搜寻目标
+</span><span style="color:#75715e"></span>      Transform target = <span style="color:#66d9ef">null</span>;
+
+      <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhileRunning(
+        <span style="color:#75715e">// 核心代码，搜寻目标并将其存放在 target 变量中
+</span><span style="color:#75715e"></span>        FindTargetInRadius(_LockOnRadius, trgt =&gt; target = trgt),
+
+	<span style="color:#75715e">// 如果还处于搜寻状态就执行
+</span><span style="color:#75715e"></span>	Idle(startYAngle));
+
+      <span style="color:#75715e">// 此处我们应当有一个非空的目标！
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">// 追踪目标并朝它射击
+</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhile(
+        <span style="color:#75715e">// 条件
+</span><span style="color:#75715e"></span>        () =&gt; Vector3.Distance(target.postion, transform.postion) &lt; _LockOffRadius,
+
+        <span style="color:#75715e">// 条件为真时追踪目标
+</span><span style="color:#75715e"></span>        TrackTarget(taget),
+
+        <span style="color:#75715e">// 条件为真时发射炮弹
+</span><span style="color:#75715e"></span>        FireProjectiles());
+    }
+}
+</code></pre></div><h2 id="定义接口">定义接口</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> ICoroutine
+		: System.IDisposable
+	{
+		<span style="color:#66d9ef">bool</span> IsRunning { <span style="color:#66d9ef">get</span>; }
+		<span style="color:#66d9ef">void</span> Update();
+		<span style="color:#66d9ef">void</span> Reset();
+	}
+
+</code></pre></div><h2 id="基本协程节点">基本协程节点</h2>
+<p><img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Child%20Node%20(1).png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Coroutine</span>
+    : ICoroutine
+{
+    <span style="color:#75715e">// 存放枚举变量资源
+</span><span style="color:#75715e"></span>    IEnumerable _Source;
+
+    <span style="color:#75715e">// 存放协程的运行实例
+</span><span style="color:#75715e"></span>    IEnumerable _StateData;
+
+    <span style="color:#75715e">// 存放生成的子节点
+</span><span style="color:#75715e"></span>    ICoroutine _Subroutine;
+
+    <span style="color:#75715e">// 当前节点的状态
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">enum</span> CorountineState
+    {
+<span style="color:#a6e22e">	[...]</span> <span style="color:#75715e">//存放是否使用迭代器，是否更新子协程状态等状态数据
+</span><span style="color:#75715e"></span>    }
+
+    CorountineState _ExecutionState;
+}
+</code></pre></div><h2 id="循环节点">循环节点</h2>
+<p>包含:子节点和是否执行子节点的判断条件
+<img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Child%20Node%20(1).png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// 只要主条件为真就运行子节点
+</span><span style="color:#75715e"></span><span style="color:#75715e">// 只要主条件为假就停止运行子节点
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">While</span>
+    : ICoroutine
+{
+    System.Func _MasterCondition;
+    ICoroutine _SlaveSubroutine; <span style="color:#75715e">// 不必拥有状态，因为它不会被结束！
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">enum</span> WhileNodeState
+    {
+	Running,
+	Complete,
+	Disposed
+    }
+
+    WhileNodeState _CurrentState;
+<span style="color:#a6e22e">
+</span><span style="color:#a6e22e">    [...]</span>
+}
+</code></pre></div><h2 id="并行节点">并行节点</h2>
+<p>ExecuteWhile() 会像这样运行：
+<img src="https://www.gamasutra.com/db_area/images/blog/267441/Concurrent%20(ICoroutine).png" alt=""></p>
+<ol>
+<li>创建一个以多个子协程为参数的并行节点</li>
+<li>创建一个带判断条件的循环节点</li>
+<li>通过 CallInstruction 运行循环节点，先前创建的并行节点将作为循环节点的子节点。</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// 条件为真时，一次运行多个协程
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> CallInsturction ExecuteWhile(System.Func masterCondition,
+       	      		      Params IEnumerable[] slaveSubroutines)
+{
+    <span style="color:#75715e">// 创建一个并行节点，以传入子协程参数作为子节点
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 当所有子节点结束运行后并行节点才会结束运行
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> subroutines = <span style="color:#66d9ef">new</span> List();
+    <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> subroutineSource <span style="color:#66d9ef">in</span> slaveSubroutines)
+    {
+	subroutines.Add(<span style="color:#66d9ef">new</span> Corountine(subroutineSource));
+    }
+    <span style="color:#66d9ef">var</span> concurrentNode = <span style="color:#66d9ef">new</span> Concurrent(Utils.Any, subroutines);
+
+    <span style="color:#75715e">// 将并行节点和判断条件传入循环节点
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> CallInstruction(<span style="color:#66d9ef">new</span> While(concurrentNode, masterCondition));
+}
+
+</code></pre></div><h2 id="向调用位置返回值">向调用位置返回值</h2>
+<p>协程并不直接支持向调用它们的语句返回数据(协程处理的大都是一些中间数据),我们可以使用闭包(或者说lambda表达式)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">IEnumerable FindTargetInRadius(<span style="color:#66d9ef">float</span> radius, System.Action targetFound)
+{
+    <span style="color:#75715e">// 目前只有一个潜在的目标，因此...
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> playerObj = GameObject.FindGameObjectWithTag(<span style="color:#e6db74">&#34;Player&#34;</span>);
+    <span style="color:#66d9ef">if</span> (playerObj != <span style="color:#66d9ef">null</span>)
+    {
+	<span style="color:#66d9ef">while</span> (Vector3.Distance(playerObj.transform.postion, transform.postion) &gt; radius)
+	{
+	    <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
+	}
+
+	<span style="color:#75715e">// 找到目标啦！
+</span><span style="color:#75715e"></span>	targetFound(playerObj.transform);
+    }
+    <span style="color:#75715e">// 其他需要留神的玩意儿...
+</span><span style="color:#75715e"></span>}
+
+</code></pre></div><p>FindTargetInRadius() 接受两个参数,其中一个为搜寻半径,另一个参数是返回 void 的函数,负责控制炮塔的动作。当找到目标后，它就会执行针对锁定目标的动作.这段代码位于 Main() 协程之中,如下所示：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">     
+<span style="color:#75715e">// 搜寻目标
+</span><span style="color:#75715e"></span>	Transform target = <span style="color:#66d9ef">null</span>;
+
+	<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhileRunning(
+	    <span style="color:#75715e">// 核心代码，搜寻目标并将其存放在 target 变量中
+</span><span style="color:#75715e"></span>            FindTargetInRadius(_LockOnRadius, trgt =&gt; target = trgt),
+
+	    <span style="color:#75715e">// 如果还处于搜寻状态就执行
+</span><span style="color:#75715e"></span>	    Idle(startYAngle));
+</code></pre></div><p>搜寻目标是一个局部变量，而 FindTargetInRadius() 的参数 Lambda 表达式也被赋给一个局部的变量。这种写法看起来有点绕弯，但这是编译器允许的一种简写方式，并不糟糕。</p>
+<h2 id="其他节点与应用">其他节点与应用</h2>
+<ul>
+<li>移除节点</li>
+</ul>
+<p>当然，这套框架真正的价值在于，通过简单的扩展与修改，它就能轻松满足许多游戏的开发需要。它向我们展示了一套优雅的方案，让我们有机会探究怎样组合和同步游戏中的各种过程与行为。</p></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

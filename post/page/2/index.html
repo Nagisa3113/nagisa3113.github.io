@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Posts - Nostalgia</title>
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="list">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+
+
+<header class="page-header">
+  <h1>Posts</h1>
+</header>
+
+
+
+
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>射箭艺术中的禅</h2>
+  </header>
+  <section class="entry-content">
+   <p>禅是纯粹的体验，不存在于任何言语文字之中。一位追求生命意义的德国哲学教授，远渡重洋来学习禅的真义。处处碰壁之后，透过了箭术，他体验到最活生生的禅。在禅的描述上，他的追寻记录达到了文字的极至。
+...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>April 25, 2019</time>
+  </footer>
+  <a class="entry-link" href="nagisa3113.com/post/zen/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>协程实现的状态机框架</h2>
+  </header>
+  <section class="entry-content">
+   <p>协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。
+...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>April 10, 2019</time>
+  </footer>
+  <a class="entry-link" href="nagisa3113.com/post/coroutines/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>传播学原理</h2>
+  </header>
+  <section class="entry-content">
+   <p>传播是人们之间的信息传递
+传播学
+ 传播是一种行为 与信息相关 是一种交流 研究对象是人类、人类的行为 ...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>September 5, 2018</time>
+  </footer>
+  <a class="entry-link" href="nagisa3113.com/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>失传的屠龙术</h2>
+  </header>
+  <section class="entry-content">
+   <p>文: 赵皓阳
+引子 有这样一个故事：
+ 有一条恶龙,附近的村民深受其害,每年这个村庄都会有一个少年英雄去与恶龙搏斗,但无人生还.又一个英雄出发时,有人悄悄尾随.龙穴铺满金银财宝,看到英雄用剑刺死恶龙,然后坐在尸身上,看着闪烁的珠宝,慢慢地长出鱗片、尾巴和触角,最终变成恶龙.
+...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>May 5, 2018</time>
+  </footer>
+  <a class="entry-link" href="nagisa3113.com/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/"></a>
+</article>
+
+<article class="post-entry">
+  <header class="entry-header">
+    <h2>理解编译器优化</h2>
+  </header>
+  <section class="entry-content">
+   <p>来自《深入理解计算机系统》第五、六章，推荐学习《编译原理》
+...</p>
+  </section>
+  <footer class="entry-footer">
+    <time>February 10, 2018</time>
+  </footer>
+  <a class="entry-link" href="nagisa3113.com/post/compile/"></a>
+</article>
+
+
+
+<footer class="page-footer">
+  <nav class="pagination">
+    
+    <a class="prev" href="nagisa3113.com/post/">← Prev Page</a>
+    
+    
+  </nav>
+</footer>
+
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>树莓派折腾 - Nostalgia</title>
+    
+    <meta name="description" content="什么是树莓派
+树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。
+它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合我等(穷)学生。">
+    <meta name="author" content="">
+    
+    <link href="nagisa3113.com/an-old-hope.min.css" rel="stylesheet">
+    <link href="nagisa3113.com/style.css" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" href="nagisa3113.com/apple-touch-icon.png">
+    <link rel="icon" href="nagisa3113.com/favicon.ico">
+    
+    <meta name="generator" content="Hugo 0.63.2" />
+    
+    <link rel="alternate" type="application/atom+xml" href="nagisa3113.com/index.xml" title="Nostalgia">
+    
+    
+    
+    <script>
+      function setTheme() {
+        const time = new Date();
+
+        const prev = localStorage.getItem('date');
+        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+
+        const now = time.getTime();
+        let sunrise;
+        let sunset;
+
+        function setBodyClass() {
+          if (now > sunrise && now < sunset) return;
+          document.body.classList.add('dark');
+        }
+
+        if (date !== prev) {
+          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
+            .then(res => res.json())
+            .then(data => {
+              sunrise = data.sunrise.split(':').map(Number);
+              sunset = data.sunset.split(':').map(Number);
+            })
+            .catch(() => {
+              sunrise = [7, 0];
+              sunset = [19, 0];
+            })
+            .finally(() => {
+              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
+              sunset = time.setHours(sunset[0], sunset[1], 0);
+              setBodyClass();
+              localStorage.setItem('sunrise', sunrise);
+              localStorage.setItem('sunset', sunset);
+            });
+          localStorage.setItem('date', date);
+        } else {
+          sunrise = Number(localStorage.getItem('sunrise'));
+          sunset = Number(localStorage.getItem('sunset'));
+          setBodyClass();
+        }
+      }
+    </script>
+  </head>
+  <body class="single">
+    <script>
+      setTheme();
+    </script>
+    <header class="header">
+      <nav class="nav">
+        
+        <p class="logo"><a href="nagisa3113.com">Nostalgia</a></p>
+        
+        
+      </nav>
+    </header>
+    <main class="main">
+
+
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">树莓派折腾</h1>
+    <div class="post-meta">February 10, 2020</div>
+  </header>
+  <div class="post-content"><h2 id="什么是树莓派">什么是树莓派</h2>
+<p>树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。</p>
+<p>它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合我等(穷)学生。</p>
+<p>这学习开了一门《嵌入式系统导论》，老师以划水著名，像我这种学生其实完全不学的，但刚好轮到我做这门课的实验，于是我借了块板子，开始了与树莓派的奇妙冒险（最后这门课只得了70分，史上最低hhhh），实验内容主要是使用GPIO控制传感器，电子电气的同学肯定很熟悉，但对于学计算机的同学就有另一套玩法了，推荐大家都去试试，可以折腾的东西太多了，毕竟它就是台电脑啊！</p>
+<p>比如说之前心心念念的<a href="https://www.clockworkpi.com/">GameShell</a>，一个模块化的开源掌机，但它太贵了（其实我用的Pi 3B是嫖的同学的），然而现在你可以单独购买电池、屏幕、扬声器手柄等配件，制作属于自己的掌机，还可以用来学习一些操作系统和计算机网络的东西。</p>
+<h2 id="系统安装">系统安装</h2>
+<p>首先需要一个SD卡格式化软件<a href="https://www.sdcard.org/downloads/formatter/">SDFormatter</a></p>
+<p>不推荐使用系统自带的</p>
+<p>在每次安装前都需要格式化</p>
+<p>绝大多数问题都出在供电不足，最新的树莓派4B承认供电存在问题。所以，最好的办法是使用官方的充电设备，不要使用移动电源和电脑端的USB口。</p>
+<h3 id="noobs">NOOBS</h3>
+<p><a href="https://www.raspberrypi.org/downloads/">下载地址</a></p>
+<p>即New Out of Box System（全新开箱即用系统），你只需要去官网下载然后拷贝到SD卡就可以了</p>
+<p>优点：</p>
+<ul>
+<li>简单</li>
+<li>可以安装多系统</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>体积大</li>
+<li>安装过程慢</li>
+</ul>
+<h3 id="手动烧录系统">手动烧录系统</h3>
+<p><a href="https://www.raspberrypi.org/downloads/raspbian/">下载地址</a></p>
+<p>可以使用一键烧录软件如win32diskimager和ApplePi-Baker</p>
+<p>这里使用MacOS/Linux下的dd命令来烧录</p>
+<ol>
+<li>
+<p>查看当前哪些设备已挂载，找到SD卡，如/dev/sda1</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">df -h
+</code></pre></div></li>
+<li>
+<p>卸载设备</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">umount /dev/sda1
+</code></pre></div></li>
+<li>
+<p>烧录，PATH为镜像的路径，bs表示一次写入多大的块，一般耗时几分钟不等</p>
+<pre><code>sudo dd if=PATH.img of=/dev/sda1 bs=4m; sync
+</code></pre></li>
+</ol>
+<h2 id="开机启动">开机启动</h2>
+<p>如果有显示器，直接连上就可以开机了，图形界面谁不爱呢?</p>
+<p>如果没有，使用SSH连接，树莓派为了安全考虑默认关闭了SSH，需要你在根目录下新建一个名为SSH（没有扩展名）的文件</p>
+<p>推荐使用网线直接连上树莓派，这里吐槽一下渣科的校园网，你需要一台可以破解校园网的路由器，你可以把树莓派改造成路由器，但前提你要先有一个路由器，于是我又买了个路由器，这样一来方便多了，可惜在学校的日子也不多了。</p>
+<ol>
+<li>
+<p>打开命令行，可以在路由器后台查询树莓派的ip地址，但也可以使用以下方式</p>
+<pre><code>sudo ssh pi@raspberrypi.local
+</code></pre><p>``
+默认账号为pi，默认密码为raspberry，登录后系统会提示你修改</p>
+</li>
+<li>
+<p>开启VNC（Virtual Network Computing），之后你就可以远程通过图形界面使用树莓派了</p>
+<pre><code>sudo raspi-config
+</code></pre></li>
+<li>
+<p>选择Interfacing Options，选择VNC，重启</p>
+<pre><code>sudo reboot
+</code></pre></li>
+<li>
+<p>在你的电脑上下载<a href="https://www.realvnc.com/en/connect/download/viewer/">VNCViewer</a>，登录方式与SSH类似</p>
+</li>
+<li>
+<p>开始折腾！</p>
+</li>
+</ol>
+<p>PS: 可以使用内网穿透，这样就可以在任何地方连接到树莓派了</p>
+<h2 id="可安装的其他系统">可安装的其他系统</h2>
+<ul>
+<li>
+<p>Ubuntu Mate</p>
+<p>图形界面很好用</p>
+</li>
+<li>
+<p>Windows 10 IoT Core</p>
+<p>主要面向物联网开发</p>
+</li>
+<li>
+<p>ArchLinux</p>
+<p>轻量简洁，安装过程稍麻烦，用来学习Linux非常好，但不推荐在自己电脑上折腾，但用在树莓派上就非常perfect，你可以多准备几个SD卡换着用，arch采用的是滚动更新的方式，但国内镜像会偶尔连不上</p>
+</li>
+<li>
+<p>RetroPie</p>
+<p>严格来说并不算是系统，它是一个游戏机模拟器，在上面你可以玩到非常多的复古游戏，推荐直接<a href="https://www.arcadepunks.com/pi-images-downloads-page/">下载</a>拷满游戏的镜像，为此你需要准备一个相当大的SD卡和一个复古手柄（强烈推荐八位堂8Bitdo），你也可以使用PICO-8等复古游戏引擎自己开发游戏</p>
+</li>
+<li>
+<p>Android</p>
+<p>没试过</p>
+</li>
+<li>
+<p>OSMC</p>
+<p>家庭娱乐中心，也就是机顶盒</p>
+</li>
+<li>
+<p>RISC OS</p>
+<p>比较硬核</p>
+</li>
+</ul>
+<h2 id="其他用途">其他用途</h2>
+<ul>
+<li>
+<p><input checked="" disabled="" type="checkbox">日常开发</p>
+<p>用来学Python再适合不过</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox">机器人控制</p>
+<p>你可以在树莓派上安装摄像头，氢气球和传感器，让它飞向地球的边缘，去探索太空。当然了，这么做的话风险很大，一定要注意安全。这里指的不是你和你的树莓派，而是天上的飞机和住在下面的人们</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox">路由器</p>
+<p>openwrt需要交叉编译，但用其他方式也行，弃坑了</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox">网络附属存储（NAS）</p>
+<p>考虑到硬件性能，还是不太推荐</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox">私有云</p>
+<p>ownCloud，度盘药丸</p>
+</li>
+<li>
+<p><input checked="" disabled="" type="checkbox">网站服务器</p>
+<p>搭建个人博客，如WordPress（太臃肿）</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox">P2P文件下载机Torrent</p>
+<p>听起来不错，待实现</p>
+</li>
+<li>
+<p><input disabled="" type="checkbox">计算机集群</p>
+<p>使用多个树莓派搭建分布式系统，前提是要买得起</p>
+</li>
+</ul></div>
+  
+  
+  
+  
+  
+</article>
+
+</main>
+<footer class="footer">
+  <span>&copy; 2020 <a href="nagisa3113.com">Nostalgia</a></span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
+</footer>
+<script src="nagisa3113.com/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+</body>
+</html>
+
