@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-    
-        
-<meta charset="utf-8">
-<meta name="HandheldFriendly" content="True">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer-when-downgrade">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>自治的可移动游戏智能体 - Nostalgia</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<title>自治的可移动游戏智能体  - Nostalgia</title>
-<meta name="description" content="what a youth">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-<link rel="alternate" type="application/rss+xml" title="RSS" href="rss/">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1582958152" />
+<meta name="author" content="nagisa" /><meta name="description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。 主要内容
+ Obstacle Avoidance Flocking " />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.63.2 with theme even" />
+
+
+<link rel="canonical" href="/post/flocking/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
 
 <meta property="og:title" content="自治的可移动游戏智能体" />
 <meta property="og:description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
@@ -29,8 +50,20 @@ Flocking
 <meta property="og:url" content="/post/flocking/" />
 <meta property="article:published_time" content="2019-09-19T17:00:00+00:00" />
 <meta property="article:modified_time" content="2019-09-19T17:00:00+00:00" />
+<meta itemprop="name" content="自治的可移动游戏智能体">
+<meta itemprop="description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
+主要内容
 
-<meta name="twitter:card" content="summary"/>
+Obstacle Avoidance
+Flocking
+">
+<meta itemprop="datePublished" content="2019-09-19T17:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-09-19T17:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2112">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="自治的可移动游戏智能体"/>
 <meta name="twitter:description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
 主要内容
@@ -39,38 +72,98 @@ Obstacle Avoidance
 Flocking
 "/>
 
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
-
-
-
-    
 </head>
 <body>
-    <div class="container">
-        <header> 
-            
-                <h1 class="site-header">
-    <a href="">Nostalgia</a>
-</h1>
-<nav>
-    
-    
-    <a class="" href="/post/" title="">Archive</a>
-    
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Nostalgia</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a>
+  </ul>
 </nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Nostalgia</a>
+</div>
 
-            
-        </header>
-        <main>
-            
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-    <article class="post">
-        <header>
-            <h1>自治的可移动游戏智能体</h1>
-        </header>
-        <div class="content">
-            <p>在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中<a href="https://youtu.be/ouHaVvmZ5uw">《Humanity》</a>展现了模拟人类集体行为，效果非常震撼。
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">自治的可移动游戏智能体</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-09-19 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#碰撞判断">碰撞判断</a></li>
+    <li><a href="#vovelocity-obstacle">VO(Velocity Obstacle)</a></li>
+    <li><a href="#rvoreciprocal-velocity-obstacle">RVO(Reciprocal Velocity Obstacle)</a></li>
+    <li><a href="#触角feeler">触角(Feeler)</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#fovfield-of-view">FOV(field of view)</a>
+      <ul>
+        <li><a href="#半径">半径</a></li>
+        <li><a href="#视野">视野</a></li>
+      </ul>
+    </li>
+    <li><a href="#alignment">Alignment</a></li>
+    <li><a href="#cohesion">Cohesion</a></li>
+    <li><a href="#separartion">Separartion</a></li>
+    <li><a href="#wander">Wander</a></li>
+    <li><a href="#领头者">领头者</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中<a href="https://youtu.be/ouHaVvmZ5uw">《Humanity》</a>展现了模拟人类集体行为，效果非常震撼。
 主要内容</p>
 <ul>
 <li>Obstacle Avoidance</li>
@@ -126,44 +219,99 @@ Flocking
 <li>窄视野容易看起来有领导核心，单位倾向排成单一纵队平滑地绕过障碍物而不会分开。</li>
 </ul>
 <p><img src="/image/02.png" alt=""></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">//获得周围单位，伪代码实现
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">foreach</span> unit <span style="color:#66d9ef">in</span> units
-{
-   <span style="color:#66d9ef">if</span>(unit.distance&lt;radius &amp;&amp; unit.angle&lt;view)
-   {
-       neighbors.Add(unit);<span style="color:#75715e">//使用容器存储
-</span><span style="color:#75715e"></span>   }
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="c1">//获得周围单位，伪代码实现
+</span><span class="c1"></span><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">units</span>
+<span class="p">{</span>
+   <span class="k">if</span><span class="p">(</span><span class="n">unit</span><span class="p">.</span><span class="n">distance</span><span class="p">&lt;</span><span class="n">radius</span> <span class="p">&amp;</span><span class="p">&amp;</span> <span class="n">unit</span><span class="p">.</span><span class="n">angle</span><span class="p">&lt;</span><span class="n">view</span><span class="p">)</span>
+   <span class="p">{</span>
+       <span class="n">neighbors</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="p">;</span><span class="c1">//使用容器存储
+</span><span class="c1"></span>   <span class="p">}</span>
 
-}
-</code></pre></div><h2 id="alignment">Alignment</h2>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="alignment">Alignment</h2>
 <p>每个单位行动时，都要把自己对齐在其临近单位的平均方向上</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">foreach</span> unit <span style="color:#66d9ef">in</span> neighbors
-{
-	Dir+=unit.velocity.normalized;<span style="color:#75715e">//对速度进行归一
-</span><span style="color:#75715e"></span>}
-avgDir=Dir/neighbors.lengths;<span style="color:#75715e">//获得平均方向
-</span><span style="color:#75715e"></span>direction=(avgPos-self.position).normalized;
-self.AddForce(direction-self.orward);
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
+<span class="p">{</span>
+	<span class="n">Dir</span><span class="p">+</span><span class="p">=</span><span class="n">unit</span><span class="p">.</span><span class="n">velocity</span><span class="p">.</span><span class="n">normalized</span><span class="p">;</span><span class="c1">//对速度进行归一
+</span><span class="c1"></span><span class="p">}</span>
+<span class="n">avgDir</span><span class="p">=</span><span class="n">Dir</span><span class="p">/</span><span class="n">neighbors</span><span class="p">.</span><span class="n">lengths</span><span class="p">;</span><span class="c1">//获得平均方向
+</span><span class="c1"></span><span class="n">direction</span><span class="p">=</span><span class="p">(</span><span class="n">avgPos</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">)</span><span class="p">.</span><span class="n">normalized</span><span class="p">;</span>
+<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">direction</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">orward</span><span class="p">)</span><span class="p">;</span>
 
-</code></pre></div><h2 id="cohesion">Cohesion</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="cohesion">Cohesion</h2>
 <p>每个单位都往临近单位的平均位置移动</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">foreach</span> unit <span style="color:#66d9ef">in</span> neighbors
-{
-	pos+=unit.position;
-}
-avgPos=pos/neighbors.lengths;<span style="color:#75715e">//获得平均位置
-</span><span style="color:#75715e"></span>direction=(avgPos-self.position).normalized;
-self.AddForce(direction-self.forward);
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
+<span class="p">{</span>
+	<span class="n">pos</span><span class="p">+</span><span class="p">=</span><span class="n">unit</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">avgPos</span><span class="p">=</span><span class="n">pos</span><span class="p">/</span><span class="n">neighbors</span><span class="p">.</span><span class="n">lengths</span><span class="p">;</span><span class="c1">//获得平均位置
+</span><span class="c1"></span><span class="n">direction</span><span class="p">=</span><span class="p">(</span><span class="n">avgPos</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">)</span><span class="p">.</span><span class="n">normalized</span><span class="p">;</span>
+<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">direction</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">forward</span><span class="p">)</span><span class="p">;</span>
 
-</code></pre></div><h2 id="separartion">Separartion</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="separartion">Separartion</h2>
 <p>每个单位行动时，要避免撞上其临近单位</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">foreach</span> unit <span style="color:#66d9ef">in</span> neighbors
-{
-	distance=unit.position-self.position;
-	force+=Calulate(distance);<span style="color:#75715e">//通过距离计算分离力，通常成反比
-</span><span style="color:#75715e"></span>}
-self.AddForce(force);
-</code></pre></div><h2 id="wander">Wander</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
+<span class="p">{</span>
+	<span class="n">distance</span><span class="p">=</span><span class="n">unit</span><span class="p">.</span><span class="n">position</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+	<span class="n">force</span><span class="p">+</span><span class="p">=</span><span class="n">Calulate</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span><span class="p">;</span><span class="c1">//通过距离计算分离力，通常成反比
+</span><span class="c1"></span><span class="p">}</span>
+<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">force</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="wander">Wander</h2>
 <p>有一个问题是，当一个单位和它的群组隔离了，它将什么都不做，为了防止这种情况发生，我们加入wander(徘徊)，这样所有的单位总可以保持运动。</p>
 <p>最初的做法是产生一个随机的驱动力，但这会产生抖动(事实上，一个好的随机函数如Perlin噪声可以产生光滑转弯，但CPU开销会很大)，Reynolds的解决方案是在前端凸出个圆圈，目标被限制在该圆圈上，然后每帧在目标添加一个随机的位移，通过调整圆圈半径，距离和随机位移产生一个没有抖动的往复运动</p>
 <p><img src="/image/03.png" alt=""></p>
@@ -182,28 +330,61 @@ self.AddForce(force);
 <li>《programming-game-ai-by-example》</li>
 <li>《AI for game developers</li>
 </ol>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/gameai/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">游戏人工智能</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/japan/">
+            <span class="next-text nav-default">日本行</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-        <div class="article-info">
-    
-        <div class="article-date">2019-09-19</div>
-    
-    <div class="article-taxonomies">
         
-            
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</div>
-    </article>
-    
+  </div>
+  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
-        </main>
-        <footer>
-            
-                <p>© nagisa, 2020<br>
-Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
-</p>
-            
-        </footer>
-    </div>
+
+
+
+
+
+
 </body>
 </html>

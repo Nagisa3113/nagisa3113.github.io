@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-    
-        
-<meta charset="utf-8">
-<meta name="HandheldFriendly" content="True">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer-when-downgrade">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>控制反转(IoC)与依赖注入(DI) - Nostalgia</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<title>控制反转(IoC)与依赖注入(DI)  - Nostalgia</title>
-<meta name="description" content="what a youth">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-<link rel="alternate" type="application/rss+xml" title="RSS" href="rss/">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1582958152" />
+<meta name="author" content="nagisa" /><meta name="description" content="控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.63.2 with theme even" />
+
+
+<link rel="canonical" href="/post/strangeioc/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
 
 <meta property="og:title" content="控制反转(IoC)与依赖注入(DI)" />
 <meta property="og:description" content="控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。" />
@@ -24,43 +45,92 @@
 <meta property="og:url" content="/post/strangeioc/" />
 <meta property="article:published_time" content="2019-05-25T10:59:09+00:00" />
 <meta property="article:modified_time" content="2019-05-25T10:59:09+00:00" />
+<meta itemprop="name" content="控制反转(IoC)与依赖注入(DI)">
+<meta itemprop="description" content="控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。">
+<meta itemprop="datePublished" content="2019-05-25T10:59:09&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-25T10:59:09&#43;00:00" />
+<meta itemprop="wordCount" content="1453">
 
-<meta name="twitter:card" content="summary"/>
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="控制反转(IoC)与依赖注入(DI)"/>
 <meta name="twitter:description" content="控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。"/>
 
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
-
-
-
-    
 </head>
 <body>
-    <div class="container">
-        <header> 
-            
-                <h1 class="site-header">
-    <a href="">Nostalgia</a>
-</h1>
-<nav>
-    
-    
-    <a class="" href="/post/" title="">Archive</a>
-    
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Nostalgia</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a>
+  </ul>
 </nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Nostalgia</a>
+</div>
 
-            
-        </header>
-        <main>
-            
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-    <article class="post">
-        <header>
-            <h1>控制反转(IoC)与依赖注入(DI)</h1>
-        </header>
-        <div class="content">
-            <p>控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。</p>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">控制反转(IoC)与依赖注入(DI)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-05-25 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#strangeioc">StrangeIoC</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。</p>
 <p>它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。</p>
 <p>通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中。</p>
 <p>举个例子，我们创建了一个英雄(Hero)，他的组件有武器和铠甲，我们如何去获得一个武器呢,</p>
@@ -90,85 +160,185 @@
 <img src="https://strangeioc.github.io/strangeioc/class-flow.png" alt=""></p>
 <p>官方给出的例子:
 假如我在玩一个游戏,每次结束时如果获得了更高的分数,想要将最高分上传到Facebook,在传统Unity方式下,会是这样的</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyShip</span> : MonoBehaviour
- {
-     <span style="color:#66d9ef">private</span> FacebookService facebook;
-     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> myScore;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">class</span> <span class="nc">MyShip</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+ <span class="p">{</span>
+     <span class="k">private</span> <span class="n">FacebookService</span> <span class="n">facebook</span><span class="p">;</span>
+     <span class="k">private</span> <span class="kt">int</span> <span class="n">myScore</span><span class="p">;</span>
      
-     <span style="color:#66d9ef">void</span> Awake()
-     {
-          facebook = FacebookService.getInstance();
-     }
+     <span class="k">void</span> <span class="n">Awake</span><span class="p">(</span><span class="p">)</span>
+     <span class="p">{</span>
+          <span class="n">facebook</span> <span class="p">=</span> <span class="n">FacebookService</span><span class="p">.</span><span class="n">getInstance</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+     <span class="p">}</span>
      
-     <span style="color:#66d9ef">void</span> onDie()
-     {
-          <span style="color:#66d9ef">if</span> (score &gt; highScore)
-               facebook.PostScore(myScore);
-     }
-}
-</code></pre></div><p>这样写有两个问题,首先,它的作用相当于控制器,与游戏本身逻辑和服务器紧密相连;第二,facebook作为它的singleton成员,如果我们想换成Twitter或Google+,会变得麻烦.总的来说,当需求发生变化时,需要修改很多代码.</p>
-<p>但在IOC中,可以这样写</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyShip</span> : MonoBehaviour
-{
-   <span style="color:#66d9ef">void</span> onDie()
-   {
-      dispatcher.Dispatch(GameEvent.SHIP_DEAD);
-   }
-}
-
-</code></pre></div><p>我们移除了逻辑部分,只需要发出一个信息(事件)&ndash;“游戏结束了”,让Command单元去处理,它会是这样的:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OnShipDeathCommand</span> : EventCommand
-{
-<span style="color:#a6e22e">   [Inject]</span>
-   ISocialService socialService{<span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>;}
-<span style="color:#a6e22e">   
-</span><span style="color:#a6e22e">   [Inject]</span>
-   IScoreModel scoreModel{<span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>;}
-   
-   <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Execute()
-   {
-      <span style="color:#66d9ef">if</span> (scoreModel.score &gt; scoreModel.highScore)
-         socialService.PostScore(scoreModel.score);
-   }
- }
-</code></pre></div><p>注意其中的[Inject],我们注入的是实现接口的类而不是特定的类,在这个例子中,我们就可以不再依赖具体的Facebook或Twitter,我们只用知道需要一个社交服务.</p>
-<p>最后,我们需要绑定相关</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">#if UNITY_ANDROID
-</span><span style="color:#75715e"></span>injectionBinder.Bind&lt;ISocialService&gt;().To&lt;GoogleService&gt;().AsSingleton();
-<span style="color:#75715e">#else
-</span><span style="color:#75715e"></span>injectionBinder.Bind&lt;ISocialService&gt;().To&lt;FacebookService&gt;().AsSingleton();
-<span style="color:#75715e">#endif
-</span><span style="color:#75715e"></span><span style="color:#75715e">//...or...
-</span><span style="color:#75715e"></span><span style="color:#75715e">//injectionBinder.Bind&lt;ISocialService&gt;().To&lt;MultiServiceResolver&gt;().AsSingleton();
-</span><span style="color:#75715e"></span>
-
-injectionBinder.Bind&lt;IScoreModel&gt;().To&lt;ScoreModel&gt;().AsSingleton();
-commandBinder.Bind(GameEvent.SHIP_DEAD , OnShipDeathCommand);
-
-</code></pre></div><p>AsSingleton()的意思是,每次通过[Inject]注入ISocialService类型的对象时,获得的都是同一个GoogleService实例,虽然出现了Singleton(单例),但我们不需要写一个单例模式,只用绑定它就行.同时,我们将之前“游戏结束”的事件,与之前Command进行绑定.</p>
-<p>这样,每个单元都是独立的,保证了灵活性和可维护性。</p>
-        </div>
-        <div class="article-info">
-    
-        <div class="article-date">2019-05-25</div>
-    
-    <div class="article-taxonomies">
-        
-            
-    </div>
+     <span class="k">void</span> <span class="n">onDie</span><span class="p">(</span><span class="p">)</span>
+     <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">score</span> <span class="p">&gt;</span> <span class="n">highScore</span><span class="p">)</span>
+               <span class="n">facebook</span><span class="p">.</span><span class="n">PostScore</span><span class="p">(</span><span class="n">myScore</span><span class="p">)</span><span class="p">;</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
-    </article>
-    
+</div><p>这样写有两个问题,首先,它的作用相当于控制器,与游戏本身逻辑和服务器紧密相连;第二,facebook作为它的singleton成员,如果我们想换成Twitter或Google+,会变得麻烦.总的来说,当需求发生变化时,需要修改很多代码.</p>
+<p>但在IOC中,可以这样写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">class</span> <span class="nc">MyShip</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+   <span class="k">void</span> <span class="n">onDie</span><span class="p">(</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="n">dispatcher</span><span class="p">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">GameEvent</span><span class="p">.</span><span class="n">SHIP_DEAD</span><span class="p">)</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
 
+</code></pre></td></tr></table>
+</div>
+</div><p>我们移除了逻辑部分,只需要发出一个信息(事件)&ndash;“游戏结束了”,让Command单元去处理,它会是这样的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">class</span> <span class="nc">OnShipDeathCommand</span> <span class="p">:</span> <span class="n">EventCommand</span>
+<span class="p">{</span>
+<span class="na">   [Inject]</span>
+   <span class="n">ISocialService</span> <span class="n">socialService</span><span class="p">{</span><span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span><span class="p">}</span>
+<span class="na">   
+</span><span class="na">   [Inject]</span>
+   <span class="n">IScoreModel</span> <span class="n">scoreModel</span><span class="p">{</span><span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span><span class="p">}</span>
+   
+   <span class="k">override</span> <span class="k">public</span> <span class="k">void</span> <span class="n">Execute</span><span class="p">(</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">scoreModel</span><span class="p">.</span><span class="n">score</span> <span class="p">&gt;</span> <span class="n">scoreModel</span><span class="p">.</span><span class="n">highScore</span><span class="p">)</span>
+         <span class="n">socialService</span><span class="p">.</span><span class="n">PostScore</span><span class="p">(</span><span class="n">scoreModel</span><span class="p">.</span><span class="n">score</span><span class="p">)</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>注意其中的[Inject],我们注入的是实现接口的类而不是特定的类,在这个例子中,我们就可以不再依赖具体的Facebook或Twitter,我们只用知道需要一个社交服务.</p>
+<p>最后,我们需要绑定相关</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="cp">#if UNITY_ANDROID
+</span><span class="cp"></span><span class="n">injectionBinder</span><span class="p">.</span><span class="n">Bind</span><span class="p">&lt;</span><span class="n">ISocialService</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">To</span><span class="p">&lt;</span><span class="n">GoogleService</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">AsSingleton</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="cp">#else
+</span><span class="cp"></span><span class="n">injectionBinder</span><span class="p">.</span><span class="n">Bind</span><span class="p">&lt;</span><span class="n">ISocialService</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">To</span><span class="p">&lt;</span><span class="n">FacebookService</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">AsSingleton</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="cp"></span><span class="c1">//...or...
+</span><span class="c1"></span><span class="c1">//injectionBinder.Bind&lt;ISocialService&gt;().To&lt;MultiServiceResolver&gt;().AsSingleton();
+</span><span class="c1"></span>
 
-        </main>
-        <footer>
-            
-                <p>© nagisa, 2020<br>
-Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
-</p>
-            
-        </footer>
+<span class="n">injectionBinder</span><span class="p">.</span><span class="n">Bind</span><span class="p">&lt;</span><span class="n">IScoreModel</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">To</span><span class="p">&lt;</span><span class="n">ScoreModel</span><span class="p">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="n">AsSingleton</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+<span class="n">commandBinder</span><span class="p">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">GameEvent</span><span class="p">.</span><span class="n">SHIP_DEAD</span> <span class="p">,</span> <span class="n">OnShipDeathCommand</span><span class="p">)</span><span class="p">;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>AsSingleton()的意思是,每次通过[Inject]注入ISocialService类型的对象时,获得的都是同一个GoogleService实例,虽然出现了Singleton(单例),但我们不需要写一个单例模式,只用绑定它就行.同时,我们将之前“游戏结束”的事件,与之前Command进行绑定.</p>
+<p>这样,每个单元都是独立的,保证了灵活性和可维护性。</p>
     </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/japan/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">日本行</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/zen/">
+            <span class="next-text nav-default">射箭艺术中的禅</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
 </body>
 </html>

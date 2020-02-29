@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-    
-        
-<meta charset="utf-8">
-<meta name="HandheldFriendly" content="True">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer-when-downgrade">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>协程实现的状态机框架 - Nostalgia</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<title>协程实现的状态机框架  - Nostalgia</title>
-<meta name="description" content="what a youth">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-<link rel="alternate" type="application/rss+xml" title="RSS" href="rss/">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="favicon.png">
 
-<link rel="stylesheet" href="css/style.css?rnd=1582958152" />
+<meta name="author" content="nagisa" /><meta name="description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.63.2 with theme even" />
+
+
+<link rel="canonical" href="/post/coroutines/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
 
 <meta property="og:title" content="协程实现的状态机框架" />
 <meta property="og:description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。" />
@@ -24,43 +45,98 @@
 <meta property="og:url" content="/post/coroutines/" />
 <meta property="article:published_time" content="2019-04-10T17:29:09+00:00" />
 <meta property="article:modified_time" content="2019-04-10T17:29:09+00:00" />
+<meta itemprop="name" content="协程实现的状态机框架">
+<meta itemprop="description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。">
+<meta itemprop="datePublished" content="2019-04-10T17:29:09&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-10T17:29:09&#43;00:00" />
+<meta itemprop="wordCount" content="1859">
 
-<meta name="twitter:card" content="summary"/>
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="协程实现的状态机框架"/>
 <meta name="twitter:description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。"/>
 
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
 
-
-
-
-    
 </head>
 <body>
-    <div class="container">
-        <header> 
-            
-                <h1 class="site-header">
-    <a href="">Nostalgia</a>
-</h1>
-<nav>
-    
-    
-    <a class="" href="/post/" title="">Archive</a>
-    
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Nostalgia</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a>
+  </ul>
 </nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Nostalgia</a>
+</div>
 
-            
-        </header>
-        <main>
-            
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
-    <article class="post">
-        <header>
-            <h1>协程实现的状态机框架</h1>
-        </header>
-        <div class="content">
-            <p><a href="https://docs.unity3d.com/Manual/Coroutines.html">协程(Cotroutines)</a>是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，<a href="https://docs.unity3d.com/Manual/ExecutionOrder.html">执行顺序</a>主要在Update()之后，LateUpdate()之前。</p>
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">协程实现的状态机框架</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-10 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#实例">实例</a></li>
+    <li><a href="#定义接口">定义接口</a></li>
+    <li><a href="#基本协程节点">基本协程节点</a></li>
+    <li><a href="#循环节点">循环节点</a></li>
+    <li><a href="#并行节点">并行节点</a></li>
+    <li><a href="#向调用位置返回值">向调用位置返回值</a></li>
+    <li><a href="#其他节点与应用">其他节点与应用</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://docs.unity3d.com/Manual/Coroutines.html">协程(Cotroutines)</a>是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，<a href="https://docs.unity3d.com/Manual/ExecutionOrder.html">执行顺序</a>主要在Update()之后，LateUpdate()之前。</p>
 <p>使用协程的优点</p>
 <ul>
 <li>简洁、直观</li>
@@ -74,37 +150,73 @@
 <li>协程可以<strong>互相嵌套</strong></li>
 </ol>
 <p>这是一个协程实现的简单状态机:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">
-IEnumerator State()
-	{
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs">
+<span class="n">IEnumerator</span> <span class="n">State</span><span class="p">(</span><span class="p">)</span>
+	<span class="p">{</span>
 		
-		<span style="color:#75715e">//local variable
-</span><span style="color:#75715e"></span>		
-		<span style="color:#75715e">//State.Enter
-</span><span style="color:#75715e"></span>		
-		<span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>)
-		{
+		<span class="c1">//local variable
+</span><span class="c1"></span>		
+		<span class="c1">//State.Enter
+</span><span class="c1"></span>		
+		<span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+		<span class="p">{</span>
 			
-			<span style="color:#75715e">//State.Update
-</span><span style="color:#75715e"></span>			
-			<span style="color:#75715e">/*每个Update更新*/</span>
-			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
-			<span style="color:#75715e">/*一定时间更新*/</span>
-			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitForXX();
-			<span style="color:#75715e">/*判断条件更新*/</span>
-			<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> WaitWhile();
+			<span class="c1">//State.Update
+</span><span class="c1"></span>			
+			<span class="cm">/*每个Update更新*/</span>
+			<span class="k">yield</span> <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+			<span class="cm">/*一定时间更新*/</span>
+			<span class="k">yield</span> <span class="k">return</span> <span class="k">new</span> <span class="n">WaitForXX</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+			<span class="cm">/*判断条件更新*/</span>
+			<span class="k">yield</span> <span class="k">return</span> <span class="k">new</span> <span class="n">WaitWhile</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
 			
-			<span style="color:#75715e">/*判断条件,结束当前状态*/</span>
-			<span style="color:#66d9ef">break</span>;
+			<span class="cm">/*判断条件,结束当前状态*/</span>
+			<span class="k">break</span><span class="p">;</span>
 			
-		}
+		<span class="p">}</span>
 		
-		<span style="color:#75715e">//State.Exit
-</span><span style="color:#75715e"></span>		
-		<span style="color:#75715e">/*开启新的状态*/</span>
-		<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> StartCoroutine(<span style="color:#66d9ef">new</span> Cortoutine(NextState()));
+		<span class="c1">//State.Exit
+</span><span class="c1"></span>		
+		<span class="cm">/*开启新的状态*/</span>
+		<span class="k">yield</span> <span class="k">return</span> <span class="n">StartCoroutine</span><span class="p">(</span><span class="k">new</span> <span class="n">Cortoutine</span><span class="p">(</span><span class="n">NextState</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
 		
-</code></pre></div><p>最近在<a href="https://indienova.com/indie-game-development/logic-over-time-jean/">indienova</a>上看到了一个更为完整的使用协/程实现的状态机框架,一共有两篇文章,原文为<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160128/264083/Logic_Over_Time.php">Logic Over Time</a>和<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160310/267441/Beyond_the_State_Machine.php">Beyond the State Machine</a>,<a href="https://github.com/jeansimonet/Coroutines">demo</a>去掉跨平台部分代码就能运行.</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>最近在<a href="https://indienova.com/indie-game-development/logic-over-time-jean/">indienova</a>上看到了一个更为完整的使用协/程实现的状态机框架,一共有两篇文章,原文为<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160128/264083/Logic_Over_Time.php">Logic Over Time</a>和<a href="http://www.gamasutra.com/blogs/JeanSimonet/20160310/267441/Beyond_the_State_Machine.php">Beyond the State Machine</a>,<a href="https://github.com/jeansimonet/Coroutines">demo</a>去掉跨平台部分代码就能运行.</p>
 <p>这套框架更类似行为树,一个基本的协程图节点可以实现如下几点功能:</p>
 <p><img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Runtime%20Graph%20(1).png" alt=""></p>
 <ul>
@@ -115,112 +227,235 @@ IEnumerator State()
 </ul>
 <h2 id="实例">实例</h2>
 <p>一个搜寻敌人并发射子弹的炮塔</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Turret</span>
-  : MonoBehaviour
-{
-<span style="color:#a6e22e">  [...]</span> <span style="color:#75715e">// 检查器配置变量
-</span><span style="color:#75715e"></span>
-  <span style="color:#75715e">// 唯一的状态是根协程节点
-</span><span style="color:#75715e"></span>  Coroutines.Corountine _Main;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">class</span> <span class="nc">Turret</span>
+  <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+<span class="na">  [...]</span> <span class="c1">// 检查器配置变量
+</span><span class="c1"></span>
+  <span class="c1">// 唯一的状态是根协程节点
+</span><span class="c1"></span>  <span class="n">Coroutines</span><span class="p">.</span><span class="n">Corountine</span> <span class="n">_Main</span><span class="p">;</span>
 
-  <span style="color:#75715e">// 初始化
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> Start()
-  {
-    _Main = <span style="color:#66d9ef">new</span> coroutines.Corountine(Main());
-  }
+  <span class="c1">// 初始化
+</span><span class="c1"></span>  <span class="k">void</span> <span class="n">Start</span><span class="p">(</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">_Main</span> <span class="p">=</span> <span class="k">new</span> <span class="n">coroutines</span><span class="p">.</span><span class="n">Corountine</span><span class="p">(</span><span class="n">Main</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  <span style="color:#75715e">// 每帧调用一次
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> Update()
-  {
-    <span style="color:#75715e">// 更新根节点
-</span><span style="color:#75715e"></span>    _Main.Update();
-  }
+  <span class="c1">// 每帧调用一次
+</span><span class="c1"></span>  <span class="k">void</span> <span class="n">Update</span><span class="p">(</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// 更新根节点
+</span><span class="c1"></span>    <span class="n">_Main</span><span class="p">.</span><span class="n">Update</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  <span style="color:#75715e">// 根协程节点
-</span><span style="color:#75715e"></span>  IEnumerable Main()
-  {
-    <span style="color:#75715e">// 存储默认的炮塔朝向，我们将会把该变量传入炮塔空闲时执行的协程
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">float</span> startYAngle = transform.rotation.eulerAngles.y;
+  <span class="c1">// 根协程节点
+</span><span class="c1"></span>  <span class="n">IEnumerable</span> <span class="n">Main</span><span class="p">(</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// 存储默认的炮塔朝向，我们将会把该变量传入炮塔空闲时执行的协程
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">startYAngle</span> <span class="p">=</span> <span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">.</span><span class="n">eulerAngles</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
 
-    <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>)
-    {
-      <span style="color:#75715e">// 搜寻目标
-</span><span style="color:#75715e"></span>      Transform target = <span style="color:#66d9ef">null</span>;
+    <span class="k">while</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="c1">// 搜寻目标
+</span><span class="c1"></span>      <span class="n">Transform</span> <span class="n">target</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
 
-      <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhileRunning(
-        <span style="color:#75715e">// 核心代码，搜寻目标并将其存放在 target 变量中
-</span><span style="color:#75715e"></span>        FindTargetInRadius(_LockOnRadius, trgt =&gt; target = trgt),
+      <span class="k">yield</span> <span class="k">return</span> <span class="n">ControlFlow</span><span class="p">.</span><span class="n">ExecuteWhileRunning</span><span class="p">(</span>
+        <span class="c1">// 核心代码，搜寻目标并将其存放在 target 变量中
+</span><span class="c1"></span>        <span class="n">FindTargetInRadius</span><span class="p">(</span><span class="n">_LockOnRadius</span><span class="p">,</span> <span class="n">trgt</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">target</span> <span class="p">=</span> <span class="n">trgt</span><span class="p">)</span><span class="p">,</span>
 
-	<span style="color:#75715e">// 如果还处于搜寻状态就执行
-</span><span style="color:#75715e"></span>	Idle(startYAngle));
+	<span class="c1">// 如果还处于搜寻状态就执行
+</span><span class="c1"></span>	<span class="n">Idle</span><span class="p">(</span><span class="n">startYAngle</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
 
-      <span style="color:#75715e">// 此处我们应当有一个非空的目标！
-</span><span style="color:#75715e"></span>      <span style="color:#75715e">// 追踪目标并朝它射击
-</span><span style="color:#75715e"></span>      <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhile(
-        <span style="color:#75715e">// 条件
-</span><span style="color:#75715e"></span>        () =&gt; Vector3.Distance(target.postion, transform.postion) &lt; _LockOffRadius,
+      <span class="c1">// 此处我们应当有一个非空的目标！
+</span><span class="c1"></span>      <span class="c1">// 追踪目标并朝它射击
+</span><span class="c1"></span>      <span class="k">yield</span> <span class="k">return</span> <span class="n">ControlFlow</span><span class="p">.</span><span class="n">ExecuteWhile</span><span class="p">(</span>
+        <span class="c1">// 条件
+</span><span class="c1"></span>        <span class="p">(</span><span class="p">)</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">Distance</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">postion</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">postion</span><span class="p">)</span> <span class="p">&lt;</span> <span class="n">_LockOffRadius</span><span class="p">,</span>
 
-        <span style="color:#75715e">// 条件为真时追踪目标
-</span><span style="color:#75715e"></span>        TrackTarget(taget),
+        <span class="c1">// 条件为真时追踪目标
+</span><span class="c1"></span>        <span class="n">TrackTarget</span><span class="p">(</span><span class="n">taget</span><span class="p">)</span><span class="p">,</span>
 
-        <span style="color:#75715e">// 条件为真时发射炮弹
-</span><span style="color:#75715e"></span>        FireProjectiles());
-    }
-}
-</code></pre></div><h2 id="定义接口">定义接口</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> ICoroutine
-		: System.IDisposable
-	{
-		<span style="color:#66d9ef">bool</span> IsRunning { <span style="color:#66d9ef">get</span>; }
-		<span style="color:#66d9ef">void</span> Update();
-		<span style="color:#66d9ef">void</span> Reset();
-	}
+        <span class="c1">// 条件为真时发射炮弹
+</span><span class="c1"></span>        <span class="n">FireProjectiles</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="定义接口">定义接口</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">interface</span> <span class="n">ICoroutine</span>
+		<span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span>
+	<span class="p">{</span>
+		<span class="kt">bool</span> <span class="n">IsRunning</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+		<span class="k">void</span> <span class="n">Update</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+		<span class="k">void</span> <span class="n">Reset</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+	<span class="p">}</span>
 
-</code></pre></div><h2 id="基本协程节点">基本协程节点</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="基本协程节点">基本协程节点</h2>
 <p><img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Child%20Node%20(1).png" alt=""></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Coroutine</span>
-    : ICoroutine
-{
-    <span style="color:#75715e">// 存放枚举变量资源
-</span><span style="color:#75715e"></span>    IEnumerable _Source;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">public</span> <span class="k">class</span> <span class="nc">Coroutine</span>
+    <span class="p">:</span> <span class="n">ICoroutine</span>
+<span class="p">{</span>
+    <span class="c1">// 存放枚举变量资源
+</span><span class="c1"></span>    <span class="n">IEnumerable</span> <span class="n">_Source</span><span class="p">;</span>
 
-    <span style="color:#75715e">// 存放协程的运行实例
-</span><span style="color:#75715e"></span>    IEnumerable _StateData;
+    <span class="c1">// 存放协程的运行实例
+</span><span class="c1"></span>    <span class="n">IEnumerable</span> <span class="n">_StateData</span><span class="p">;</span>
 
-    <span style="color:#75715e">// 存放生成的子节点
-</span><span style="color:#75715e"></span>    ICoroutine _Subroutine;
+    <span class="c1">// 存放生成的子节点
+</span><span class="c1"></span>    <span class="n">ICoroutine</span> <span class="n">_Subroutine</span><span class="p">;</span>
 
-    <span style="color:#75715e">// 当前节点的状态
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">enum</span> CorountineState
-    {
-<span style="color:#a6e22e">	[...]</span> <span style="color:#75715e">//存放是否使用迭代器，是否更新子协程状态等状态数据
-</span><span style="color:#75715e"></span>    }
+    <span class="c1">// 当前节点的状态
+</span><span class="c1"></span>    <span class="k">enum</span> <span class="n">CorountineState</span>
+    <span class="p">{</span>
+<span class="na">	[...]</span> <span class="c1">//存放是否使用迭代器，是否更新子协程状态等状态数据
+</span><span class="c1"></span>    <span class="p">}</span>
 
-    CorountineState _ExecutionState;
-}
-</code></pre></div><h2 id="循环节点">循环节点</h2>
+    <span class="n">CorountineState</span> <span class="n">_ExecutionState</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="循环节点">循环节点</h2>
 <p>包含:子节点和是否执行子节点的判断条件
 <img src="https://www.gamasutra.com/db_area/images/blog/267441/Coroutine%20Child%20Node%20(1).png" alt=""></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// 只要主条件为真就运行子节点
-</span><span style="color:#75715e"></span><span style="color:#75715e">// 只要主条件为假就停止运行子节点
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">While</span>
-    : ICoroutine
-{
-    System.Func _MasterCondition;
-    ICoroutine _SlaveSubroutine; <span style="color:#75715e">// 不必拥有状态，因为它不会被结束！
-</span><span style="color:#75715e"></span>
-    <span style="color:#66d9ef">enum</span> WhileNodeState
-    {
-	Running,
-	Complete,
-	Disposed
-    }
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="c1">// 只要主条件为真就运行子节点
+</span><span class="c1"></span><span class="c1">// 只要主条件为假就停止运行子节点
+</span><span class="c1"></span><span class="k">public</span> <span class="k">class</span> <span class="nc">While</span>
+    <span class="p">:</span> <span class="n">ICoroutine</span>
+<span class="p">{</span>
+    <span class="n">System</span><span class="p">.</span><span class="n">Func</span> <span class="n">_MasterCondition</span><span class="p">;</span>
+    <span class="n">ICoroutine</span> <span class="n">_SlaveSubroutine</span><span class="p">;</span> <span class="c1">// 不必拥有状态，因为它不会被结束！
+</span><span class="c1"></span>
+    <span class="k">enum</span> <span class="n">WhileNodeState</span>
+    <span class="p">{</span>
+	<span class="n">Running</span><span class="p">,</span>
+	<span class="n">Complete</span><span class="p">,</span>
+	<span class="n">Disposed</span>
+    <span class="p">}</span>
 
-    WhileNodeState _CurrentState;
-<span style="color:#a6e22e">
-</span><span style="color:#a6e22e">    [...]</span>
-}
-</code></pre></div><h2 id="并行节点">并行节点</h2>
+    <span class="n">WhileNodeState</span> <span class="n">_CurrentState</span><span class="p">;</span>
+<span class="na">
+</span><span class="na">    [...]</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="并行节点">并行节点</h2>
 <p>ExecuteWhile() 会像这样运行：
 <img src="https://www.gamasutra.com/db_area/images/blog/267441/Concurrent%20(ICoroutine).png" alt=""></p>
 <ol>
@@ -228,81 +463,169 @@ IEnumerator State()
 <li>创建一个带判断条件的循环节点</li>
 <li>通过 CallInstruction 运行循环节点，先前创建的并行节点将作为循环节点的子节点。</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs"><span style="color:#75715e">// 条件为真时，一次运行多个协程
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> CallInsturction ExecuteWhile(System.Func masterCondition,
-       	      		      Params IEnumerable[] slaveSubroutines)
-{
-    <span style="color:#75715e">// 创建一个并行节点，以传入子协程参数作为子节点
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 当所有子节点结束运行后并行节点才会结束运行
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> subroutines = <span style="color:#66d9ef">new</span> List();
-    <span style="color:#66d9ef">foreach</span> (<span style="color:#66d9ef">var</span> subroutineSource <span style="color:#66d9ef">in</span> slaveSubroutines)
-    {
-	subroutines.Add(<span style="color:#66d9ef">new</span> Corountine(subroutineSource));
-    }
-    <span style="color:#66d9ef">var</span> concurrentNode = <span style="color:#66d9ef">new</span> Concurrent(Utils.Any, subroutines);
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="c1">// 条件为真时，一次运行多个协程
+</span><span class="c1"></span><span class="k">public</span> <span class="k">static</span> <span class="n">CallInsturction</span> <span class="n">ExecuteWhile</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Func</span> <span class="n">masterCondition</span><span class="p">,</span>
+       	      		      <span class="n">Params</span> <span class="n">IEnumerable</span><span class="p">[</span><span class="p">]</span> <span class="n">slaveSubroutines</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 创建一个并行节点，以传入子协程参数作为子节点
+</span><span class="c1"></span>    <span class="c1">// 当所有子节点结束运行后并行节点才会结束运行
+</span><span class="c1"></span>    <span class="kt">var</span> <span class="n">subroutines</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">subroutineSource</span> <span class="k">in</span> <span class="n">slaveSubroutines</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="n">subroutines</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Corountine</span><span class="p">(</span><span class="n">subroutineSource</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">var</span> <span class="n">concurrentNode</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Concurrent</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="n">Any</span><span class="p">,</span> <span class="n">subroutines</span><span class="p">)</span><span class="p">;</span>
 
-    <span style="color:#75715e">// 将并行节点和判断条件传入循环节点
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> CallInstruction(<span style="color:#66d9ef">new</span> While(concurrentNode, masterCondition));
-}
+    <span class="c1">// 将并行节点和判断条件传入循环节点
+</span><span class="c1"></span>    <span class="k">return</span> <span class="k">new</span> <span class="n">CallInstruction</span><span class="p">(</span><span class="k">new</span> <span class="n">While</span><span class="p">(</span><span class="n">concurrentNode</span><span class="p">,</span> <span class="n">masterCondition</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
 
-</code></pre></div><h2 id="向调用位置返回值">向调用位置返回值</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="向调用位置返回值">向调用位置返回值</h2>
 <p>协程并不直接支持向调用它们的语句返回数据(协程处理的大都是一些中间数据),我们可以使用闭包(或者说lambda表达式)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">IEnumerable FindTargetInRadius(<span style="color:#66d9ef">float</span> radius, System.Action targetFound)
-{
-    <span style="color:#75715e">// 目前只有一个潜在的目标，因此...
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> playerObj = GameObject.FindGameObjectWithTag(<span style="color:#e6db74">&#34;Player&#34;</span>);
-    <span style="color:#66d9ef">if</span> (playerObj != <span style="color:#66d9ef">null</span>)
-    {
-	<span style="color:#66d9ef">while</span> (Vector3.Distance(playerObj.transform.postion, transform.postion) &gt; radius)
-	{
-	    <span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span>;
-	}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="n">IEnumerable</span> <span class="n">FindTargetInRadius</span><span class="p">(</span><span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Action</span> <span class="n">targetFound</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 目前只有一个潜在的目标，因此...
+</span><span class="c1"></span>    <span class="kt">var</span> <span class="n">playerObj</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">FindGameObjectWithTag</span><span class="p">(</span><span class="s">&#34;Player&#34;</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">playerObj</span> <span class="p">!</span><span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">Vector3</span><span class="p">.</span><span class="n">Distance</span><span class="p">(</span><span class="n">playerObj</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">postion</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">postion</span><span class="p">)</span> <span class="p">&gt;</span> <span class="n">radius</span><span class="p">)</span>
+	<span class="p">{</span>
+	    <span class="k">yield</span> <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+	<span class="p">}</span>
 
-	<span style="color:#75715e">// 找到目标啦！
-</span><span style="color:#75715e"></span>	targetFound(playerObj.transform);
-    }
-    <span style="color:#75715e">// 其他需要留神的玩意儿...
-</span><span style="color:#75715e"></span>}
+	<span class="c1">// 找到目标啦！
+</span><span class="c1"></span>	<span class="n">targetFound</span><span class="p">(</span><span class="n">playerObj</span><span class="p">.</span><span class="n">transform</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 其他需要留神的玩意儿...
+</span><span class="c1"></span><span class="p">}</span>
 
-</code></pre></div><p>FindTargetInRadius() 接受两个参数,其中一个为搜寻半径,另一个参数是返回 void 的函数,负责控制炮塔的动作。当找到目标后，它就会执行针对锁定目标的动作.这段代码位于 Main() 协程之中,如下所示：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cs" data-lang="cs">     
-<span style="color:#75715e">// 搜寻目标
-</span><span style="color:#75715e"></span>	Transform target = <span style="color:#66d9ef">null</span>;
+</code></pre></td></tr></table>
+</div>
+</div><p>FindTargetInRadius() 接受两个参数,其中一个为搜寻半径,另一个参数是返回 void 的函数,负责控制炮塔的动作。当找到目标后，它就会执行针对锁定目标的动作.这段代码位于 Main() 协程之中,如下所示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cs" data-lang="cs">     
+<span class="c1">// 搜寻目标
+</span><span class="c1"></span>	<span class="n">Transform</span> <span class="n">target</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
 
-	<span style="color:#66d9ef">yield</span> <span style="color:#66d9ef">return</span> ControlFlow.ExecuteWhileRunning(
-	    <span style="color:#75715e">// 核心代码，搜寻目标并将其存放在 target 变量中
-</span><span style="color:#75715e"></span>            FindTargetInRadius(_LockOnRadius, trgt =&gt; target = trgt),
+	<span class="k">yield</span> <span class="k">return</span> <span class="n">ControlFlow</span><span class="p">.</span><span class="n">ExecuteWhileRunning</span><span class="p">(</span>
+	    <span class="c1">// 核心代码，搜寻目标并将其存放在 target 变量中
+</span><span class="c1"></span>            <span class="n">FindTargetInRadius</span><span class="p">(</span><span class="n">_LockOnRadius</span><span class="p">,</span> <span class="n">trgt</span> <span class="p">=</span><span class="p">&gt;</span> <span class="n">target</span> <span class="p">=</span> <span class="n">trgt</span><span class="p">)</span><span class="p">,</span>
 
-	    <span style="color:#75715e">// 如果还处于搜寻状态就执行
-</span><span style="color:#75715e"></span>	    Idle(startYAngle));
-</code></pre></div><p>搜寻目标是一个局部变量，而 FindTargetInRadius() 的参数 Lambda 表达式也被赋给一个局部的变量。这种写法看起来有点绕弯，但这是编译器允许的一种简写方式，并不糟糕。</p>
+	    <span class="c1">// 如果还处于搜寻状态就执行
+</span><span class="c1"></span>	    <span class="n">Idle</span><span class="p">(</span><span class="n">startYAngle</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>搜寻目标是一个局部变量，而 FindTargetInRadius() 的参数 Lambda 表达式也被赋给一个局部的变量。这种写法看起来有点绕弯，但这是编译器允许的一种简写方式，并不糟糕。</p>
 <h2 id="其他节点与应用">其他节点与应用</h2>
 <ul>
 <li>移除节点</li>
 </ul>
 <p>当然，这套框架真正的价值在于，通过简单的扩展与修改，它就能轻松满足许多游戏的开发需要。它向我们展示了一套优雅的方案，让我们有机会探究怎样组合和同步游戏中的各种过程与行为。</p>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/zen/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">射箭艺术中的禅</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/">
+            <span class="next-text nav-default">传播学原理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
-        <div class="article-info">
-    
-        <div class="article-date">2019-04-10</div>
-    
-    <div class="article-taxonomies">
         
-            
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-</div>
-    </article>
-    
+  </div>
+  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
 
 
-        </main>
-        <footer>
-            
-                <p>© nagisa, 2020<br>
-Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
-</p>
-            
-        </footer>
-    </div>
+
+
+
+
+
+
 </body>
 </html>
