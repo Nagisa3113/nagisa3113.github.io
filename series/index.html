@@ -1,280 +1,74 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html>
+<head>
     
-    <title>Posts - 你的博客名称</title>
-    
-    <meta name="description" content="专注于IT互联万,喜欢Go语言、Java、PHP、flutter、项目管理、软件架构等">
-    <meta name="author" content="作者名称">
-    
-    <link href="https://www.yoursite.org/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://www.yoursite.org/style.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://www.yoursite.org/apple-touch-icon.png">
-    <link rel="icon" href="https://www.yoursite.org/favicon.ico">
-    
-    <meta name="generator" content="Hugo 0.63.2" />
-    
-    <link rel="alternate" type="application/atom+xml" href="https://www.yoursite.org/index.xml" title="你的博客名称">
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
-
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
-
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
-
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
-
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
-      }
-    </script>
-  </head>
-  <body class="list">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
         
-        <p class="logo"><a href="https://www.yoursite.org">你的博客名称</a></p>
-        
-        
-        <ul class="menu">
-          
-          <li>
-            <a href="/books/">新书</a>
-          </li>
-          
-          <li>
-            <a href="/archives/">归档</a>
-          </li>
-          
-          <li>
-            <a href="/about/">关于</a>
-          </li>
-          
-        </ul>
-        
-      </nav>
-    </header>
-    <main class="main">
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Series  - Nostalgia</title>
+<meta name="description" content="what a youth">
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://example.com/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://example.com/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://example.com/favicon.png">
+
+<link rel="stylesheet" href="https://example.com/css/style.css?rnd=1582956154" />
+
+<meta property="og:title" content="Series" />
+<meta property="og:description" content="what a youth" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://example.com/series/" />
 
 
-
-
-<header class="page-header">
-  <h1>Posts</h1>
-</header>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Series"/>
+<meta name="twitter:description" content="what a youth"/>
 
 
 
 
 
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>写在前面</h2>
-  </header>
-  <section class="entry-content">
-   <p> “Whenever you feel like criticising anyone,” he told me, “just remember that all the people in this world haven’t had the advantages that you’ve had”
-– The Great Gatsby
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>January 1, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Front/"></a>
-</article>
 
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>为什么我们如此喜爱魂系列</h2>
-  </header>
-  <section class="entry-content">
-   <p> “人类最古老、最强烈的恐惧，是对未知的恐惧”
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>February 12, 2020</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Dark-Souls/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>树莓派折腾</h2>
-  </header>
-  <section class="entry-content">
-   <p>什么是树莓派 树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。
-它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合我等(穷)学生。
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>February 10, 2020</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/RaspberryPi/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>Summary</h2>
-  </header>
-  <section class="entry-content">
-   <p>2019-2020
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>February 6, 2020</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Summary/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>函数式编程</h2>
-  </header>
-  <section class="entry-content">
-   <p>Functional Programming 先提出一个问题:	为什么可以嵌套定义类,但是不能嵌套定义函数?
-反过来我们可以想想:	如果可以在函数中定义函数会发生什么?
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>December 14, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Functional-Programming/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>寻路优化</h2>
-  </header>
-  <section class="entry-content">
-   <p>从启发式搜索算法
-到A*算法的优化
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>December 8, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Pathfinding/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>游戏人工智能</h2>
-  </header>
-  <section class="entry-content">
-   <p>解决方案
- 编码 Code 规划 Plan 学习 Learn ...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>October 17, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/GameAI/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>自治的可移动游戏智能体</h2>
-  </header>
-  <section class="entry-content">
-   <p>在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。 主要内容
- Obstacle Avoidance Flocking ...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>September 19, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Flocking/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>日本行</h2>
-  </header>
-  <section class="entry-content">
-   <p>大二暑假报名了一个日本的访学(旅游)项目，记录一下有趣的事情。
-图片挂了,之后有时间再补…….
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>September 5, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/Japan/"></a>
-</article>
-
-<article class="post-entry">
-  <header class="entry-header">
-    <h2>控制反转(IoC)与依赖注入(DI)</h2>
-  </header>
-  <section class="entry-content">
-   <p>控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。
-...</p>
-  </section>
-  <footer class="entry-footer">
-    <time>May 25, 2019</time>
-  </footer>
-  <a class="entry-link" href="https://www.yoursite.org/post/StrangeIOC/"></a>
-</article>
-
-
-
-<footer class="page-footer">
-  <nav class="pagination">
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://example.com">Nostalgia</a>
+</h1>
+<nav>
     
     
-    <a class="next" href="/series/page/2/">Next Page →</a>
+    <a class="" href="/post/" title="">Archive</a>
     
-  </nav>
-</footer>
+</nav>
+
+            
+        </header>
+        <main>
+            
+
+    <h1></h1>
+
+    <ul class="terms">
+        
+    </ul>
 
 
-</main>
-<footer class="footer">
-  <span>&copy; 2020 <a href="https://www.yoursite.org">你的博客名称</a></span>
-  <span>&middot;</span>
-  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
-  <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
-</footer>
-<script src="https://www.yoursite.org/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
+        </main>
+        <footer>
+            
+                <p>© nagisa, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
 </body>
 </html>
-

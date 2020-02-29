@@ -1,112 +1,76 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html>
+<head>
     
-    <title>游戏人工智能 - 你的博客名称</title>
-    
-    <meta name="description" content="解决方案
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>游戏人工智能  - Nostalgia</title>
+<meta name="description" content="what a youth">
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://example.com/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://example.com/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://example.com/favicon.png">
+
+<link rel="stylesheet" href="https://example.com/css/style.css?rnd=1582956153" />
+
+<meta property="og:title" content="游戏人工智能" />
+<meta property="og:description" content="解决方案
 
 编码 Code
 规划 Plan
 学习 Learn
-">
-    <meta name="author" content="作者名称">
-    
-    <link href="https://www.yoursite.org/an-old-hope.min.css" rel="stylesheet">
-    <link href="https://www.yoursite.org/style.css" rel="stylesheet">
-    
-    <link rel="apple-touch-icon" href="https://www.yoursite.org/apple-touch-icon.png">
-    <link rel="icon" href="https://www.yoursite.org/favicon.ico">
-    
-    <meta name="generator" content="Hugo 0.63.2" />
-    
-    <link rel="alternate" type="application/atom+xml" href="https://www.yoursite.org/index.xml" title="你的博客名称">
-    
-    
-    
-    <script>
-      function setTheme() {
-        const time = new Date();
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/post/gameai/" />
+<meta property="article:published_time" content="2019-10-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-10-17T00:00:00+00:00" />
 
-        const prev = localStorage.getItem('date');
-        const date = String(time.getMonth() + 1) + '.' + String(time.getDate());
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="游戏人工智能"/>
+<meta name="twitter:description" content="解决方案
 
-        const now = time.getTime();
-        let sunrise;
-        let sunset;
-
-        function setBodyClass() {
-          if (now > sunrise && now < sunset) return;
-          document.body.classList.add('dark');
-        }
-
-        if (date !== prev) {
-          fetch('https://api.ipgeolocation.io/astronomy?apiKey=5ed37d85103e4defa5df4c5298ed5215')
-            .then(res => res.json())
-            .then(data => {
-              sunrise = data.sunrise.split(':').map(Number);
-              sunset = data.sunset.split(':').map(Number);
-            })
-            .catch(() => {
-              sunrise = [7, 0];
-              sunset = [19, 0];
-            })
-            .finally(() => {
-              sunrise = time.setHours(sunrise[0], sunrise[1], 0);
-              sunset = time.setHours(sunset[0], sunset[1], 0);
-              setBodyClass();
-              localStorage.setItem('sunrise', sunrise);
-              localStorage.setItem('sunset', sunset);
-            });
-          localStorage.setItem('date', date);
-        } else {
-          sunrise = Number(localStorage.getItem('sunrise'));
-          sunset = Number(localStorage.getItem('sunset'));
-          setBodyClass();
-        }
-      }
-    </script>
-  </head>
-  <body class="single">
-    <script>
-      setTheme();
-    </script>
-    <header class="header">
-      <nav class="nav">
-        
-        <p class="logo"><a href="https://www.yoursite.org">你的博客名称</a></p>
-        
-        
-        <ul class="menu">
-          
-          <li>
-            <a href="/books/">新书</a>
-          </li>
-          
-          <li>
-            <a href="/archives/">归档</a>
-          </li>
-          
-          <li>
-            <a href="/about/">关于</a>
-          </li>
-          
-        </ul>
-        
-      </nav>
-    </header>
-    <main class="main">
+编码 Code
+规划 Plan
+学习 Learn
+"/>
 
 
-<article class="post-single">
-  <header class="post-header">
-    <h1 class="post-title">游戏人工智能</h1>
-    <div class="post-meta">作者名称 · October 17, 2019</div>
-  </header>
-  <div class="post-content"><p>解决方案</p>
+
+
+
+
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://example.com">Nostalgia</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="/post/" title="">Archive</a>
+    
+</nav>
+
+            
+        </header>
+        <main>
+            
+
+    <article class="post">
+        <header>
+            <h1>游戏人工智能</h1>
+        </header>
+        <div class="content">
+            <p>解决方案</p>
 <ol>
 <li>编码 Code</li>
 <li>规划 Plan</li>
@@ -203,26 +167,29 @@
 <li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-Imitation-Learning.md">Imitation Learning</a>模仿学习，AI根据玩家行为进行学习</li>
 <li><a href="https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Feature-Monitor.md">Monitor</a>监视器，随时在UI上显示环境参数</li>
 <li>Unity Editor, Excutable, Command Line</li>
-</ul></div>
-  
-  
-  
-  
-  
-</article>
+</ul>
+        </div>
+        <div class="article-info">
+    
+        <div class="article-date">2019-10-17</div>
+    
+    <div class="article-taxonomies">
+        
+            
+    </div>
+</div>
+    </article>
+    
 
-</main>
-<footer class="footer">
-  <span>&copy; 2020 <a href="https://www.yoursite.org">你的博客名称</a></span>
-  <span>&middot;</span>
-  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
-  <span>&middot;</span>
-  <span>Theme️ <a href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank">Paper</a></span>
-</footer>
-<script src="https://www.yoursite.org/highlight.min.js"></script>
-<script>
-  hljs.initHighlightingOnLoad();
-</script>
+
+        </main>
+        <footer>
+            
+                <p>© nagisa, 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
 </body>
 </html>
-
