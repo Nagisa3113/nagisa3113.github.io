@@ -3,96 +3,100 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>nagisa3113.github.io/post/front/</loc>
+    <loc>https://www.yoursite.org/post/Front/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/</loc>
+    <loc>https://www.yoursite.org/post/</loc>
     <lastmod>2020-02-12T10:34:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/</loc>
+    <loc>https://www.yoursite.org/post/Dark-Souls/</loc>
     <lastmod>2020-02-12T10:34:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/dark-souls/</loc>
+    <loc>https://www.yoursite.org/</loc>
     <lastmod>2020-02-12T10:34:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/raspberrypi/</loc>
+    <loc>https://www.yoursite.org/post/RaspberryPi/</loc>
     <lastmod>2020-02-10T19:53:36+08:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/summary/</loc>
+    <loc>https://www.yoursite.org/post/Summary/</loc>
     <lastmod>2020-02-06T19:53:36+08:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/functional-programming/</loc>
+    <loc>https://www.yoursite.org/post/Functional-Programming/</loc>
     <lastmod>2019-12-14T22:20:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/pathfinding/</loc>
+    <loc>https://www.yoursite.org/post/Pathfinding/</loc>
     <lastmod>2019-12-08T22:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/gameai/</loc>
+    <loc>https://www.yoursite.org/post/GameAI/</loc>
     <lastmod>2019-10-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/flocking/</loc>
+    <loc>https://www.yoursite.org/post/Flocking/</loc>
     <lastmod>2019-09-19T17:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/japan/</loc>
+    <loc>https://www.yoursite.org/post/Japan/</loc>
     <lastmod>2019-09-05T10:59:09+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/strangeioc/</loc>
+    <loc>https://www.yoursite.org/post/StrangeIOC/</loc>
     <lastmod>2019-05-25T10:59:09+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/zen/</loc>
+    <loc>https://www.yoursite.org/post/Zen/</loc>
     <lastmod>2019-04-25T22:33:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/coroutines/</loc>
+    <loc>https://www.yoursite.org/post/Coroutines/</loc>
     <lastmod>2019-04-10T17:29:09+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</loc>
+    <loc>https://www.yoursite.org/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2018-09-05T10:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</loc>
+    <loc>https://www.yoursite.org/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</loc>
     <lastmod>2018-05-05T10:10:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/post/compile/</loc>
+    <loc>https://www.yoursite.org/post/Compile/</loc>
     <lastmod>2018-02-10T19:53:36+08:00</lastmod>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/categories/</loc>
+    <loc>https://www.yoursite.org/categories/</loc>
   </url>
   
   <url>
-    <loc>nagisa3113.github.io/tags/</loc>
+    <loc>https://www.yoursite.org/series/</loc>
+  </url>
+  
+  <url>
+    <loc>https://www.yoursite.org/tags/</loc>
   </url>
   
 </urlset>
