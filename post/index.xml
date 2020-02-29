@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Nostalgia</title>
-    <link>https://example.com/post/</link>
+    <link>nagisa3113.com/post/</link>
     <description>Nostalgia (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 12 Feb 2020 10:34:00 +0000</lastBuildDate>
     
-    <atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="nagisa3113.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>为什么我们如此喜爱魂系列</title>
-      <link>https://example.com/post/dark-souls/</link>
+      <link>nagisa3113.com/post/dark-souls/</link>
       <pubDate>Wed, 12 Feb 2020 10:34:00 +0000</pubDate>
       
-      <guid>https://example.com/post/dark-souls/</guid>
+      <guid>nagisa3113.com/post/dark-souls/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;“人类最古老、最强烈的恐惧，是对未知的恐惧”&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -65,10 +65,10 @@
     
     <item>
       <title>树莓派折腾</title>
-      <link>https://example.com/post/raspberrypi/</link>
+      <link>nagisa3113.com/post/raspberrypi/</link>
       <pubDate>Mon, 10 Feb 2020 19:53:36 +0800</pubDate>
       
-      <guid>https://example.com/post/raspberrypi/</guid>
+      <guid>nagisa3113.com/post/raspberrypi/</guid>
       <description>&lt;p&gt;树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。&lt;/p&gt;
 &lt;p&gt;它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合我等(穷)学生。&lt;/p&gt;
 &lt;p&gt;这学习开了一门《嵌入式系统导论》，老师以划水著名，像我这种学生其实完全不学的，但刚好轮到我做这门课的实验，于是我借了块板子，开始了与树莓派的奇妙冒险（最后这门课只得了70分，史上最低hhhh），实验内容主要是使用GPIO控制传感器，电子电气的同学肯定很熟悉，但对于学计算机的同学就有另一套玩法了，推荐大家都去试试，可以折腾的东西太多了，毕竟它就是台电脑啊！&lt;/p&gt;
@@ -206,10 +206,10 @@
     
     <item>
       <title>Summary</title>
-      <link>https://example.com/post/summary/</link>
+      <link>nagisa3113.com/post/summary/</link>
       <pubDate>Thu, 06 Feb 2020 19:53:36 +0800</pubDate>
       
-      <guid>https://example.com/post/summary/</guid>
+      <guid>nagisa3113.com/post/summary/</guid>
       <description>&lt;p&gt;2019-2020&lt;/p&gt;
 &lt;h1 id=&#34;发生了什么&#34;&gt;发生了什么&lt;/h1&gt;
 &lt;ul&gt;
@@ -290,10 +290,10 @@
     
     <item>
       <title>函数式编程</title>
-      <link>https://example.com/post/functional-programming/</link>
+      <link>nagisa3113.com/post/functional-programming/</link>
       <pubDate>Sat, 14 Dec 2019 22:20:00 +0000</pubDate>
       
-      <guid>https://example.com/post/functional-programming/</guid>
+      <guid>nagisa3113.com/post/functional-programming/</guid>
       <description>&lt;p&gt;先提出一个问题:	&lt;strong&gt;为什么可以嵌套定义类,但是不能嵌套定义函数?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;反过来我们可以想想:	&lt;strong&gt;如果可以在函数中定义函数会发生什么?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;主要内容&lt;/p&gt;
@@ -559,10 +559,10 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
     
     <item>
       <title>寻路优化</title>
-      <link>https://example.com/post/pathfinding/</link>
+      <link>nagisa3113.com/post/pathfinding/</link>
       <pubDate>Sun, 08 Dec 2019 22:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/pathfinding/</guid>
+      <guid>nagisa3113.com/post/pathfinding/</guid>
       <description>&lt;p&gt;从启发式搜索算法&lt;/p&gt;
 &lt;p&gt;到A*算法的优化&lt;/p&gt;
 &lt;h1 id=&#34;启发式搜索算法&#34;&gt;启发式搜索算法&lt;/h1&gt;
@@ -588,19 +588,19 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
 &lt;h2 id=&#34;审美优化&#34;&gt;审美优化&lt;/h2&gt;
 &lt;h3 id=&#34;直路径&#34;&gt;直路径&lt;/h3&gt;
 &lt;p&gt;设置非直路径的处罚值,使用代价函数,如果被考虑的新一步与上一步不是直线相连,就加入一个额外代价(处罚因子)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;多边形空间的直路径。多边形不像矩形栅格那样形状一致,可能不存在所谓的直线路径,此时可以通过后处理,即在路径计算出之后对它的直线性进行优化&lt;/p&gt;
 &lt;h3 id=&#34;平滑路径&#34;&gt;平滑路径&lt;/h3&gt;
 &lt;p&gt;通过A*计算出的路径通常有许多急转弯,使其看上去很不自然,此时应用 &lt;strong&gt;转动减幅技术&lt;/strong&gt;(rotational dampening)可以稍微掩饰一下,但是在锐角转角处将摆动得很厉害,在计算机图形学中有一个算法可以使其变得更加平滑,那就是Catmull-Rom样条(Bezier曲线也比较平滑但不能经过所有的控制点)&lt;/p&gt;
 &lt;p&gt;Catmull-Rom公式要求4个点,然后会给出一条位于第2个点和第3个点之间的光滑曲线&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;有了Catmull-Rom公式,你所需要做的就是找出A*所有经过的点,在开始时把第一个点输入2次,在结束时最后一个点也输入2次,得到的新路径的点数是原来的4倍,此时通过一个剪除路径共线点的函数可以显著减少点数量&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;分级路径hierarchical-pathing&#34;&gt;分级路径(hierarchical pathing)&lt;/h3&gt;
 &lt;p&gt;该方法常用来减少大范围寻路的计算量,其思想是首先找到大范围的路径,然后再在局部进行寻路,但由此会使路径变得不自然&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;有一种简单的方法可以得到理想的路径,但会花费2倍的时间,那就是找到下下个要抵达的目标，在进入下个目标时重新执行这一过程&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;优化响应率&#34;&gt;优化响应率&lt;/h3&gt;
 &lt;p&gt;当玩家发出一条寻路命令时,希望个体能够立即响应,但CPU需要花费一段时间计算路径,于是,在CPU给出答案前需要使用一些技巧给玩家提供及时响应的感觉&lt;/p&gt;
 &lt;ol&gt;
@@ -622,10 +622,10 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
 &lt;li&gt;可见点&lt;/li&gt;
 &lt;li&gt;广义圆柱体&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/7.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/7.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;启发式函数的设计&#34;&gt;启发式函数的设计&lt;/h3&gt;
 &lt;p&gt;采用高估的启发式代价,可以通过Open表和Close表的大小进行调整估计出一个合理的值&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/6.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/6.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;优化open表&#34;&gt;优化open表&lt;/h3&gt;
 &lt;p&gt;使用优先队列,优先队列可以作为一个二分堆(binary heap)实现,它是一个排序树,它的特性是双亲节点总是比它的孩子节点具有更低的值,因此插入和提取元素(删除最小元素)的时间复杂度仅为$O(log n)$&lt;/p&gt;
 &lt;h1 id=&#34;a改进算法&#34;&gt;A*改进算法&lt;/h1&gt;
@@ -636,7 +636,7 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
 &lt;p&gt;Lazy Theta*的核心思想在于，将line of sight(LOS)检查延迟到打开该节点为止。&lt;/p&gt;
 &lt;h2 id=&#34;jpsjump-point-search&#34;&gt;JPS（Jump Point Search）&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://cloud.tencent.com/developer/article/1006844&#34;&gt;参见&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/jps.png&#34; alt=&#34;&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/jps.png&#34; alt=&#34;&#34;&gt;
 优化&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;JPS-Bit:位运算优化&lt;/li&gt;
@@ -650,10 +650,10 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
     
     <item>
       <title>游戏人工智能</title>
-      <link>https://example.com/post/gameai/</link>
+      <link>nagisa3113.com/post/gameai/</link>
       <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/gameai/</guid>
+      <guid>nagisa3113.com/post/gameai/</guid>
       <description>&lt;p&gt;解决方案&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;编码 Code&lt;/li&gt;
@@ -756,43 +756,43 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
     
     <item>
       <title>自治的可移动游戏智能体</title>
-      <link>https://example.com/post/flocking/</link>
+      <link>nagisa3113.com/post/flocking/</link>
       <pubDate>Thu, 19 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/flocking/</guid>
+      <guid>nagisa3113.com/post/flocking/</guid>
       <description>&lt;p&gt;在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中&lt;a href=&#34;https://youtu.be/ouHaVvmZ5uw&#34;&gt;《Humanity》&lt;/a&gt;展现了模拟人类集体行为，效果非常震撼。
 主要内容&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Obstacle Avoidance&lt;/li&gt;
 &lt;li&gt;Flocking&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/IMG_7037.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/IMG_7037.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;obstacle-avoidance&#34;&gt;Obstacle Avoidance&lt;/h1&gt;
 &lt;p&gt;障碍物躲避属于路径规划中的底层算法，与此相对的高层算法有dijkstra,A*等&lt;/p&gt;
 &lt;h2 id=&#34;碰撞判断&#34;&gt;碰撞判断&lt;/h2&gt;
 &lt;p&gt;为了便于计算，我们将角色视为质点，于此同时让障碍物的碰撞半径扩大角色自身宽度的一半&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/geogebra-export-2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/geogebra-export-2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;判断是否相交，其中$\vec v$为当前速度与预测时间$t$的乘积，$t$越大，感知的范围也越大，可以更早地避开障碍物，但更消耗性能&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/geogebra-export-3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/geogebra-export-3.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;$\vec p$为向量$\vec a$在速度$\vec v$上的投影，$\vec b = \vec p - \vec a$，当$|\vec b|-|\vec r|&amp;lt;0$时，代表未来可能发生碰撞，这时需要给其添加两个力的作用，侧向操控力使其远离障碍物，与$\vec b$的大小成负相关，制动力使其减速，方向与当前速度相反，大小正比于$\vec a$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/geogebra-export-5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/geogebra-export-5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;上述方法是通过施加力的作用避开障碍物，下面介绍的方法是改变速度&lt;/p&gt;
 &lt;h2 id=&#34;vovelocity-obstacle&#34;&gt;VO(Velocity Obstacle)&lt;/h2&gt;
 &lt;p&gt;即：排除未来有可能会发生碰撞的速度&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/geogebra-export-4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/geogebra-export-4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;VO是指速度方向与B相交的部分，即会发生碰撞的部分（图中灰色部分)，VO会排除未来所有可能会发生碰撞的速度(例如$\vec v2$在短时间内不会发生碰撞，但被舍弃了)&lt;/p&gt;
 &lt;p&gt;遇到可移动的障碍物时,直接求$\vec V_A$绝对速度的VO而不是$\vec V_A− \vec V_B$相对速度的VO，将相对速度下的VO延$\vec V_B$方向平移，新的VO为右深色三角形区域&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/vo.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/vo.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;rvoreciprocal-velocity-obstacle&#34;&gt;RVO(Reciprocal Velocity Obstacle)&lt;/h2&gt;
 &lt;p&gt;VO的一个缺点是，当存在大量障碍物或可移动的障碍物时，会频繁改变速度产生抖动现象，例如当两个使用VO的物体相遇时，会产生左图的现象，RVO则是在VO基础上的优化(右图)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/oscillation.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/oscillation.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;RVO的解决方案：缩小VO的大小以减少速度的突变&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/rvo.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/rvo.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;从另一个方面会更好理解，不直接选择VO外的速度，而是选择当前速度与新速度的平均值，从某种程度上认为，对方也会做出相应回避行为，详细推导证明过程见&lt;a href=&#34;http://gamma.cs.unc.edu/RVO//&#34;&gt;Reciprocal Velocity Obstacles for Real-Time Multi-Agent Navigation&lt;/a&gt;有个有趣的问题是，当双方直面相遇时，如何避免双方选择相同的躲避方向？&lt;/p&gt;
 &lt;p&gt;还有一个优化算法是&lt;a href=&#34;http://gamma.cs.unc.edu/ORCA/&#34;&gt;ORCA&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;触角feeler&#34;&gt;触角(Feeler)&lt;/h2&gt;
 &lt;p&gt;模仿动物，我们还可以在物体前添加三根触角，分别测试他们是否和障碍物相交，其转向力与渗透深度成正比&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/01.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/01.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h1 id=&#34;flocking&#34;&gt;Flocking&lt;/h1&gt;
 &lt;p&gt;群聚算法最早由Craig Reynolds 于1987 在SIGGRAPH上提出&lt;/p&gt;
 &lt;blockquote&gt;
@@ -800,11 +800,11 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
 &lt;/blockquote&gt;
 &lt;p&gt;其image是三个组行为的组合: separation(分离),alignment(对齐),cohesion(聚合)，你需要仔细调节它们间的权重以获得满意的群组行为，一个好的方法是使用势函数(potential function),在物理学中，它根据分子的接近程度产生引力和斥力，我们同样可以用在游戏单位身上&lt;/p&gt;
 &lt;p&gt;$Lenard-Jones: U=-\frac{A}{r^n}+\frac{B}{r^m}$&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/05.png&#34; alt=&#34;Lenard-Jones&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/image.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/05.png&#34; alt=&#34;Lenard-Jones&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/image.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;fovfield-of-view&#34;&gt;FOV(field of view)&lt;/h2&gt;
 &lt;p&gt;首先，在一个组群中，每个单位都需要感知周围局部环境的情况，感知范围(视野)的确定对群体行为的影响很大&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/04.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/04.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;半径&#34;&gt;半径&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;大半径容易产生凝聚性更强的群体，不容易发生落单现象&lt;/li&gt;
@@ -815,7 +815,7 @@ tymeta&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#3
 &lt;li&gt;宽视角容易得到组织良好的群体,遇到障碍物时，群聚会倾向分开，从两边绕过障碍物，在某些情况下，他们会迅速重组，但某些情况下不会。&lt;/li&gt;
 &lt;li&gt;窄视野容易看起来有领导核心，单位倾向排成单一纵队平滑地绕过障碍物而不会分开。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/02.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/02.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cs&#34; data-lang=&#34;cs&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//获得周围单位，伪代码实现
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;foreach&lt;/span&gt; unit &lt;span style=&#34;color:#66d9ef&#34;&gt;in&lt;/span&gt; units
 {
@@ -856,7 +856,7 @@ self.AddForce(force);
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;wander&#34;&gt;Wander&lt;/h2&gt;
 &lt;p&gt;有一个问题是，当一个单位和它的群组隔离了，它将什么都不做，为了防止这种情况发生，我们加入wander(徘徊)，这样所有的单位总可以保持运动。&lt;/p&gt;
 &lt;p&gt;最初的做法是产生一个随机的驱动力，但这会产生抖动(事实上，一个好的随机函数如Perlin噪声可以产生光滑转弯，但CPU开销会很大)，Reynolds的解决方案是在前端凸出个圆圈，目标被限制在该圆圈上，然后每帧在目标添加一个随机的位移，通过调整圆圈半径，距离和随机位移产生一个没有抖动的往复运动&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/image/03.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;nagisa3113.com/image/03.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;领头者&#34;&gt;领头者&lt;/h2&gt;
 &lt;p&gt;通过当前单位前方视野内的其他单位数量判断是否是领头者，也可以使用tag标记领头者，给他赋予单独的AI，一般领头者不太需要遵循上述群聚规则。&lt;/p&gt;
 &lt;p&gt;综合以上便可产生一些有趣的战术行为，例如，大半径窄视野并带有领头者的群组，就像秩序良好的突击队在半夜执行机密任务&lt;/p&gt;
@@ -876,10 +876,10 @@ self.AddForce(force);
     
     <item>
       <title>日本行</title>
-      <link>https://example.com/post/japan/</link>
+      <link>nagisa3113.com/post/japan/</link>
       <pubDate>Thu, 05 Sep 2019 10:59:09 +0000</pubDate>
       
-      <guid>https://example.com/post/japan/</guid>
+      <guid>nagisa3113.com/post/japan/</guid>
       <description>&lt;p&gt;大二暑假报名了一个日本的访学(旅游)项目，记录一下有趣的事情。&lt;/p&gt;
 &lt;p&gt;图片挂了,之后有时间再补&amp;hellip;&amp;hellip;.&lt;/p&gt;
 &lt;ul&gt;
@@ -963,10 +963,10 @@ self.AddForce(force);
     
     <item>
       <title>控制反转(IoC)与依赖注入(DI)</title>
-      <link>https://example.com/post/strangeioc/</link>
+      <link>nagisa3113.com/post/strangeioc/</link>
       <pubDate>Sat, 25 May 2019 10:59:09 +0000</pubDate>
       
-      <guid>https://example.com/post/strangeioc/</guid>
+      <guid>nagisa3113.com/post/strangeioc/</guid>
       <description>&lt;p&gt;控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。&lt;/p&gt;
 &lt;p&gt;它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。&lt;/p&gt;
 &lt;p&gt;通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)，将其所依赖的对象的引用传递给它。也可以说，依赖被注入到对象中。&lt;/p&gt;
@@ -1058,10 +1058,10 @@ commandBinder.Bind(GameEvent.SHIP_DEAD , OnShipDeathCommand);
     
     <item>
       <title>射箭艺术中的禅</title>
-      <link>https://example.com/post/zen/</link>
+      <link>nagisa3113.com/post/zen/</link>
       <pubDate>Thu, 25 Apr 2019 22:33:00 +0000</pubDate>
       
-      <guid>https://example.com/post/zen/</guid>
+      <guid>nagisa3113.com/post/zen/</guid>
       <description>&lt;p&gt;禅是纯粹的体验，不存在于任何言语文字之中。一位追求生命意义的德国哲学教授，远渡重洋来学习禅的真义。处处碰壁之后，透过了箭术，他体验到最活生生的禅。在禅的描述上，他的追寻记录达到了文字的极至。&lt;/p&gt;
 &lt;p&gt;Eugen Herrigel
 鲁宓 译&lt;/p&gt;
@@ -1102,10 +1102,10 @@ commandBinder.Bind(GameEvent.SHIP_DEAD , OnShipDeathCommand);
     
     <item>
       <title>协程实现的状态机框架</title>
-      <link>https://example.com/post/coroutines/</link>
+      <link>nagisa3113.com/post/coroutines/</link>
       <pubDate>Wed, 10 Apr 2019 17:29:09 +0000</pubDate>
       
-      <guid>https://example.com/post/coroutines/</guid>
+      <guid>nagisa3113.com/post/coroutines/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://docs.unity3d.com/Manual/Coroutines.html&#34;&gt;协程(Cotroutines)&lt;/a&gt;是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，&lt;a href=&#34;https://docs.unity3d.com/Manual/ExecutionOrder.html&#34;&gt;执行顺序&lt;/a&gt;主要在Update()之后，LateUpdate()之前。&lt;/p&gt;
 &lt;p&gt;使用协程的优点&lt;/p&gt;
 &lt;ul&gt;
@@ -1331,10 +1331,10 @@ IEnumerator State()
     
     <item>
       <title>传播学原理</title>
-      <link>https://example.com/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</link>
+      <link>nagisa3113.com/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</link>
       <pubDate>Wed, 05 Sep 2018 10:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</guid>
+      <guid>nagisa3113.com/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</guid>
       <description>&lt;p&gt;传播是人们之间的信息传递&lt;/p&gt;
 &lt;p&gt;传播学&lt;/p&gt;
 &lt;ol&gt;
@@ -1950,10 +1950,10 @@ IEnumerator State()
     
     <item>
       <title>失传的屠龙术</title>
-      <link>https://example.com/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</link>
+      <link>nagisa3113.com/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</link>
       <pubDate>Sat, 05 May 2018 10:10:00 +0000</pubDate>
       
-      <guid>https://example.com/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</guid>
+      <guid>nagisa3113.com/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</guid>
       <description>&lt;p&gt;文: 赵皓阳&lt;/p&gt;
 &lt;h2 id=&#34;引子&#34;&gt;引子&lt;/h2&gt;
 &lt;p&gt;有这样一个故事：&lt;/p&gt;
@@ -2065,10 +2065,10 @@ IEnumerator State()
     
     <item>
       <title>理解编译器优化</title>
-      <link>https://example.com/post/compile/</link>
+      <link>nagisa3113.com/post/compile/</link>
       <pubDate>Sat, 10 Feb 2018 19:53:36 +0800</pubDate>
       
-      <guid>https://example.com/post/compile/</guid>
+      <guid>nagisa3113.com/post/compile/</guid>
       <description>&lt;p&gt;来自《深入理解计算机系统》第五、六章&lt;/p&gt;
 &lt;p&gt;如何编写出高效的程序&lt;/p&gt;
 &lt;ul&gt;
