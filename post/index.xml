@@ -6,10 +6,32 @@
     <description>Recent content in Posts on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 12 Feb 2020 10:34:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>了解世界</title>
+      <link>/post/world/</link>
+      <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/world/</guid>
+      <description>&lt;p&gt;最近看了一篇文章&lt;a href=&#34;https://www.douban.com/group/topic/12121637/&#34;&gt;王垠：完全用Linux工作&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其中有些想法很偏激，但我很认可&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Unix 是简单的，你不需要成为一个天才或是计算机专家。但是在这个冲斥着 Windows 错误观念的世界，你需要信念和勇气才能理解它的简单&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apple有哪些黑科技</title>
+      <link>/post/apple/</link>
+      <pubDate>Sat, 22 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/apple/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>为什么我们如此喜爱魂系列</title>
@@ -128,10 +150,10 @@
     
     <item>
       <title>传播学原理</title>
-      <link>/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</link>
+      <link>/post/communication/</link>
       <pubDate>Wed, 05 Sep 2018 10:00:00 +0000</pubDate>
       
-      <guid>/post/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</guid>
+      <guid>/post/communication/</guid>
       <description>&lt;p&gt;传播是人们之间的信息传递&lt;/p&gt;
 &lt;p&gt;传播学&lt;/p&gt;
 &lt;ol&gt;
@@ -144,10 +166,10 @@
     
     <item>
       <title>失传的屠龙术</title>
-      <link>/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</link>
+      <link>/post/mao/</link>
       <pubDate>Sat, 05 May 2018 10:10:00 +0000</pubDate>
       
-      <guid>/post/%E5%B1%A0%E9%BE%99%E6%9C%AF/</guid>
+      <guid>/post/mao/</guid>
       <description>&lt;p&gt;文: 赵皓阳&lt;/p&gt;
 &lt;h2 id=&#34;引子&#34;&gt;引子&lt;/h2&gt;
 &lt;p&gt;有这样一个故事：&lt;/p&gt;
