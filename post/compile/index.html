@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -19,26 +19,26 @@
 <meta name="author" content="nagisa" /><meta name="description" content="来自《深入理解计算机系统》第五、六章
 如何编写出高效的程序
  选取适当的算法和数据结构 编写编译器能够有效优化的源代码  这里讨论如何理解编译器的能力和局限性，我们将会发现，对源代码进行非常微小的修改会对程序性能产生很大的影响。
-" />
+" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.63.2 with theme even" />
+<meta name="generator" content="Hugo 0.66.0 with theme even" />
 
 
-<link rel="canonical" href="/post/compile/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="nagisa3113.com/post/compile/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/nagisa3113.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/nagisa3113.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/nagisa3113.com/favicon-16x16.png">
+<link rel="manifest" href="/nagisa3113.com/manifest.json">
+<link rel="mask-icon" href="/nagisa3113.com/safari-pinned-tab.svg" color="#5bbad5">
 
 
-<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+<link href="/nagisa3113.com/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/nagisa3113.com/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
 
 
 <meta property="og:title" content="理解编译器优化" />
@@ -50,7 +50,7 @@
 
 这里讨论如何理解编译器的能力和局限性，我们将会发现，对源代码进行非常微小的修改会对程序性能产生很大的影响。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/post/compile/" />
+<meta property="og:url" content="nagisa3113.com/post/compile/" />
 <meta property="article:published_time" content="2018-02-10T19:53:36+08:00" />
 <meta property="article:modified_time" content="2018-02-10T19:53:36+08:00" />
 <meta itemprop="name" content="理解编译器优化">
@@ -90,7 +90,7 @@
 <body>
   <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
-    <a href="/" class="logo">Nostalgia</a>
+    <a href="/nagisa3113.com/" class="logo">Nostalgia</a>
   </div>
   <div class="mobile-navbar-icon">
     <span></span>
@@ -100,9 +100,9 @@
 </div>
 <nav id="mobile-menu" class="mobile-menu slideout-menu">
   <ul class="mobile-menu-list">
-    <a href="/">
+    <a href="nagisa3113.com/">
         <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
+      </a><a href="nagisa3113.com/post/">
         <li class="mobile-menu-item">Archives</li>
       </a>
   </ul>
@@ -110,15 +110,15 @@
   <div class="container" id="mobile-panel">
     <header id="header" class="header">
         <div class="logo-wrapper">
-  <a href="/" class="logo">Nostalgia</a>
+  <a href="/nagisa3113.com/" class="logo">Nostalgia</a>
 </div>
 
 <nav class="site-navbar">
   <ul id="menu" class="menu">
     <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
+        <a class="menu-item-link" href="nagisa3113.com/">Home</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
+        <a class="menu-item-link" href="nagisa3113.com/post/">Archives</a>
       </li>
   </ul>
 </nav>
@@ -140,7 +140,7 @@
     </header>
 
     <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
+  <h2 class="post-toc-title">Contents</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
@@ -198,12 +198,12 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">twiddle1</span><span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="n">xp</span><span class="err">，</span> <span class="kt">long</span> <span class="o">*</span><span class="n">yp</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="n">xp</span> <span class="o">+</span><span class="o">=</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
-	<span class="n">xp</span> <span class="o">+</span><span class="o">=</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
+	<span class="n">xp</span> <span class="o">+=</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
+	<span class="n">xp</span> <span class="o">+=</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="kt">void</span> <span class="nf">twiddle2</span><span class="p">(</span><span class="kt">long</span> <span class="o">*</span><span class="n">xp</span><span class="err">，</span> <span class="kt">long</span> <span class="o">*</span><span class="n">yp</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="n">xp</span> <span class="o">+</span><span class="o">=</span> <span class="mi">2</span><span class="o">*</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
+	<span class="n">xp</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span> <span class="o">*</span><span class="n">yp</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
@@ -284,12 +284,12 @@
 <pre class="chroma"><code class="language-c" data-lang="c"> <span class="c1">//定义常量:
 </span><span class="c1"></span> 
  <span class="c1">//对于求和 
-</span><span class="c1"></span> <span class="cp">#</span><span class="cp">define IDENT 0</span><span class="cp">
-</span><span class="cp"></span> <span class="cp">#</span><span class="cp">define OP +</span><span class="cp">
+</span><span class="c1"></span> <span class="cp">#define IDENT 0
+</span><span class="cp"></span> <span class="cp">#define OP +
 </span><span class="cp"></span>
  <span class="c1">//对于求积
-</span><span class="c1"></span> <span class="cp">#</span><span class="cp">define IDENT 1</span><span class="cp">
-</span><span class="cp"></span> <span class="cp">#</span><span class="cp">define OP *</span><span class="cp">
+</span><span class="c1"></span> <span class="cp">#define IDENT 1
+</span><span class="cp"></span> <span class="cp">#define OP *
 </span></code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
@@ -307,7 +307,7 @@
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine1</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span><span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="o">*</span><span class="n">dest</span> <span class="n">OP</span> <span class="n">get_element</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -374,9 +374,9 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine2</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span><span class="o">*</span> <span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
 	<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="o">*</span><span class="n">dest</span> <span class="n">OP</span> <span class="n">get_element</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -443,10 +443,10 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine3</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span> <span class="o">*</span><span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
 	<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="o">*</span><span class="n">dest</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 	<span class="p">}</span>
@@ -511,13 +511,13 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c">	<span class="nl">L17</span><span class="p">:</span>
-	<span class="n">mov</span> <span class="p">(</span><span class="o">%</span><span class="n">bx</span><span class="p">)</span><span class="o">-</span><span class="o">&gt;</span><span class="o">%</span><span class="n">xm</span>				<span class="err">将</span><span class="err">寄</span><span class="err">存</span><span class="err">器</span><span class="n">bx存储的dest值给临时变量寄存器xm</span>
-	<span class="n">mul</span> <span class="p">(</span><span class="o">%</span><span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-</span><span class="o">&gt;</span> <span class="o">%</span><span class="n">xm</span>		<span class="err">将</span><span class="n">xm与寄存器dx中</span> <span class="err">的</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="err">相</span><span class="err">乘</span><span class="err">，</span><span class="err">结</span><span class="err">果</span><span class="err">赋</span><span class="err">给</span><span class="n">xm</span>
-	<span class="n">mov</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-</span><span class="o">&gt;</span> <span class="p">(</span><span class="o">%</span><span class="n">bx</span><span class="p">)</span>				<span class="err">将</span><span class="n">xm的值重新赋值给寄存器bx存储的dest</span> 
-									<span class="err">因</span><span class="err">为</span><span class="err">寄</span><span class="err">存</span><span class="err">器</span><span class="err">不</span><span class="err">能</span><span class="err">直</span><span class="err">接</span><span class="err">参</span><span class="err">与</span><span class="err">运</span><span class="err">算</span> 
-									<span class="err">以</span><span class="err">上</span><span class="err">代</span><span class="err">码</span><span class="err">作</span><span class="err">用</span><span class="err">为</span> <span class="o">*</span><span class="n">dest</span><span class="o">=</span><span class="o">*</span><span class="n">dest</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>	
-	<span class="n">add</span> <span class="mi">8</span> <span class="o">-</span><span class="o">&gt;</span> <span class="o">%</span><span class="n">dx</span>					<span class="err">指</span><span class="err">针</span><span class="err">移</span><span class="err">动</span><span class="err">，</span><span class="mi">8</span><span class="err">为</span><span class="n">double的字长</span>
-	<span class="n">cmp</span> <span class="o">%</span><span class="n">dx</span> <span class="o">+</span> <span class="n">length</span><span class="err">，</span> <span class="o">%</span><span class="n">dx</span> 		<span class="err">循</span><span class="err">环</span><span class="err">结</span><span class="err">束</span><span class="err">判</span><span class="err">断</span>
+	<span class="n">mov</span> <span class="p">(</span><span class="o">%</span><span class="n">bx</span><span class="p">)</span><span class="o">-&gt;%</span><span class="n">xm</span>				<span class="err">将寄存器</span><span class="n">bx存储的dest值给临时变量寄存器xm</span>
+	<span class="n">mul</span> <span class="p">(</span><span class="o">%</span><span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-&gt;</span> <span class="o">%</span><span class="n">xm</span>		<span class="err">将</span><span class="n">xm与寄存器dx中</span> <span class="err">的</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="err">相乘，结果赋给</span><span class="n">xm</span>
+	<span class="n">mov</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="o">%</span><span class="n">bx</span><span class="p">)</span>				<span class="err">将</span><span class="n">xm的值重新赋值给寄存器bx存储的dest</span> 
+									<span class="err">因为寄存器不能直接参与运算</span> 
+									<span class="err">以上代码作用为</span> <span class="o">*</span><span class="n">dest</span><span class="o">=*</span><span class="n">dest</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>	
+	<span class="n">add</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="o">%</span><span class="n">dx</span>					<span class="err">指针移动，</span><span class="mi">8</span><span class="err">为</span><span class="n">double的字长</span>
+	<span class="n">cmp</span> <span class="o">%</span><span class="n">dx</span> <span class="o">+</span> <span class="n">length</span><span class="err">，</span> <span class="o">%</span><span class="n">dx</span> 		<span class="err">循环结束判断</span>
 	<span class="n">jmp</span> <span class="n">L17</span> 
 </code></pre></td></tr></table>
 </div>
@@ -540,10 +540,10 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine4</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span> <span class="o">*</span><span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
 	<span class="n">data_t</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 	<span class="p">}</span>
@@ -562,8 +562,8 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c">	<span class="nl">L25</span><span class="p">:</span>
-	<span class="n">mul</span> <span class="p">(</span><span class="o">%</span><span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-</span><span class="o">&gt;</span> <span class="o">%</span><span class="n">xm</span>
-	<span class="n">add</span> <span class="mi">8</span> <span class="o">-</span><span class="o">&gt;</span> <span class="o">%</span><span class="n">dx</span>
+	<span class="n">mul</span> <span class="p">(</span><span class="o">%</span><span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="o">%</span><span class="n">xm</span> <span class="o">-&gt;</span> <span class="o">%</span><span class="n">xm</span>
+	<span class="n">add</span> <span class="mi">8</span> <span class="o">-&gt;</span> <span class="o">%</span><span class="n">dx</span>
 	<span class="n">cmp</span> <span class="o">%</span><span class="n">dx</span> <span class="o">+</span> <span class="n">length</span><span class="err">，</span> <span class="o">%</span><span class="n">dx</span>
 	<span class="n">jmp</span> <span class="n">L25</span>
 </code></pre></td></tr></table>
@@ -635,12 +635,12 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine5</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span> <span class="o">*</span><span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
     <span class="kt">long</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="c1">//为了表示方便，假设长度为偶数
+	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">)</span><span class="c1">//为了表示方便，假设长度为偶数
 </span><span class="c1"></span>	<span class="p">{</span>
-		<span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
 	<span class="p">}</span>
     <span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="n">acc</span><span class="p">;</span>
 <span class="p">}</span>
@@ -724,17 +724,17 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span> <span class="nf">combine6</span><span class="p">(</span><span class="n">vec_ptr</span> <span class="n">v</span><span class="err">，</span> <span class="n">data_t</span> <span class="o">*</span><span class="n">dest</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">long</span> <span class="n">length</span> <span class="o">=</span> <span class="n">vec_length</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
     <span class="kt">long</span> <span class="n">acc0</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
     <span class="kt">long</span> <span class="n">acc1</span> <span class="o">=</span> <span class="n">IDENT</span><span class="p">;</span>
-	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="p">;</span>
-	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="c1">//为了表示方便，假设长度为偶数
+	<span class="n">data_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_vec_start</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="c1">//为了表示方便，假设长度为偶数
 </span><span class="c1"></span>	<span class="p">{</span>
-		<span class="n">acc0</span> <span class="o">=</span> <span class="n">acc0</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">acc0</span> <span class="o">=</span> <span class="n">acc0</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 	<span class="p">}</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="n">acc1</span> <span class="o">=</span> <span class="n">acc1</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">acc1</span> <span class="o">=</span> <span class="n">acc1</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 	<span class="p">}</span>
 
     <span class="o">*</span><span class="n">dest</span> <span class="o">=</span> <span class="n">acc0</span> <span class="n">OP</span> <span class="n">acc1</span><span class="p">;</span>
@@ -797,9 +797,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="p">;</span>
-<span class="err">修</span><span class="err">改</span><span class="err">为</span>
-<span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="n">OP</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+<span class="err">修改为</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">acc</span> <span class="n">OP</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="n">OP</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
 </code></pre></td></tr></table>
 </div>
 </div><table>
@@ -933,10 +933,10 @@ GCC会对整数运算执行重新结合，但不是总有好的效果</p>
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="/post/mao/">
+        <a class="prev" href="nagisa3113.com/post/mao/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">失传的屠龙术</span>
-            <span class="prev-text nav-mobile">上一篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
           </a>
         
       </nav>
@@ -954,16 +954,26 @@ GCC会对整数运算执行重新结合，但不是总有好的效果</p>
 
     <footer id="footer" class="footer">
       
+
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
       <i class="iconfont icon-up"></i>
     </div>
   </div>
-  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript" src="/nagisa3113.com/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/nagisa3113.com/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/nagisa3113.com/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/nagisa3113.com/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 
