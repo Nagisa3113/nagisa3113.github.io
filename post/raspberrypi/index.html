@@ -18,14 +18,14 @@
 
 <meta name="author" content="nagisa" /><meta name="description" content="树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。
 它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合(穷)学生。
-" /><meta name="keywords" content="Hugo, theme, even" />
+" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.66.0 with theme even" />
+<meta name="generator" content="Hugo 0.67.1 with theme even" />
 
 
 <link rel="canonical" href="/post/raspberrypi/" />
@@ -52,7 +52,7 @@
 它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合(穷)学生。">
 <meta itemprop="datePublished" content="2020-02-10T19:53:36&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-10T19:53:36&#43;08:00" />
-<meta itemprop="wordCount" content="1741">
+<meta itemprop="wordCount" content="1719">
 
 
 
@@ -249,24 +249,24 @@
 <p>开始折腾！</p>
 </li>
 </ol>
-<p>PS: 可以使用内网穿透，这样就可以在任何地方连接到树莓派了</p>
 <h2 id="可安装的其他系统">可安装的其他系统</h2>
+<p>在自己电脑上折腾Linux系统很容易gg，但在树莓派上就非常方便，可以多准备几个SD卡换着用，但适用于树莓派的系统不多。</p>
 <ul>
 <li>
+<p>ArchLinux</p>
+<p>绝配，妙不可言，推荐使用i3桌面管理器，精简高效</p>
+</li>
+<li>
 <p>Ubuntu Mate</p>
-<p>图形界面很好用</p>
+<p>图形界面很好用，1G内存稍有不足</p>
 </li>
 <li>
 <p>Windows 10 IoT Core</p>
 <p>主要面向物联网开发</p>
 </li>
 <li>
-<p>ArchLinux</p>
-<p>轻量简洁，安装过程稍麻烦，用来学习Linux非常好，但不推荐在自己电脑上折腾，但用在树莓派上就非常perfect，你可以多准备几个SD卡换着用，arch采用的是滚动更新的方式，但国内镜像会偶尔连不上</p>
-</li>
-<li>
 <p>RetroPie</p>
-<p>严格来说并不算是系统，它是一个游戏机模拟器，在上面你可以玩到非常多的复古游戏，推荐直接<a href="https://www.arcadepunks.com/pi-images-downloads-page/">下载</a>拷满游戏的镜像，为此你需要准备一个相当大的SD卡和一个复古手柄（强烈推荐八位堂8Bitdo），你也可以使用PICO-8等复古游戏引擎自己开发游戏</p>
+<p>严格来说并不算是系统，它是一个游戏机模拟器，在上面你可以玩到非常多的复古游戏，推荐直接<a href="https://www.arcadepunks.com/pi-images-downloads-page/">下载</a>拷满游戏的镜像，为此你需要准备一个相当大的SD卡和一个复古手柄（强烈推荐八位堂8Bitdo），也可以使用PICO-8等复古游戏引擎自己开发游戏</p>
 </li>
 <li>
 <p>Android</p>
@@ -278,13 +278,13 @@
 </li>
 <li>
 <p>RISC OS</p>
-<p>比较硬核</p>
+<p>硬核</p>
 </li>
 </ul>
 <h2 id="其他用途">其他用途</h2>
 <ul>
 <li>
-<p><input checked="" disabled="" type="checkbox">日常开发</p>
+<p><input checked="" disabled="" type="checkbox">日常学习</p>
 <p>用来学Python再适合不过</p>
 </li>
 <li>
@@ -297,7 +297,7 @@
 </li>
 <li>
 <p><input checked="" disabled="" type="checkbox">网络附属存储（NAS）</p>
-<p>请使用最新的4b型号，3b型号的网口与usb共享300Mbps的带宽</p>
+<p>3b型号的网口与USB共享300Mbps的带宽，4b升级成了千兆网口和USB3.0，大有一番作为</p>
 </li>
 <li>
 <p><input checked="" disabled="" type="checkbox">私有云</p>
@@ -346,9 +346,20 @@
     </main>
 
     <footer id="footer" class="footer">
-      
+      <div class="copyright">
 
+  
 
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">nagisa</span>
+  </span>
+</div>
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -362,6 +373,7 @@
   <script type="text/javascript">
     window.MathJax = {
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
       showProcessingMessages: false,
       messageStyle: 'none'
     };

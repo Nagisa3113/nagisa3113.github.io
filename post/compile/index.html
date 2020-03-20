@@ -19,14 +19,14 @@
 <meta name="author" content="nagisa" /><meta name="description" content="来自《深入理解计算机系统》第五、六章
 如何编写出高效的程序
  选取适当的算法和数据结构 编写编译器能够有效优化的源代码  这里讨论如何理解编译器的能力和局限性，我们将会发现，对源代码进行非常微小的修改会对程序性能产生很大的影响。
-" /><meta name="keywords" content="Hugo, theme, even" />
+" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.66.0 with theme even" />
+<meta name="generator" content="Hugo 0.67.1 with theme even" />
 
 
 <link rel="canonical" href="/post/compile/" />
@@ -953,9 +953,20 @@ GCC会对整数运算执行重新结合，但不是总有好的效果</p>
     </main>
 
     <footer id="footer" class="footer">
-      
+      <div class="copyright">
 
+  
 
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">nagisa</span>
+  </span>
+</div>
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -969,6 +980,7 @@ GCC会对整数运算执行重新结合，但不是总有好的效果</p>
   <script type="text/javascript">
     window.MathJax = {
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
       showProcessingMessages: false,
       messageStyle: 'none'
     };

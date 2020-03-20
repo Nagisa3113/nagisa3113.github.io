@@ -17,14 +17,14 @@
 
 
 <meta name="author" content="nagisa" /><meta name="description" content="协程(Cotroutines)是一个分步执行，遇到条件（yield return 语句）会挂起，直到条件满足才会被唤醒继续执行后面的代码，即延迟(等待)一段时间或某个操作完成后执行代码，执行顺序主要在Update()之后，LateUpdate()之前。
-" /><meta name="keywords" content="Hugo, theme, even" />
+" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.66.0 with theme even" />
+<meta name="generator" content="Hugo 0.67.1 with theme even" />
 
 
 <link rel="canonical" href="/post/coroutines/" />
@@ -588,9 +588,20 @@
     </main>
 
     <footer id="footer" class="footer">
-      
+      <div class="copyright">
 
+  
 
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">nagisa</span>
+  </span>
+</div>
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -604,6 +615,7 @@
   <script type="text/javascript">
     window.MathJax = {
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
       showProcessingMessages: false,
       messageStyle: 'none'
     };
