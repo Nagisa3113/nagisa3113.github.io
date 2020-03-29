@@ -64,15 +64,6 @@
     </item>
     
     <item>
-      <title>Summary</title>
-      <link>/post/summary/</link>
-      <pubDate>Thu, 06 Feb 2020 19:53:36 +0800</pubDate>
-      
-      <guid>/post/summary/</guid>
-      <description>&lt;p&gt;2019-2020&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>函数式编程</title>
       <link>/post/functional-programming/</link>
       <pubDate>Sat, 14 Dec 2019 22:20:00 +0000</pubDate>
