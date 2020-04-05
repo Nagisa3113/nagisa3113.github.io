@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>GOAP - Nostalgia</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="nagisa" /><meta name="description" content="Goal-Oriented Action Planning 目标导向型算法
+GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了AIPlanner插件
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.1 with theme even" />
+
+
+<link rel="canonical" href="/post/goap/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+<meta property="og:title" content="GOAP" />
+<meta property="og:description" content="Goal-Oriented Action Planning 目标导向型算法
+GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了AIPlanner插件" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/goap/" />
+<meta property="article:published_time" content="2020-04-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-04-05T00:00:00+00:00" />
+<meta itemprop="name" content="GOAP">
+<meta itemprop="description" content="Goal-Oriented Action Planning 目标导向型算法
+GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了AIPlanner插件">
+<meta itemprop="datePublished" content="2020-04-05T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-04-05T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1917">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GOAP"/>
+<meta name="twitter:description" content="Goal-Oriented Action Planning 目标导向型算法
+GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了AIPlanner插件"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Nostalgia</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Nostalgia</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">GOAP</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-05 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fsm">FSM</a></li>
+    <li><a href="#行为树">行为树</a></li>
+    <li><a href="#goap">GOAP</a></li>
+    <li><a href="#部件">部件</a>
+      <ul>
+        <li><a href="#state">State</a></li>
+        <li><a href="#actionfsm">ActionFSM</a></li>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#agent">Agent</a></li>
+        <li><a href="#trigger">Trigger</a></li>
+        <li><a href="#planner">Planner</a></li>
+      </ul>
+    </li>
+    <li><a href="#执行过程">执行过程</a></li>
+    <li><a href="#算法">算法</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="http://alumni.media.mit.edu/~jorkin/goap.html">Goal-Oriented Action Planning 目标导向型算法</a></p>
+<p>GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了<a href="https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html">AIPlanner</a>插件</p>
+<h2 id="fsm">FSM</h2>
+<p>使用FSM有限状态机的弊端：当AI行为非常庞大时，很难维护，代码可读性和重用性低</p>
+<p><img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4ba6257.com/resource/attachment/3c0c05cdb1466b156157f700e754525b" alt="AI决策算法之GOAP （一）"></p>
+<h2 id="行为树">行为树</h2>
+<p>行为树节点的可复用性高，可以自由组合出行为而不用重新编码整个框架，但由于是依赖设计者的固定架构的，很不灵活，做的选择不一定是最优选择，每次都要经过大量的逻辑判断。</p>
+<p><img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4c69dd7.com/resource/attachment/4edca0ec5f73ec225d0c9017109b498a" alt="AI决策算法之GOAP （一）"></p>
+<h2 id="goap">GOAP</h2>
+<p>让AI自己找到解决问题的办法，它会根据环境动态中决策出最优的选择，从而达到看起来相对智能的AI，且代码的分层相对清晰，可读性高，重用性高。</p>
+<p><img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4d670b6.com/resource/attachment/5e3a786f08a7d7ac3f7705c140ec46d5" alt="AI决策算法之GOAP （一）"></p>
+<p>我们只提供</p>
+<ol>
+<li>可执行的行为，包括行为的先决条件和影响效果</li>
+<li>不同目标的优先级</li>
+<li>玩家状态和世界环境的描述</li>
+</ol>
+<p>得到结果：</p>
+<p>​	一个行动Action的序列，通常使用队列进行存储</p>
+<h2 id="部件">部件</h2>
+<p>找到一个还不错的项目，<a href="http://github.com/nagisa3113/BlueGameAI">BlueGameAI</a></p>
+<h3 id="state">State</h3>
+<p>用于记录角色状态，Action表示某个行动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">State</span><span class="p">{</span>
+    <span class="c1">//当状态被改变时触发的事件
+</span><span class="c1"></span>    <span class="k">event</span> <span class="n">OnChange</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">class</span> <span class="nc">Action</span><span class="p">{</span>
+    <span class="c1">//动作的花费，优先级和是否可以被中断
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">cost</span><span class="p">,</span><span class="n">priority</span>
+    <span class="kt">bool</span> <span class="n">canInterrupited</span><span class="p">;</span>
+    <span class="c1">//动作的先决条件
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">PreCondition</span><span class="p">;</span>
+    <span class="c1">//动作执行后的状态
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">Effect</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">class</span> <span class="nc">ActionHandle</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">event</span> <span class="n">onActionFinished</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="actionfsm">ActionFSM</h3>
+<p>动作的状态机，其中也维护着一个动作状态（FSMState），要与人物的状态（AgentState）区别开来</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">FSMState</span><span class="p">{</span>
+    <span class="k">void</span> <span class="n">Enter</span><span class="p">();</span>
+    <span class="k">void</span> <span class="n">Execute</span><span class="p">();</span>
+    <span class="k">void</span> <span class="n">Exit</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="k">class</span> <span class="nc">ActionFSM</span><span class="p">{</span>
+    <span class="c1">//当前、上一个状态机状态
+</span><span class="c1"></span>    <span class="n">FSMState</span> <span class="n">currentState</span><span class="p">,</span><span class="n">previousState</span><span class="p">;</span>
+    <span class="k">void</span> <span class="n">AddState</span><span class="p">();</span>
+    <span class="k">void</span> <span class="n">ExecuteNewState</span><span class="p">();</span>
+    <span class="k">void</span> <span class="n">Update</span><span class="p">(){</span>
+        <span class="n">currentState</span><span class="p">.</span><span class="n">Execute</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="goal">Goal</h3>
+<p>目标，比如获得武器，消灭敌人</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">Goal</span><span class="p">{</span>
+    <span class="c1">//目标的优先级
+</span><span class="c1"></span>   	<span class="kt">int</span> <span class="n">priority</span><span class="p">;</span>
+    <span class="c1">//激活目标的前置条件
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">ActiveCondition</span><span class="p">;</span>
+    <span class="c1">//完成目标后的影响
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">Effect</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="agent">Agent</h3>
+<p>挂载到角色身上，它整合了其他组件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">Agent</span><span class="p">(){</span>
+    <span class="c1">//角色状态
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">AgentState</span><span class="p">;</span>
+    <span class="c1">//Action管理对象
+</span><span class="c1"></span>    <span class="n">ACtionManager</span> <span class="n">actionManager</span><span class="p">;</span>
+    <span class="c1">//Goal管理对象
+</span><span class="c1"></span>    <span class="n">GoalManager</span> <span class="n">goalManager</span><span class="p">;</span>
+    <span class="c1">//计划管理对象，下文会提到
+</span><span class="c1"></span>    <span class="n">Performer</span> <span class="n">performer</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="trigger">Trigger</h3>
+<p>触发器，是影响决策改变的直接原因</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">Trigger</span><span class="p">{</span>
+    <span class="c1">//优先级
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">priority</span>
+    <span class="c1">//触发效果
+</span><span class="c1"></span>    <span class="n">State</span> <span class="n">effect</span><span class="p">;</span>
+    <span class="c1">//是否被触发
+</span><span class="c1"></span>    <span class="kt">bool</span> <span class="n">IsTrigger</span><span class="p">();</span>
+    <span class="c1">//触发影响
+</span><span class="c1"></span>    <span class="k">void</span> <span class="n">Update</span><span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">Istrigger</span><span class="p">())</span>
+    		<span class="n">agent</span><span class="p">.</span><span class="n">AgentState</span><span class="p">.</span><span class="n">Set</span><span class="p">(</span><span class="n">effect</span><span class="p">);</span><span class="c1">//改变Agent的状态
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="planner">Planner</h3>
+<p>对需要执行的动作进行动态规划</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">Planner</span><span class="p">(){</span>
+    <span class="c1">//制定计划
+</span><span class="c1"></span>    <span class="c1">//参数为目标
+</span><span class="c1"></span>    <span class="c1">//返回值为行为的序列
+</span><span class="c1"></span>    <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Action</span><span class="p">&gt;</span> <span class="n">BuildPlan</span><span class="p">(</span><span class="n">Goal</span> <span class="n">goal</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">class</span> <span class="nc">Performer</span><span class="p">{</span>
+    <span class="c1">//plan即为上面Planner计算出的行为序列
+</span><span class="c1"></span>    <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Action</span><span class="p">&gt;</span> <span class="n">plan</span> <span class="p">=</span> <span class="n">Planner</span><span class="p">.</span><span class="n">BuildPlan</span><span class="p">(</span><span class="n">currentGoal</span><span class="p">);</span>
+    
+    <span class="c1">//执行计划
+</span><span class="c1"></span>    <span class="k">void</span> <span class="n">Next</span><span class="p">(){</span>
+        <span class="c1">//plan出栈，执行下一个Action
+</span><span class="c1"></span>        <span class="n">Agent</span><span class="p">.</span><span class="n">ActionManager</span><span class="p">.</span><span class="n">ExecuteNewState</span><span class="p">(</span><span class="n">plan</span><span class="p">.</span><span class="n">Dequeue</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="执行过程">执行过程</h2>
+<ol>
+<li>
+<p>假设Agent初始状态为idle，ActionFSM为空</p>
+</li>
+<li>
+<p>某个事件触发了Trigger，改变了Agent的状态State</p>
+</li>
+<li>
+<p>触发State中的回调函数 event OnChange();</p>
+</li>
+<li>
+<p>ActionManager 更新内部元素</p>
+</li>
+<li>
+<p>GoalManager 获得当前目标优先级最大的目标</p>
+</li>
+<li>
+<p>Performer 很据目标制定新计划</p>
+<ol>
+<li>获得Action队列</li>
+<li>让ActionFSM执行Action队列中的第一个元素</li>
+</ol>
+</li>
+<li>
+<p>执行新ACtino后又改变了Agent的状态State，这时候由于已经处在某个计划中(队列中还有ACtion未完成)，这时候不再回到第3布重新生成新的计划，而是执行以下步骤</p>
+<ol>
+<li>检查计划/动作是否允许被中断</li>
+<li>检查计划/动作是否为已经完成</li>
+</ol>
+</li>
+</ol>
+<p>以上是GOAP各个部分的简要介绍，实际工程写起来要负责很多，可以参考一下前面链接中的项目</p>
+<h2 id="算法">算法</h2>
+<p>即，如何根据目标Goal得到最优的行为序列</p>
+<ol>
+<li>
+<p>获得目标Goal与当前状态的差异</p>
+</li>
+<li>
+<p>查看哪些action可以满足这些差异</p>
+</li>
+</ol>
+<p>该项目使用方式：<strong>树结构</strong>+<strong>动态规划</strong></p>
+<p>这里举个例子，林克要死了，需要补充生命值，这时候有一个目标，砍苹果树获得苹果，达到这个目标需要哪些条件呢？</p>
+<ol>
+<li>林克到苹果树下</li>
+<li>林克有一个斧头</li>
+<li>林克有体力</li>
+</ol>
+<p>这些条件与当前state有哪些差异呢？</p>
+<ol>
+<li>林克的位置(position)不在苹果树下</li>
+<li>林克的背包里没有斧头</li>
+<li>林克体力不多了</li>
+</ol>
+<p>于是，开始遍历所有可以执行的Action，查看哪些可以改变林克的位置，比如走路，走路Action有一个cost(比如消耗体力，前进速度)，把它作为一个树节点，除了走路，骑马也可以，但骑马又需要马了，于是要先遍历可以让林克骑马的Action，比如找到马，驯服马，和马培养感情，遍历了这些子节点后，将其作为骑马这个复合节点的子节点，然后计算整个cost，可以类比哈夫曼编码，不过那个是贪心算法，这个是动态规划。</p>
+<p>遍历了所有的可执行Action后，一些独立的action会成为一些综合节点的子节点，比如，最后得到两种方案</p>
+<ol>
+<li>找马+养马+找斧头+砍树</li>
+<li>步行+买斧头+砍树</li>
+<li>传送+爬树</li>
+<li>传送+放火烧树（没想到吧）</li>
+</ol>
+<p>显然，传送、烧树、买斧头也是由一些小的子节点(Action)构成的，此时计算出了各个行为的cost，选择最优的一种方案，比如第2个，然后将步行、买斧头、砍树这四个节点的父节点设为树的头节点，(注意，复合节点本身不包括Action)，经过一次先序遍历，便能得到对应的Action序列。</p>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/machinelearning/">
+            <span class="next-text nav-default">机器学习总结</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="copyright">
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">nagisa</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

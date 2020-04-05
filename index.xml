@@ -6,10 +6,20 @@
     <description>Recent content on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 07 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GOAP</title>
+      <link>/post/goap/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/goap/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://alumni.media.mit.edu/~jorkin/goap.html&#34;&gt;Goal-Oriented Action Planning 目标导向型算法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;GOAP提供了一个很好的AI解决方案，对于简单的游戏可能不太明显，与状态机和行为树不同的是它并非硬编码，而是属于规划算法，Unity也提供了&lt;a href=&#34;https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html&#34;&gt;AIPlanner&lt;/a&gt;插件&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>机器学习总结</title>
