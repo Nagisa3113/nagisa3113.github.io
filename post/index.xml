@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 16 Apr 2020 10:10:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>网络游戏同步</title>
+      <link>/post/net/</link>
+      <pubDate>Thu, 16 Apr 2020 10:10:00 +0000</pubDate>
+      
+      <guid>/post/net/</guid>
+      <description>&lt;p&gt;浅谈网络游戏开发中的TCP/UDP、帧同步/状态同步以及预测、快照和回滚&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>GOAP</title>
