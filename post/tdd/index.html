@@ -49,7 +49,7 @@
 <meta itemprop="description" content="在软件工程中，绕不开的一个过程就是测试">
 <meta itemprop="datePublished" content="2020-05-12T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-05-12T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1064">
+<meta itemprop="wordCount" content="1066">
 
 
 
@@ -140,6 +140,7 @@
   <ul>
     <li><a href="#核心">核心</a></li>
     <li><a href="#过程">过程</a></li>
+    <li><a href="#原因">原因</a></li>
     <li><a href="#tdd是银弹吗">TDD是银弹吗</a></li>
   </ul>
 </nav>
@@ -190,13 +191,14 @@
 <li>编写实现代码，使其<strong>刚好</strong>可以通过测试</li>
 <li><strong>重构</strong>，消除代码的smell，再次运行测试</li>
 </ol>
+<h2 id="原因">原因</h2>
 <ul>
 <li>
 <p>为什么不能先写功能实现代码？</p>
 <p>无法确定这段代码是为了实现什么功能，以及是否真的实现了</p>
 </li>
 <li>
-<p>为什么名知道会报错，还要运行</p>
+<p>为什么明知道会报错，还要运行</p>
 <p>报错有很多种可能，目的是看看是不是期望的错误</p>
 </li>
 <li>
@@ -210,7 +212,7 @@
 </ul>
 <p>一个好的实例: <a href="https://my.oschina.net/xbl/blog/3107866">测试驱动开发（TDD）入门</a></p>
 <h2 id="tdd是银弹吗">TDD是银弹吗</h2>
-<p>TDD不能解决所有的问题，并不能保证程序一定不出错。</p>
+<p>TDD并不能解决所有的问题，不能保证程序一定不出错。</p>
 <p>另：Unity内置Test Runner，基于NUnit，分为Edit Mode和Play Mode，使用方法非常简单，在此就不讨论了</p>
     </div>
 
@@ -238,8 +240,8 @@
     </main>
 
     <footer id="footer" class="footer">
-      <div class="copyright">
-
+      
+<div class="copyright">
   
 
   <span class="copyright-year">
@@ -252,6 +254,7 @@
     <span class="author">nagisa</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
