@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 Apr 2020 10:10:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 12 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>测试驱动开发</title>
+      <link>/post/tdd/</link>
+      <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tdd/</guid>
+      <description>&lt;p&gt;在软件工程中，绕不开的一个过程就是测试&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>网络游戏同步</title>
@@ -50,15 +59,6 @@
 &lt;blockquote&gt;
 &lt;p&gt;Unix 是简单的，你不需要成为一个天才或是计算机专家。但是在这个冲斥着 Windows 错误观念的世界，你需要信念和勇气才能理解它的简单&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Apple有哪些黑科技</title>
-      <link>/post/apple/</link>
-      <pubDate>Sat, 22 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/apple/</guid>
-      <description></description>
     </item>
     
     <item>

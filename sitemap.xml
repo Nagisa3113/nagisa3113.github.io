@@ -3,14 +3,21 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-04-16T10:10:00+00:00</lastmod>
+    <lastmod>2020-05-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2020-04-16T10:10:00+00:00</lastmod>
+    <lastmod>2020-05-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>/post/tdd/</loc>
+    <lastmod>2020-05-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -39,13 +46,6 @@
   <url>
     <loc>/post/world/</loc>
     <lastmod>2020-03-02T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>/post/apple/</loc>
-    <lastmod>2020-02-22T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

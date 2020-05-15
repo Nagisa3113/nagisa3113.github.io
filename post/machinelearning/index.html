@@ -49,7 +49,7 @@
 <meta itemprop="description" content="这几个星期机器学习的总结，不涉及具体代码，看了不少书，但还没自己动手写过。涉及到的概念和知识点很多，每一个部分都有很多理论支持，这里就不具体展开了(有些LateX公式之后补上)，文章末尾附有常见术语。">
 <meta itemprop="datePublished" content="2020-03-07T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-03-07T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="3285">
+<meta itemprop="wordCount" content="3097">
 
 
 
@@ -138,7 +138,18 @@
         <li><a href="#线性回归器">线性回归器</a></li>
         <li><a href="#支持向量机">支持向量机</a></li>
         <li><a href="#ｋ近邻">Ｋ近邻</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#聚类">聚类</a>
+      <ul>
         <li><a href="#k均值k-means">K均值(K-means)</a></li>
+      </ul>
+    </li>
+    <li><a href="#降维">降维</a>
+      <ul>
         <li><a href="#主成分分析principal-component-analysis-pca">主成分分析(Principal Component Analysis, PCA)</a></li>
       </ul>
     </li>
@@ -174,10 +185,8 @@
   </ul>
 
   <ul>
-    <li><a href="#python">Python</a></li>
     <li><a href="#激活函数">激活函数</a></li>
     <li><a href="#损失函数">损失函数</a></li>
-    <li><a href="#heading"></a></li>
     <li><a href="#过拟合">过拟合</a></li>
     <li><a href="#正则化">正则化</a></li>
     <li><a href="#梯度下降">梯度下降</a></li>
@@ -245,9 +254,9 @@
 <p>同样，只从训练数据中选取一部分更加有效的支持向量，不是它们的结果不再是类别目标，而是具体的预测数值</p>
 <h3 id="ｋ近邻">Ｋ近邻</h3>
 <p>同样只借助周围Ｋ个最近训练样本的目标数值，对待测样本的回归值进行决策</p>
-<p>#　无监督学习(Unsupervised Learning)</p>
+<h1 id="无监督学习unsupervised-learning">无监督学习(Unsupervised Learning)</h1>
 <p>相比与监督学习，他不需要人为得标注数据结果(如是否患病、房价数值)，因此它所应用的领域也与监督学习的不同。</p>
-<p>##　聚类</p>
+<h2 id="聚类">聚类</h2>
 <p>对于分布在空间的很多数据，通过某些参数将它们分类</p>
 <h3 id="k均值k-means">K均值(K-means)</h3>
 <ol>
@@ -256,7 +265,7 @@
 <li>在所有数据都被标记后，根据这些数据新分配的类簇，重新对Ｋ个聚类中心做计算</li>
 <li>如果一轮下来，所有数据从属的聚类中心与上一次分配的类簇没有变化，可以停止迭代，否则回到第2步</li>
 </ol>
-<p>##　降维</p>
+<h2 id="降维">降维</h2>
 <p>在实际项目中，经常会遇到特征维度非常高的训练样本(单个训练数据包含的参数非常多)，特征降维可以重构有效的低纬度特征向量，比如使彩色照片变成黑白照片</p>
 <h3 id="主成分分析principal-component-analysis-pca">主成分分析(Principal Component Analysis, PCA)</h3>
 <p>有点复杂。。。</p>
@@ -314,35 +323,6 @@
 <p>不仅取决于之前出现的单词，还取决于之后的单词（预扫描）</p>
 <p><img src="/image/brnn.png" alt="brnn"></p>
 <h1 id="附常见术语">附：常见术语</h1>
-<h2 id="python">Python</h2>
-<p>方便调试、、跨平台、广泛的API、丰富的开源工具包的解释型语言，但各种版本、包配置起来麻烦</p>
-<p>相关：</p>
-<ul>
-<li>
-<p>Numpy</p>
-<p>最基础的Python库，提供许多高级数学运算，是其他库的基础</p>
-</li>
-<li>
-<p>Matplotlib</p>
-<p>提供免费的绘图功能</p>
-</li>
-<li>
-<p>Scikit-learn</p>
-<p>简洁的机器学习的开源程序库</p>
-</li>
-<li>
-<p>Pandas</p>
-<p>主要针对数据预处理的工具包</p>
-</li>
-<li>
-<p>Tensorflow</p>
-<p>Google的开源深度学习框架，核心是张量(tensor)和计算图(graph)</p>
-</li>
-<li>
-<p>Anaconda</p>
-<p>集成平台，方便管理各种Python包依赖，强烈建议</p>
-</li>
-</ul>
 <h2 id="激活函数">激活函数</h2>
 <p>使线性函数去线性化（很奇怪的表达），将一定范围内的值映射到指定范围</p>
 <p><img src="/image/activate.png" alt="activate"></p>
@@ -355,7 +335,6 @@
 <li>交叉熵(cross entropy)
 刻画两个概率分布之间的距离，适用于分类问题，多用于神经网络，通常先使用Softmax回归将神经网络的输出变成一个概率分布。</li>
 </ul>
-<h2 id="heading"></h2>
 <h2 id="过拟合">过拟合</h2>
 <p>计算方法里有讲，过拟合的模型在训练集上会得到较高的正确率，但我们的目的是预测未知数据，所以还要看在测试集上的表现。</p>
 <p><img src="/image/reg.png" alt="reg"></p>

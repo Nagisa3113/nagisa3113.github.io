@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>测试驱动开发 - Nostalgia</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="nagisa" /><meta name="description" content="在软件工程中，绕不开的一个过程就是测试
+" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.69.0 with theme even" />
+
+
+<link rel="canonical" href="/post/tdd/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+<meta property="og:title" content="测试驱动开发" />
+<meta property="og:description" content="在软件工程中，绕不开的一个过程就是测试" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/tdd/" />
+<meta property="article:published_time" content="2020-05-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-12T00:00:00+00:00" />
+<meta itemprop="name" content="测试驱动开发">
+<meta itemprop="description" content="在软件工程中，绕不开的一个过程就是测试">
+<meta itemprop="datePublished" content="2020-05-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-05-12T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1064">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="测试驱动开发"/>
+<meta name="twitter:description" content="在软件工程中，绕不开的一个过程就是测试"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Nostalgia</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Nostalgia</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">测试驱动开发</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-12 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么需要测试">为什么需要测试？</a></li>
+    <li><a href="#什么是测试驱动开发">什么是测试驱动开发</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#为什么要单元测试">为什么要单元测试</a></li>
+    <li><a href="#由谁来编写">由谁来编写</a></li>
+    <li><a href="#什么时候编写测试">什么时候编写测试</a></li>
+    <li><a href="#什么需要测试">什么需要测试</a></li>
+    <li><a href="#单元测试必须自动化">单元测试必须自动化</a></li>
+    <li><a href="#弊端">弊端</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#核心">核心</a></li>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#tdd是银弹吗">TDD是银弹吗</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>在软件工程中，绕不开的一个过程就是测试</p>
+<h2 id="为什么需要测试">为什么需要测试？</h2>
+<p>避免写出耦合度高难以维护的烂代码，当然，这与设计模式也有密不可分的关系</p>
+<p>当出现以下情况时，就需要考虑是否需要添加测试</p>
+<ul>
+<li>看不懂以前写的代码</li>
+<li>频繁改动已有的代码</li>
+<li>出现难以复现的bug</li>
+<li>不知道从哪里开始调试</li>
+<li>改动一处后引起一系列bug</li>
+</ul>
+<h2 id="什么是测试驱动开发">什么是测试驱动开发</h2>
+<blockquote>
+<p>Kent Beck：“测试驱动开发不是一种测试技术。它是一种分析技术、设计技术，更是一种组织所有开发活动的技术”。</p>
+</blockquote>
+<p>TDD（Test Driven Development），通常指的是UTDD（Unit Test Driven Development）单元测试驱动开发，原理是在开发功能代码前，先编写单元测试用例代码，再进行实现。</p>
+<h1 id="什么是单元测试">什么是单元测试</h1>
+<p>Unit Test ，是针对程序设计中的最小模块进行正确性检验的测试工作</p>
+<p>通常是使用断言（Assert）对单个函数功能进行测试</p>
+<h2 id="为什么要单元测试">为什么要单元测试</h2>
+<p>保证代码质量，主要体现在当代码被修改后功能依然正常，实际上就是维护API</p>
+<h2 id="由谁来编写">由谁来编写</h2>
+<p>测试工程师还是软件开发人员？实际上，凡是修改了代码的人都需要编写单元测试</p>
+<h2 id="什么时候编写测试">什么时候编写测试</h2>
+<p>TDD提倡在实现具体代码之前编写测试</p>
+<h2 id="什么需要测试">什么需要测试</h2>
+<p>主要针对复杂的、容易出错的功能。较少的测试意味着对代码足够自信，比如get set不需要测试</p>
+<h2 id="单元测试必须自动化">单元测试必须自动化</h2>
+<p>每修改一次程序就要进行一次单元测试，使用脚本或自动化工具节省人力成本</p>
+<h2 id="弊端">弊端</h2>
+<p>显然，编写测试会增加负担，额外的代码量是人们不愿意写测试的最大原因，但这并不是测试的弊端，一些不好的测试会带来很多隐患。相反，一个良好的测试代码应该做到足够简单，否则不仅维护时要修改功能代码，还要修改测试代码。</p>
+<h1 id="为什么需要测试驱动开发">为什么需要测试驱动开发</h1>
+<blockquote>
+<p>Kent Beck: “<strong>代码简洁可用</strong>这句言简意赅的话，正是 TDD 所追求的目标”。</p>
+</blockquote>
+<h2 id="核心">核心</h2>
+<p>拆分任务，一次只关注一件事，小步前进</p>
+<h2 id="过程">过程</h2>
+<p><img src="/image/TDD.png" alt=""></p>
+<ol>
+<li>编写一个<strong>功能最小</strong>的单元测试，运行时当然会失败</li>
+<li>编写实现代码，使其<strong>刚好</strong>可以通过测试</li>
+<li><strong>重构</strong>，消除代码的smell，再次运行测试</li>
+</ol>
+<ul>
+<li>
+<p>为什么不能先写功能实现代码？</p>
+<p>无法确定这段代码是为了实现什么功能，以及是否真的实现了</p>
+</li>
+<li>
+<p>为什么名知道会报错，还要运行</p>
+<p>报错有很多种可能，目的是看看是不是期望的错误</p>
+</li>
+<li>
+<p>为什么要编写刚好可以通过的代码</p>
+<p>如果超出了测试的功能，这部分代码就不知道是否正确，需要手工测试，如果是后面新增的功能，那么后面编写的测试就会直接通过</p>
+</li>
+<li>
+<p>如何重构？</p>
+<p>这是另外一个领域的事情了</p>
+</li>
+</ul>
+<p>一个好的实例: <a href="https://my.oschina.net/xbl/blog/3107866">测试驱动开发（TDD）入门</a></p>
+<h2 id="tdd是银弹吗">TDD是银弹吗</h2>
+<p>TDD不能解决所有的问题，并不能保证程序一定不出错。</p>
+<p>另：Unity内置Test Runner，基于NUnit，分为Edit Mode和Play Mode，使用方法非常简单，在此就不讨论了</p>
+    </div>
+
+    
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/net/">
+            <span class="next-text nav-default">网络游戏同步</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="copyright">
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2018 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">nagisa</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
