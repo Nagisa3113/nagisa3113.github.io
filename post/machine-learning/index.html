@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>机器学习 | Nostalgia</title>
+
+<meta property='og:title' content='机器学习 - Nostalgia'>
+<meta property='og:description' content='2020-03-07
+这几个星期机器学习的总结，不涉及具体代码，看了不少书，但还没自己动手写过。涉及到的概念和知识点很多，每一个部分都有很多理论支持，这里就不具体展开了(有些LateX公式之后补上)，文章末尾附有常见术语。
+虽然实际应用的时候也就一行代码(框架中已经封装好了)，但了解原理有助于调整合适的参数，遇到一些实在复杂的(比如反向传播)知道作用就行，实际上很少会接触算法，大部分时候在搜集处理数据，调整参数。
+其实不太推荐看书，因为技术变化得太快了，纸上的内容还停留在以前，英语好的可以直接看官方教程(可能不好懂)，而且书又贵又重又占位置，看电子版也是个不错的选择。
+机器学习的一般步骤   数据预处理
+筛选有价值的数据，修复存在部分缺失的数据，通常使用留出验证将数据分为训练集和测试集，通常比例为3:1。如果是参加竞赛(如Kaggle)或是解决未知问题，则无法得到测试集，需要自己在训练集中划分出测试集(还有一种方式叫交叉验证)，在真实的机器学习应用中，大部分时间都在进行数据预处理。
+  选择适当的学习模型，根据经验调整参数，应用于训练集，得到预期结果
+  将预期结果与真实结果比较，根据损失函数判断学习性能，通常的损失函数有平均绝对误差(Mean Absolute Error, MAE)、均方误差(Mean Squared Error, MSE)
+  优化参数，使评价函数的结果尽可能小,通常的方式为梯度下降(gradient decent)
+  当训练次数达到一定数量时，损失函数几乎不再变化，可以认为训练已经结束。再将训练好的模型应用于测试集上并观察结果(通常与在训练集上的结果不一样，因为会出现过拟合和欠拟合的情况)，重复2-4步，直到得到满意结果
+  监督学习(Supervised Learning) 给定一组样本（通常由人工标注），它可以学会将输入数据映射到已知目标
+分类学习 这里讨论最基础的二分类
+经典例子：
+ 良、恶性肿瘤预测 泰坦尼克号乘客是否生还  线性分类器(Linear Classifiers) 假设特征与分类结果存在线性关系，通过一条线划分数据
+如果我们想要把结果映射到(0,1)，可以使用Logistic函数，将结果大于０的划分为一类
+支持向量机(Support Vector Machine) 可以发现决定直线位置的并不是所以的数据，而是两个类别中间隔最小的几个数据点，称之为支持向量(Support Vector)。而在上面Logistic模型中考虑了所有数据对参数的影响，因此不一定得到最佳结果。
+朴素贝叶斯(Naive Bayes) 基于概率的分类器，很简单，学过概率论的都会，但解释起来篇幅有点长
+K近邻(K-Nearest Neighbor, KNN) 在特征空间中，如果一个样本附近的k个最近(即特征空间中最邻近)样本的大多数属于某一个类别，则该样本也属于这个类别。
+其他  决策树 随机森林  回归预测 待预测的目标是连续变量，比如在训练集中有很多点(x,y)，选择一个函数使其在坐标系上的曲线尽量接近所有数据点，针对测试集中某个未知点的x值预测y值。但在实际运用中，参数是多元的、非线性可分的，需要用到数据降维
+经典例子
+ 波士顿房价预测  线性回归器 类似于最小二乘法，寻找一条直线使其尽量接近所有数据
+支持向量机 同样，只从训练数据中选取一部分更加有效的支持向量，不是它们的结果不再是类别目标，而是具体的预测数值'>
+<meta property='og:url' content='https://nagisa3113.com/post/machine-learning/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2019-09-05T00:00:00Z'><meta property='article:modified_time' content='2019-09-05T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
+
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://nagisa3113.com/post/machine-learning/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">September 5, 2019</h2>
+    <h1 class="title">机器学习</h1>
+    
+    <div class="content">
+      <p>2020-03-07</p>
+<p>这几个星期机器学习的总结，不涉及具体代码，看了不少书，但还没自己动手写过。涉及到的概念和知识点很多，每一个部分都有很多理论支持，这里就不具体展开了(有些LateX公式之后补上)，文章末尾附有常见术语。</p>
+<p>虽然实际应用的时候也就一行代码(框架中已经封装好了)，但了解原理有助于调整合适的参数，遇到一些实在复杂的(比如反向传播)知道作用就行，实际上很少会接触算法，大部分时候在搜集处理数据，调整参数。</p>
+<p>其实不太推荐看书，因为技术变化得太快了，纸上的内容还停留在以前，英语好的可以直接看官方教程(可能不好懂)，而且书又贵又重又占位置，看电子版也是个不错的选择。</p>
+<h1 id="机器学习的一般步骤">机器学习的一般步骤</h1>
+<ol>
+<li>
+<p>数据预处理</p>
+<p>筛选有价值的数据，修复存在部分缺失的数据，通常使用<strong>留出验证</strong>将数据分为训练集和测试集，通常比例为3:1。如果是参加竞赛(如Kaggle)或是解决未知问题，则无法得到测试集，需要自己在训练集中划分出测试集(还有一种方式叫<strong>交叉验证</strong>)，在真实的机器学习应用中，大部分时间都在进行数据预处理。</p>
+</li>
+<li>
+<p>选择适当的学习模型，根据经验调整参数，应用于训练集，得到预期结果</p>
+</li>
+<li>
+<p>将预期结果与真实结果比较，根据<strong>损失函数</strong>判断学习性能，通常的损失函数有<strong>平均绝对误差</strong>(Mean Absolute Error, MAE)、<strong>均方误差</strong>(Mean Squared Error, MSE)</p>
+</li>
+<li>
+<p>优化参数，使评价函数的结果尽可能小,通常的方式为<strong>梯度下降</strong>(gradient decent)</p>
+</li>
+<li>
+<p>当训练次数达到一定数量时，损失函数几乎不再变化，可以认为训练已经结束。再将训练好的模型应用于测试集上并观察结果(通常与在训练集上的结果不一样，因为会出现<strong>过拟合</strong>和<strong>欠拟合</strong>的情况)，重复2-4步，直到得到满意结果</p>
+</li>
+</ol>
+<h1 id="监督学习supervised-learning">监督学习(Supervised Learning)</h1>
+<p>给定一组样本（通常由人工标注），它可以学会将输入数据映射到已知目标</p>
+<h2 id="分类学习">分类学习</h2>
+<p>这里讨论最基础的二分类</p>
+<p><img src="/image/linear-classifier.png" alt="linear-classifier"></p>
+<p>经典例子：</p>
+<ul>
+<li>良、恶性肿瘤预测</li>
+<li>泰坦尼克号乘客是否生还</li>
+</ul>
+<h3 id="线性分类器linear-classifiers">线性分类器(Linear Classifiers)</h3>
+<p>假设特征与分类结果存在线性关系，通过一条线划分数据</p>
+<p>如果我们想要把结果映射到(0,1)，可以使用<strong>Logistic函数</strong>，将结果大于０的划分为一类</p>
+<h3 id="支持向量机support-vector-machine">支持向量机(Support Vector Machine)</h3>
+<p>可以发现决定直线位置的并不是所以的数据，而是两个类别中间隔最小的几个数据点，称之为支持向量(Support Vector)。而在上面Logistic模型中考虑了所有数据对参数的影响，因此不一定得到最佳结果。</p>
+<h3 id="朴素贝叶斯naive-bayes">朴素贝叶斯(Naive Bayes)</h3>
+<p>基于概率的分类器，很简单，学过概率论的都会，但解释起来篇幅有点长</p>
+<h3 id="k近邻k-nearest-neighbor-knn">K近邻(K-Nearest Neighbor, KNN)</h3>
+<p>在特征空间中，如果一个样本附近的k个最近(即特征空间中最邻近)样本的大多数属于某一个类别，则该样本也属于这个类别。</p>
+<h3 id="其他">其他</h3>
+<ul>
+<li>决策树</li>
+<li>随机森林</li>
+</ul>
+<h2 id="回归预测">回归预测</h2>
+<p>待预测的目标是连续变量，比如在训练集中有很多点(x,y)，选择一个函数使其在坐标系上的曲线尽量接近所有数据点，针对测试集中某个未知点的x值预测y值。但在实际运用中，参数是多元的、非线性可分的，需要用到<strong>数据降维</strong></p>
+<p>经典例子</p>
+<ul>
+<li>波士顿房价预测</li>
+</ul>
+<h3 id="线性回归器">线性回归器</h3>
+<p>类似于最小二乘法，寻找一条直线使其尽量接近所有数据</p>
+<h3 id="支持向量机">支持向量机</h3>
+<p>同样，只从训练数据中选取一部分更加有效的支持向量，不是它们的结果不再是类别目标，而是具体的预测数值</p>
+<h3 id="ｋ近邻">Ｋ近邻</h3>
+<p>同样只借助周围Ｋ个最近训练样本的目标数值，对待测样本的回归值进行决策</p>
+<h1 id="无监督学习unsupervised-learning">无监督学习(Unsupervised Learning)</h1>
+<p>相比与监督学习，他不需要人为得标注数据结果(如是否患病、房价数值)，因此它所应用的领域也与监督学习的不同。</p>
+<h2 id="聚类">聚类</h2>
+<p>对于分布在空间的很多数据，通过某些参数将它们分类</p>
+<h3 id="k均值k-means">K均值(K-means)</h3>
+<ol>
+<li>随机设置Ｋ个特征空间内的点作为初始的聚类中心</li>
+<li>对于每个数据，从Ｋ个聚类中心中寻找最近的一个，并且标记为从属该聚类</li>
+<li>在所有数据都被标记后，根据这些数据新分配的类簇，重新对Ｋ个聚类中心做计算</li>
+<li>如果一轮下来，所有数据从属的聚类中心与上一次分配的类簇没有变化，可以停止迭代，否则回到第2步</li>
+</ol>
+<h2 id="降维">降维</h2>
+<p>在实际项目中，经常会遇到特征维度非常高的训练样本(单个训练数据包含的参数非常多)，特征降维可以重构有效的低纬度特征向量，比如使彩色照片变成黑白照片</p>
+<h3 id="主成分分析principal-component-analysis-pca">主成分分析(Principal Component Analysis, PCA)</h3>
+<p>有点复杂。。。</p>
+<h1 id="神经网络neural-network">神经网络(Neural network)</h1>
+<h2 id="神经元">神经元</h2>
+<p><img src="/image/neuron.png" alt="neuron"></p>
+<p>有多个输入和一个输出，每个层由多个神经元，一个神经元可以接受多个其他层的神经元作为输入</p>
+<h2 id="前向传播">前向传播</h2>
+<p>给定输入参数，不同层间连接关系的权重（这里为线性关系），得到输出结果</p>
+<p><img src="/image/frontP.png" alt="frontP"></p>
+<h2 id="输入层">输入层</h2>
+<p>该层的神经元没有输入，数量为单个数据特征向量的长度</p>
+<h2 id="隐藏层">隐藏层</h2>
+<p>一个神经网络有一个或多个层，层间通常为全连接</p>
+<h2 id="输出层">输出层</h2>
+<p>该层拥有一个或多个神经元，可以通过某些函数将输出值映射到(0,1)上，若是分类问题，神经元的个数为分类的个数，通常先使用softmax层将输出转化为概率分布</p>
+<h1 id="深度学习deep-learning">深度学习(Deep learning)</h1>
+<p>通常深度学习指的就是深度神经网络</p>
+<p>特点</p>
+<ol>
+<li>具有多层隐藏层</li>
+<li>非线性</li>
+</ol>
+<p>我们可以发现，如果使用线性函数表达每层之间的数据传递，任意多个线性模型的组合仍然是线性模型，多层和单层没有什么区别，能解决的问题非常有限，所以会使用<strong>激活函数</strong>去线性化</p>
+<p><img src="/image/delinear.png" alt="delinear"></p>
+<h2 id="反向传播backpropagation">反向传播(backpropagation)</h2>
+<p>前面的正向传播是通过输入参数和权重得到训练结果，反向传播则是通过训练结果和预期结果，调整原先的权重。</p>
+<p>原理：在所有参数上使用<strong>梯度下降算法</strong>，实际非常复杂</p>
+<h1 id="卷积神经网络convent-neural-networl-cnn">卷积神经网络(Convent neural networl, CNN)</h1>
+<p>当全连接神经网络的参数太多时，除了导致计算速度减慢，还容易导致<strong>过拟合</strong>的问题，所以需要减少神经网络中的参数个数</p>
+<p><img src="/image/conv1.png" alt="conv1"></p>
+<p><img src="/image/conv2.png" alt="conv2"></p>
+<p>经典例子：MNIST手写数字数据集</p>
+<h2 id="输入层-1">输入层</h2>
+<p>比如用三维矩阵代表一张图片，长和宽分别是图像的大小，如28*28，深度代表图像的色彩，黑白图片的深度为１，RGB色彩下的深度为３</p>
+<h2 id="卷积层">卷积层</h2>
+<p>每一个节点的输入是上一层的一小块，通常有3<em>3或5</em>5，一般通过卷积层的节点居住深度增加</p>
+<h2 id="池化层">池化层</h2>
+<p>不会改变三维矩阵的深度，但会减小长宽，可以理解为将高分辨率的照片转化为低分辨率的照片，从而减少整个神经网络中的参数</p>
+<h2 id="经典卷积神经网络">经典卷积神经网络</h2>
+<h3 id="lenet-5">LeNet-5</h3>
+<p><img src="/image/lenet-5.png" alt="lenet-5"></p>
+<h3 id="inception-v3">Inception-v3</h3>
+<p>与上面不同的是，它同时所有不同尺寸的过滤器，然后再将得到的矩阵拼接起来</p>
+<p><img src="/image/inception-v3.png" alt="inception-v3"></p>
+<h1 id="循环神经网络recurrent-neural-network-rnn">循环神经网络(Recurrent neural network, RNN)</h1>
+<p>神经网络的输出不仅取决与当前时刻的状态，还取决于之前时刻的状态</p>
+<p><img src="/image/rnn.png" alt="rnn"></p>
+<p>例子：自然语言处理（Natural language process, NLP），对某个单词的处理还取决于它之前的单词</p>
+<h2 id="长短时记忆网络long-short-term-memory-ltsm">长短时记忆网络(Long short-term memory, LTSM)</h2>
+<p>当模型要记录大量上下文信息时，需要根据间隔、长短调整权重，选择正确的信息，最大的特点是加入了<strong>遗忘门</strong>，让RNN“忘记”之前没用的上下文信息。</p>
+<p><img src="/image/ltsm.png" alt="ltsm"></p>
+<p>LTSM结构可以更加有效的决定哪些信息应该被遗忘，哪些信息应该得到保留。</p>
+<h2 id="双向循环神经网络">双向循环神经网络</h2>
+<p>不仅取决于之前出现的单词，还取决于之后的单词（预扫描）</p>
+<p><img src="/image/brnn.png" alt="brnn"></p>
+<h1 id="附常见术语">附：常见术语</h1>
+<h2 id="激活函数">激活函数</h2>
+<p>使线性函数去线性化（很奇怪的表达），将一定范围内的值映射到指定范围</p>
+<p><img src="/image/activate.png" alt="activate"></p>
+<h2 id="损失函数">损失函数</h2>
+<p>用于刻画训练结果和真实数据结果的差距，也就是评测模型的性能</p>
+<p>通常有</p>
+<ul>
+<li>平均绝对误差(Mean Absolute Error, MAE)</li>
+<li>均方误差(Mean Squared Error, MSE)</li>
+<li>交叉熵(cross entropy) 刻画两个概率分布之间的距离，适用于分类问题，多用于神经网络，通常先使用Softmax回归将神经网络的输出变成一个概率分布。</li>
+</ul>
+<h2 id="过拟合">过拟合</h2>
+<p>计算方法里有讲，过拟合的模型在训练集上会得到较高的正确率，但我们的目的是预测未知数据，所以还要看在测试集上的表现。</p>
+<p><img src="/image/reg.png" alt="reg"></p>
+<h2 id="正则化">正则化</h2>
+<p>目的：避免过拟合，提高模型在未知测试数据上的泛化能力</p>
+<p>原理：限制高次方的参数大小</p>
+<ul>
+<li>L1范数正则化</li>
+<li>L2范数正则化</li>
+</ul>
+<h2 id="梯度下降">梯度下降</h2>
+<p><img src="/image/gradient.png" alt="gradient"></p>
+<p>作用：优化单个参数的取值</p>
+<p>原理：类似于每次改变一个与导数相关的值（称之为学习率），使损失函数最小（此时最低点的导数为０），因为导数会随着接近最低点（可能是局部）而自动减小，所以不需要人为改变</p>
+<h2 id="学习率">学习率</h2>
+<p>控制每次参数更新的速度，需要结合梯度下降，该值小于１，通常采用指数递减的方式。</p>
+
+      
+      <div class="related">
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+</body>
+</html>
+

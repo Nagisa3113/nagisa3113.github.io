@@ -1,153 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>测试驱动开发 - Nostalgia</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<title>测试驱动开发 | Nostalgia</title>
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+<meta property='og:title' content='测试驱动开发 - Nostalgia'>
+<meta property='og:description' content='在软件工程中，绕不开的一个过程就是测试。'>
+<meta property='og:url' content='https://nagisa3113.com/post/tdd/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2020-05-12T00:00:00Z'><meta property='article:modified_time' content='2020-05-12T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
-<meta name="author" content="nagisa" /><meta name="description" content="在软件工程中，绕不开的一个过程就是测试
-" />
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
 
-
-
-
-
-
-<meta name="generator" content="Hugo 0.69.0 with theme even" />
-
-
-<link rel="canonical" href="/post/tdd/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
-<meta property="og:title" content="测试驱动开发" />
-<meta property="og:description" content="在软件工程中，绕不开的一个过程就是测试" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/tdd/" />
-<meta property="article:published_time" content="2020-05-12T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-05-12T00:00:00+00:00" />
-<meta itemprop="name" content="测试驱动开发">
-<meta itemprop="description" content="在软件工程中，绕不开的一个过程就是测试">
-<meta itemprop="datePublished" content="2020-05-12T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-05-12T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1066">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="测试驱动开发"/>
-<meta name="twitter:description" content="在软件工程中，绕不开的一个过程就是测试"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
+<link rel="canonical" href="https://nagisa3113.com/post/tdd/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
 </head>
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">Nostalgia</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">Nostalgia</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">测试驱动开发</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2020-05-12 </span>
-        
-        
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
       </div>
-    </header>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#为什么需要测试">为什么需要测试？</a></li>
-    <li><a href="#什么是测试驱动开发">什么是测试驱动开发</a></li>
-  </ul>
+    <nav class="nav">
+      
 
-  <ul>
-    <li><a href="#为什么要单元测试">为什么要单元测试</a></li>
-    <li><a href="#由谁来编写">由谁来编写</a></li>
-    <li><a href="#什么时候编写测试">什么时候编写测试</a></li>
-    <li><a href="#什么需要测试">什么需要测试</a></li>
-    <li><a href="#单元测试必须自动化">单元测试必须自动化</a></li>
-    <li><a href="#弊端">弊端</a></li>
-  </ul>
+      
+    </nav>
 
-  <ul>
-    <li><a href="#核心">核心</a></li>
-    <li><a href="#过程">过程</a></li>
-    <li><a href="#原因">原因</a></li>
-    <li><a href="#tdd是银弹吗">TDD是银弹吗</a></li>
-  </ul>
-</nav>
   </div>
-</div>
-    <div class="post-content">
-      <p>在软件工程中，绕不开的一个过程就是测试</p>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">May 12, 2020</h2>
+    <h1 class="title">测试驱动开发</h1>
+    
+    <div class="content">
+      <p>在软件工程中，绕不开的一个过程就是测试。</p>
 <h2 id="为什么需要测试">为什么需要测试？</h2>
 <p>避免写出耦合度高难以维护的烂代码，当然，这与设计模式也有密不可分的关系</p>
 <p>当出现以下情况时，就需要考虑是否需要添加测试</p>
@@ -185,7 +113,7 @@
 <h2 id="核心">核心</h2>
 <p>拆分任务，一次只关注一件事，小步前进</p>
 <h2 id="过程">过程</h2>
-<p><img src="/image/TDD.png" alt=""></p>
+<p><img src="/image/TDD.png" alt="img"></p>
 <ol>
 <li>编写一个<strong>功能最小</strong>的单元测试，运行时当然会失败</li>
 <li>编写实现代码，使其<strong>刚好</strong>可以通过测试</li>
@@ -213,73 +141,86 @@
 <p>一个好的实例: <a href="https://my.oschina.net/xbl/blog/3107866">测试驱动开发（TDD）入门</a></p>
 <h2 id="tdd是银弹吗">TDD是银弹吗</h2>
 <p>TDD并不能解决所有的问题，不能保证程序一定不出错。</p>
-<p>另：Unity内置Test Runner，基于NUnit，分为Edit Mode和Play Mode，使用方法非常简单，在此就不讨论了</p>
-    </div>
-
-    
-<footer class="post-footer">
       
-      <nav class="post-nav">
-        
-        <a class="next" href="/post/net/">
-            <span class="next-text nav-default">网络游戏同步</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="copyright">
-  
-
-  <span class="copyright-year">
-    &copy; 
-    2018 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">nagisa</span>
-  </span>
+      <div class="related">
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
+      
     </div>
+    
   </div>
-  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
-  <script type="text/javascript">
-    window.MathJax = {
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-      TeX: {equationNumbers: {autoNumber: "AMS"}},
-      showProcessingMessages: false,
-      messageStyle: 'none'
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+</section>
 
 
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 
 
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
 
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
 
-
-
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
 </body>
 </html>
+

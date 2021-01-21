@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>控制反转与依赖注入 | Nostalgia</title>
+
+<meta property='og:title' content='控制反转与依赖注入 - Nostalgia'>
+<meta property='og:description' content='控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。
+它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。
+通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)。'>
+<meta property='og:url' content='https://nagisa3113.com/post/ioc/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2019-05-25T00:00:00Z'><meta property='article:modified_time' content='2019-05-25T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
+
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://nagisa3113.com/post/ioc/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">May 25, 2019</h2>
+    <h1 class="title">控制反转与依赖注入</h1>
+    
+    <div class="content">
+      <p>控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。</p>
+<p>它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。</p>
+<p>通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)。</p>
+<p>举个例子，我们创建了一个英雄(Hero)，他的组件有武器和铠甲，我们如何去获得一个武器呢,</p>
+<ul>
+<li>传统方式: 在英雄脚本中 new 一个 Weapon 出来 ,该对象的创建、销毁、生命周期都由Hero控制,Hero依赖Weapon,耦合度高</li>
+<li>IOC: 容器先创建好Weapon,当Hero需要时,从该容器中取出要用的Weapon交给Hero使用,至于容器怎么创建Weapon的,Hero不需要关心</li>
+</ul>
+<p>IoC主要实现方式有两种：</p>
+<ol>
+<li>
+<p>依赖查找(Dependency Lookup）：容器提供回调接口和上下文环境给组件。</p>
+<p>例如Unity中 GameObject.Find(Name)</p>
+</li>
+<li>
+<p>依赖注入(Dependency Injection）：组件不做定位查询，只提供普通的方法让容器去决定依赖关系。</p>
+</li>
+</ol>
+<p>其又有三种方式,拿之前Hero的例子来说:</p>
+<ol>
+<li>接口注入(Interface Injection): 让英雄继承SetObject()接口,在英雄中实现SetObject(Weapon)方法</li>
+<li>设值注入(Setter Injection): 在类中写一个方法,SetWeapon(content),让外部容器传调用传入依赖</li>
+<li>构造子注入(Constructor Injection): 在英雄的构造函数中写方法,Hero(content),在建立对象时传入依赖.</li>
+</ol>
+<h2 id="strangeioc">StrangeIoC</h2>
+<p>StraneIoC是一个轻量、高扩展性的Unity,C#的IoC框架,其使用的方式为依赖注入.</p>
+<p><a href="https://strangeioc.github.io/strangeioc/">StrangeIoC官网</a>一张图可以概括,我们先继续往下看 <img src="https://strangeioc.github.io/strangeioc/class-flow.png" alt="img"></p>
+<p>官方给出的例子: 假如我在玩一个游戏,每次结束时如果获得了更高的分数,想要将最高分上传到Facebook,在传统Unity方式下,会是这样的</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyShip</span> : MonoBehaviour {    
+    <span style="color:#66d9ef">private</span> FacebookService facebook;    
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> myScore;     
+    <span style="color:#66d9ef">void</span> Awake(){    	
+        facebook = FacebookService.getInstance();    
+    }     
+    <span style="color:#66d9ef">void</span> onDie(){    	
+        <span style="color:#66d9ef">if</span> (score &gt; highScore)	
+            facebook.PostScore(myScore);    
+    } 
+}
+</code></pre></div><p>这样写有两个问题,首先,它的作用相当于控制器,与游戏本身逻辑和服务器紧密相连;第二,facebook作为它的singleton成员,如果我们想换成Twitter或Google+,会变得麻烦.总的来说,当需求发生变化时,需要修改很多代码.</p>
+<p>但在IOC中,可以这样写</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyShip</span> : MonoBehaviour {   
+    <span style="color:#66d9ef">void</span> onDie(){      
+        dispatcher.Dispatch(GameEvent.SHIP_DEAD);   
+    } 
+} 
+</code></pre></div><p>我们移除了逻辑部分,只需要发出一个信息(事件)–“游戏结束了”,让Command单元去处理,它会是这样的:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OnShipDeathCommand</span> : EventCommand {   
+<span style="color:#a6e22e">    [Inject]</span>   
+    ISocialService socialService{<span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>;}      
+<span style="color:#a6e22e">    [Inject]</span>   
+    IScoreModel scoreModel{<span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">set</span>;}      
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Execute()   {      
+        <span style="color:#66d9ef">if</span> (scoreModel.score &gt; scoreModel.highScore)         
+            socialService.PostScore(scoreModel.score);   
+    } 
+}
+</code></pre></div><p>注意其中的[Inject],我们注入的是实现接口的类而不是特定的类,在这个例子中,我们就可以不再依赖具体的Facebook或Twitter,我们只用知道需要一个社交服务.</p>
+<p>最后,我们需要绑定相关</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">#if UNITY_ANDROID 
+</span><span style="color:#75715e"></span>    injectionBinder.Bind&lt;ISocialService&gt;().To&lt;GoogleService&gt;().AsSingleton(); 
+<span style="color:#75715e">#else injectionBinder.Bind&lt;ISocialService&gt;().To&lt;FacebookService&gt;().AsSingleton(); 
+</span><span style="color:#75715e">#endif //...or... //
+</span><span style="color:#75715e"></span>    injectionBinder.Bind&lt;ISocialService&gt;().To&lt;MultiServiceResolver&gt;().AsSingleton();  
+injectionBinder.Bind&lt;IScoreModel&gt;().To&lt;ScoreModel&gt;().AsSingleton(); 
+commandBinder.Bind(GameEvent.SHIP_DEAD , OnShipDeathCommand); 
+</code></pre></div><p>AsSingleton()的意思是,每次通过[Inject]注入ISocialService类型的对象时,获得的都是同一个GoogleService实例,虽然出现了Singleton(单例),但我们不需要写一个单例模式,只用绑定它就行.同时,我们将之前“游戏结束”的事件,与之前Command进行绑定.</p>
+<p>这样,每个单元都是独立的,保证了灵活性和可维护性。</p>
+      
+      <div class="related">
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+    <script src="/js/copycode.js"></script>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+</body>
+</html>
+

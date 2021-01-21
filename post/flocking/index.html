@@ -1,213 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>自治的可移动游戏智能体 - Nostalgia</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<title>自治的可移动游戏智能体 | Nostalgia</title>
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+<meta property='og:title' content='自治的可移动游戏智能体 - Nostalgia'>
+<meta property='og:description' content='在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。'>
+<meta property='og:url' content='https://nagisa3113.com/post/flocking/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2019-09-19T00:00:00Z'><meta property='article:modified_time' content='2019-09-19T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
-<meta name="author" content="nagisa" /><meta name="description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。 主要内容
- Obstacle Avoidance Flocking " />
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
 
-
-
-
-
-
-<meta name="generator" content="Hugo 0.69.0 with theme even" />
-
-
-<link rel="canonical" href="/post/flocking/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
-<meta property="og:title" content="自治的可移动游戏智能体" />
-<meta property="og:description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
-主要内容
-
-Obstacle Avoidance
-Flocking
-" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/flocking/" />
-<meta property="article:published_time" content="2019-09-19T17:00:00+00:00" />
-<meta property="article:modified_time" content="2019-09-19T17:00:00+00:00" />
-<meta itemprop="name" content="自治的可移动游戏智能体">
-<meta itemprop="description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
-主要内容
-
-Obstacle Avoidance
-Flocking
-">
-<meta itemprop="datePublished" content="2019-09-19T17:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-09-19T17:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2112">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="自治的可移动游戏智能体"/>
-<meta name="twitter:description" content="在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中《Humanity》展现了模拟人类集体行为，效果非常震撼。
-主要内容
-
-Obstacle Avoidance
-Flocking
-"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
+<link rel="canonical" href="https://nagisa3113.com/post/flocking/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
 </head>
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">Nostalgia</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">Nostalgia</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">自治的可移动游戏智能体</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2019-09-19 </span>
-        
-        
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
       </div>
-    </header>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#碰撞判断">碰撞判断</a></li>
-    <li><a href="#vovelocity-obstacle">VO(Velocity Obstacle)</a></li>
-    <li><a href="#rvoreciprocal-velocity-obstacle">RVO(Reciprocal Velocity Obstacle)</a></li>
-    <li><a href="#触角feeler">触角(Feeler)</a></li>
-  </ul>
+    <nav class="nav">
+      
 
-  <ul>
-    <li><a href="#fovfield-of-view">FOV(field of view)</a>
-      <ul>
-        <li><a href="#半径">半径</a></li>
-        <li><a href="#视野">视野</a></li>
-      </ul>
-    </li>
-    <li><a href="#alignment">Alignment</a></li>
-    <li><a href="#cohesion">Cohesion</a></li>
-    <li><a href="#separartion">Separartion</a></li>
-    <li><a href="#wander">Wander</a></li>
-    <li><a href="#领头者">领头者</a></li>
-    <li><a href="#参考">参考</a></li>
-  </ul>
-</nav>
+      
+    </nav>
+
   </div>
-</div>
-    <div class="post-content">
-      <p>在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中<a href="https://youtu.be/ouHaVvmZ5uw">《Humanity》</a>展现了模拟人类集体行为，效果非常震撼。
-主要内容</p>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">September 19, 2019</h2>
+    <h1 class="title">自治的可移动游戏智能体</h1>
+    
+    <div class="content">
+      <p>在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中<a href="https://youtu.be/ouHaVvmZ5uw">《Humanity》</a>展现了模拟人类集体行为，效果非常震撼。</p>
+<p>主要内容</p>
 <ul>
 <li>Obstacle Avoidance</li>
 <li>Flocking</li>
 </ul>
-<p><img src="/image/humanity.png" alt=""></p>
+<p><img src="/image/humanity.png" alt="img"></p>
 <h1 id="obstacle-avoidance">Obstacle Avoidance</h1>
 <p>障碍物躲避属于路径规划中的底层算法，与此相对的高层算法有dijkstra,A*等</p>
 <h2 id="碰撞判断">碰撞判断</h2>
 <p>为了便于计算，我们将角色视为质点，于此同时让障碍物的碰撞半径扩大角色自身宽度的一半</p>
-<p><img src="/image/geogebra-export-2.png" alt=""></p>
-<p>判断是否相交，其中$\vec v$为当前速度与预测时间$t$的乘积，$t$越大，感知的范围也越大，可以更早地避开障碍物，但更消耗性能</p>
-<p><img src="/image/geogebra-export-3.png" alt=""></p>
-<p>$\vec p$为向量$\vec a$在速度$\vec v$上的投影，$\vec b = \vec p - \vec a$，当$|\vec b|-|\vec r|&lt;0$时，代表未来可能发生碰撞，这时需要给其添加两个力的作用，侧向操控力使其远离障碍物，与$\vec b$的大小成负相关，制动力使其减速，方向与当前速度相反，大小正比于$\vec a$</p>
-<p><img src="/image/geogebra-export-5.png" alt=""></p>
+<p><img src="/image/geogebra-export-2.png" alt="img"></p>
+<p>判断是否相交，其中→vv→为当前速度与预测时间tt的乘积，tt越大，感知的范围也越大，可以更早地避开障碍物，但更消耗性能</p>
+<p><img src="/image/geogebra-export-3.png" alt="img"></p>
+<p>→pp→为向量→aa→在速度→vv→上的投影，→b=→p−→ab→=p→−a→，当|→b|−|→r|&lt;0|b→|−|r→|&lt;0时，代表未来可能发生碰撞，这时需要给其添加两个力的作用，侧向操控力使其远离障碍物，与→bb→的大小成负相关，制动力使其减速，方向与当前速度相反，大小正比于→aa→</p>
+<p><img src="/image/geogebra-export-5.png" alt="img"></p>
 <p>上述方法是通过施加力的作用避开障碍物，下面介绍的方法是改变速度</p>
 <h2 id="vovelocity-obstacle">VO(Velocity Obstacle)</h2>
 <p>即：排除未来有可能会发生碰撞的速度</p>
-<p><img src="/image/geogebra-export-4.png" alt=""></p>
-<p>VO是指速度方向与B相交的部分，即会发生碰撞的部分（图中灰色部分)，VO会排除未来所有可能会发生碰撞的速度(例如$\vec v2$在短时间内不会发生碰撞，但被舍弃了)</p>
-<p>遇到可移动的障碍物时,直接求$\vec V_A$绝对速度的VO而不是$\vec V_A− \vec V_B$相对速度的VO，将相对速度下的VO延$\vec V_B$方向平移，新的VO为右深色三角形区域</p>
-<p><img src="/image/vo.png" alt=""></p>
+<p><img src="/image/geogebra-export-4.png" alt="img"></p>
+<p>VO是指速度方向与B相交的部分，即会发生碰撞的部分（图中灰色部分)，VO会排除未来所有可能会发生碰撞的速度(例如→v2v→2在短时间内不会发生碰撞，但被舍弃了)</p>
+<p>遇到可移动的障碍物时,直接求→VAV→A绝对速度的VO而不是→VA−→VBV→A−V→B相对速度的VO，将相对速度下的VO延→VBV→B方向平移，新的VO为右深色三角形区域</p>
+<p><img src="/image/vo.png" alt="img"></p>
 <h2 id="rvoreciprocal-velocity-obstacle">RVO(Reciprocal Velocity Obstacle)</h2>
 <p>VO的一个缺点是，当存在大量障碍物或可移动的障碍物时，会频繁改变速度产生抖动现象，例如当两个使用VO的物体相遇时，会产生左图的现象，RVO则是在VO基础上的优化(右图)</p>
-<p><img src="/image/oscillation.png" alt=""></p>
+<p><img src="/image/oscillation.png" alt="img"></p>
 <p>RVO的解决方案：缩小VO的大小以减少速度的突变</p>
-<p><img src="/image/rvo.png" alt=""></p>
+<p><img src="/image/rvo.png" alt="img"></p>
 <p>从另一个方面会更好理解，不直接选择VO外的速度，而是选择当前速度与新速度的平均值，从某种程度上认为，对方也会做出相应回避行为，详细推导证明过程见<a href="http://gamma.cs.unc.edu/RVO//">Reciprocal Velocity Obstacles for Real-Time Multi-Agent Navigation</a>有个有趣的问题是，当双方直面相遇时，如何避免双方选择相同的躲避方向？</p>
 <p>还有一个优化算法是<a href="http://gamma.cs.unc.edu/ORCA/">ORCA</a></p>
 <h2 id="触角feeler">触角(Feeler)</h2>
 <p>模仿动物，我们还可以在物体前添加三根触角，分别测试他们是否和障碍物相交，其转向力与渗透深度成正比</p>
-<p><img src="/image/01.png" alt=""></p>
+<p><img src="/image/01.png" alt="img"></p>
 <h1 id="flocking">Flocking</h1>
 <p>群聚算法最早由Craig Reynolds 于1987 在SIGGRAPH上提出</p>
 <blockquote>
 <p>Flocks,Herds,and Schools: A Distributed Behavior Model</p>
 </blockquote>
 <p>其image是三个组行为的组合: separation(分离),alignment(对齐),cohesion(聚合)，你需要仔细调节它们间的权重以获得满意的群组行为，一个好的方法是使用势函数(potential function),在物理学中，它根据分子的接近程度产生引力和斥力，我们同样可以用在游戏单位身上</p>
-<p>$Lenard-Jones: U=-\frac{A}{r^n}+\frac{B}{r^m}$</p>
+<p>Lenard−Jones:U=−Arn+BrmLenard−Jones:U=−Arn+Brm</p>
 <p><img src="/image/05.png" alt="Lenard-Jones"></p>
-<p><img src="/image/image.jpg" alt=""></p>
+<p><img src="/image/image.jpg" alt="img"></p>
 <h2 id="fovfield-of-view">FOV(field of view)</h2>
 <p>首先，在一个组群中，每个单位都需要感知周围局部环境的情况，感知范围(视野)的确定对群体行为的影响很大</p>
-<p><img src="/image/04.png" alt=""></p>
+<p><img src="/image/04.png" alt="img"></p>
 <h3 id="半径">半径</h3>
 <ul>
 <li>大半径容易产生凝聚性更强的群体，不容易发生落单现象</li>
@@ -218,103 +130,46 @@ Flocking
 <li>宽视角容易得到组织良好的群体,遇到障碍物时，群聚会倾向分开，从两边绕过障碍物，在某些情况下，他们会迅速重组，但某些情况下不会。</li>
 <li>窄视野容易看起来有领导核心，单位倾向排成单一纵队平滑地绕过障碍物而不会分开。</li>
 </ul>
-<p><img src="/image/02.png" alt=""></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="c1">//获得周围单位，伪代码实现
-</span><span class="c1"></span><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">units</span>
-<span class="p">{</span>
-   <span class="k">if</span><span class="p">(</span><span class="n">unit</span><span class="p">.</span><span class="n">distance</span><span class="p">&lt;</span><span class="n">radius</span> <span class="p">&amp;&amp;</span> <span class="n">unit</span><span class="p">.</span><span class="n">angle</span><span class="p">&lt;</span><span class="n">view</span><span class="p">)</span>
-   <span class="p">{</span>
-       <span class="n">neighbors</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">unit</span><span class="p">);</span><span class="c1">//使用容器存储
-</span><span class="c1"></span>   <span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="alignment">Alignment</h2>
+<p><img src="/image/02.png" alt="img"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">//获得周围单位，伪代码实现 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(unit in units){   
+	<span style="color:#66d9ef">if</span>(unit.distance<span style="color:#f92672">&lt;</span>radius <span style="color:#f92672">&amp;&amp;</span> unit.angle<span style="color:#f92672">&lt;</span>view){
+		neighbors.Add(unit);<span style="color:#75715e">//使用容器存储
+</span><span style="color:#75715e"></span>	} 
+} 
+</code></pre></div><h2 id="alignment">Alignment</h2>
 <p>每个单位行动时，都要把自己对齐在其临近单位的平均方向上</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
-<span class="p">{</span>
-	<span class="n">Dir</span><span class="p">+=</span><span class="n">unit</span><span class="p">.</span><span class="n">velocity</span><span class="p">.</span><span class="n">normalized</span><span class="p">;</span><span class="c1">//对速度进行归一
-</span><span class="c1"></span><span class="p">}</span>
-<span class="n">avgDir</span><span class="p">=</span><span class="n">Dir</span><span class="p">/</span><span class="n">neighbors</span><span class="p">.</span><span class="n">lengths</span><span class="p">;</span><span class="c1">//获得平均方向
-</span><span class="c1"></span><span class="n">direction</span><span class="p">=(</span><span class="n">avgPos</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">).</span><span class="n">normalized</span><span class="p">;</span>
-<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">direction</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">orward</span><span class="p">);</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
+<span style="color:#66d9ef">for</span>(unit in neighbors){
+    Dir<span style="color:#f92672">+=</span>unit.velocity.normalized;<span style="color:#75715e">//对速度进行归一 
+</span><span style="color:#75715e"></span>} 
+avgDir <span style="color:#f92672">=</span> Dir <span style="color:#f92672">/</span> neighbors.lengths;<span style="color:#75715e">//获得平均方向 
+</span><span style="color:#75715e"></span>direction <span style="color:#f92672">=</span> (avgPos <span style="color:#f92672">-</span> self.position).normalized; 
+self.AddForce(direction <span style="color:#f92672">-</span> self.orward); 
 
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="cohesion">Cohesion</h2>
+</code></pre></div><h2 id="cohesion">Cohesion</h2>
 <p>每个单位都往临近单位的平均位置移动</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
-<span class="p">{</span>
-	<span class="n">pos</span><span class="p">+=</span><span class="n">unit</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="n">avgPos</span><span class="p">=</span><span class="n">pos</span><span class="p">/</span><span class="n">neighbors</span><span class="p">.</span><span class="n">lengths</span><span class="p">;</span><span class="c1">//获得平均位置
-</span><span class="c1"></span><span class="n">direction</span><span class="p">=(</span><span class="n">avgPos</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">).</span><span class="n">normalized</span><span class="p">;</span>
-<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">direction</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">forward</span><span class="p">);</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
+<span style="color:#66d9ef">for</span>(unit in neighbors){ 
+    pos <span style="color:#f92672">+=</span> unit.position; 
+} 
+avgPos <span style="color:#f92672">=</span> pos <span style="color:#f92672">/</span> neighbors.lengths;<span style="color:#75715e">//获得平均位置 
+</span><span style="color:#75715e"></span>direction <span style="color:#f92672">=</span> (avgPos <span style="color:#f92672">-</span> self.position).normalized;
+self.AddForce(direction <span style="color:#f92672">-</span> self.forward);
 
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="separartion">Separartion</h2>
+
+</code></pre></div><h2 id="separartion">Separartion</h2>
 <p>每个单位行动时，要避免撞上其临近单位</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="k">foreach</span> <span class="n">unit</span> <span class="k">in</span> <span class="n">neighbors</span>
-<span class="p">{</span>
-	<span class="n">distance</span><span class="p">=</span><span class="n">unit</span><span class="p">.</span><span class="n">position</span><span class="p">-</span><span class="n">self</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
-	<span class="n">force</span><span class="p">+=</span><span class="n">Calulate</span><span class="p">(</span><span class="n">distance</span><span class="p">);</span><span class="c1">//通过距离计算分离力，通常成反比
-</span><span class="c1"></span><span class="p">}</span>
-<span class="n">self</span><span class="p">.</span><span class="n">AddForce</span><span class="p">(</span><span class="n">force</span><span class="p">);</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="wander">Wander</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">for</span>(unit in neighbors){
+    distance <span style="color:#f92672">=</span> unit.position <span style="color:#f92672">-</span> self.position;
+    force <span style="color:#f92672">+=</span> Calulate(distance);<span style="color:#75715e">//通过距离计算分离力，通常成反比 
+</span><span style="color:#75715e"></span>} 
+self.AddForce(force); 
+
+</code></pre></div><h2 id="wander">Wander</h2>
 <p>有一个问题是，当一个单位和它的群组隔离了，它将什么都不做，为了防止这种情况发生，我们加入wander(徘徊)，这样所有的单位总可以保持运动。</p>
 <p>最初的做法是产生一个随机的驱动力，但这会产生抖动(事实上，一个好的随机函数如Perlin噪声可以产生光滑转弯，但CPU开销会很大)，Reynolds的解决方案是在前端凸出个圆圈，目标被限制在该圆圈上，然后每帧在目标添加一个随机的位移，通过调整圆圈半径，距离和随机位移产生一个没有抖动的往复运动</p>
-<p><img src="/image/03.png" alt=""></p>
+<p><img src="/image/03.png" alt="img"></p>
 <h2 id="领头者">领头者</h2>
 <p>通过当前单位前方视野内的其他单位数量判断是否是领头者，也可以使用tag标记领头者，给他赋予单独的AI，一般领头者不太需要遵循上述群聚规则。</p>
 <p>综合以上便可产生一些有趣的战术行为，例如，大半径窄视野并带有领头者的群组，就像秩序良好的突击队在半夜执行机密任务</p>
@@ -330,76 +185,90 @@ Flocking
 <li>《programming-game-ai-by-example》</li>
 <li>《AI for game developers</li>
 </ol>
-    </div>
-
-    
-<footer class="post-footer">
+<pre><code>
+</code></pre>
       
-      <nav class="post-nav">
-        <a class="prev" href="/post/gameai/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">游戏人工智能</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/japan/">
-            <span class="next-text nav-default">日本行</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="copyright">
-  
-
-  <span class="copyright-year">
-    &copy; 
-    2018 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">nagisa</span>
-  </span>
+      <div class="related">
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
+      
     </div>
+    
   </div>
-  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
-  <script type="text/javascript">
-    window.MathJax = {
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-      TeX: {equationNumbers: {autoNumber: "AMS"}},
-      showProcessingMessages: false,
-      messageStyle: 'none'
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+</section>
+
+    <script src="/js/copycode.js"></script>
 
 
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 
 
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
 
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
 
-
-
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
 </body>
 </html>
+

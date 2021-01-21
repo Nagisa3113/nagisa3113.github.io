@@ -1,152 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>函数式编程 - Nostalgia</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<title>函数式编程 | Nostalgia</title>
 
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+<meta property='og:title' content='函数式编程 - Nostalgia'>
+<meta property='og:description' content='先提出一个问题: 为什么可以嵌套定义类,但是不能嵌套定义函数?
+反过来我们可以想想: 如果可以在函数中定义函数会发生什么?'>
+<meta property='og:url' content='https://nagisa3113.com/post/functional-programming/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2019-12-14T00:00:00Z'><meta property='article:modified_time' content='2019-12-14T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
 
 
-<meta name="author" content="nagisa" /><meta name="description" content="先提出一个问题:	为什么可以嵌套定义类,但是不能嵌套定义函数?
-反过来我们可以想想:	如果可以在函数中定义函数会发生什么?
-" />
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
 
-
-
-
-
-
-<meta name="generator" content="Hugo 0.69.0 with theme even" />
-
-
-<link rel="canonical" href="/post/functional-programming/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
-<meta property="og:title" content="函数式编程" />
-<meta property="og:description" content="先提出一个问题:	为什么可以嵌套定义类,但是不能嵌套定义函数?
-反过来我们可以想想:	如果可以在函数中定义函数会发生什么?" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/post/functional-programming/" />
-<meta property="article:published_time" content="2019-12-14T22:20:00+00:00" />
-<meta property="article:modified_time" content="2019-12-14T22:20:00+00:00" />
-<meta itemprop="name" content="函数式编程">
-<meta itemprop="description" content="先提出一个问题:	为什么可以嵌套定义类,但是不能嵌套定义函数?
-反过来我们可以想想:	如果可以在函数中定义函数会发生什么?">
-<meta itemprop="datePublished" content="2019-12-14T22:20:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-12-14T22:20:00&#43;00:00" />
-<meta itemprop="wordCount" content="3111">
-
-
-
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="函数式编程"/>
-<meta name="twitter:description" content="先提出一个问题:	为什么可以嵌套定义类,但是不能嵌套定义函数?
-反过来我们可以想想:	如果可以在函数中定义函数会发生什么?"/>
-
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
+<link rel="canonical" href="https://nagisa3113.com/post/functional-programming/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
 </head>
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">Nostalgia</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">Archives</li>
-      </a>
-  </ul>
-</nav>
-  <div class="container" id="mobile-panel">
-    <header id="header" class="header">
-        <div class="logo-wrapper">
-  <a href="/" class="logo">Nostalgia</a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">Home</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">Archives</a>
-      </li>
-  </ul>
-</nav>
-    </header>
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">函数式编程</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2019-12-14 </span>
-        
-        
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
       </div>
-    </header>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#匿名函数">匿名函数</a></li>
-    <li><a href="#lambda表达式">lambda表达式</a></li>
-    <li><a href="#闭包">闭包</a></li>
-    <li><a href="#高阶函数">高阶函数</a></li>
-    <li><a href="#科里化">科里化</a></li>
-    <li><a href="#纯函数">纯函数</a></li>
-    <li><a href="#函数式编程">函数式编程</a></li>
-  </ul>
+    <nav class="nav">
+      
 
-  <ul>
-    <li><a href="#数值计算">数值计算</a></li>
-    <li><a href="#类型计算">类型计算</a></li>
-  </ul>
-</nav>
+      
+    </nav>
+
   </div>
-</div>
-    <div class="post-content">
-      <p>先提出一个问题:	<strong>为什么可以嵌套定义类,但是不能嵌套定义函数?</strong></p>
-<p>反过来我们可以想想:	<strong>如果可以在函数中定义函数会发生什么?</strong></p>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">December 14, 2019</h2>
+    <h1 class="title">函数式编程</h1>
+    
+    <div class="content">
+      <p>先提出一个问题: <strong>为什么可以嵌套定义类,但是不能嵌套定义函数?</strong></p>
+<p>反过来我们可以想想: <strong>如果可以在函数中定义函数会发生什么?</strong></p>
 <p>主要内容</p>
 <ul>
 <li>匿名函数、lambda表达式</li>
@@ -158,34 +89,15 @@
 </ul>
 <p>C#、C++11通过支持Lambda表达式(本质上是匿名类)来实现类似功能</p>
 <h2 id="匿名函数">匿名函数</h2>
-<p>简化程序中使用次数少的函数,不用显式定义函数名,但编译期还是会在背后定义,是一种语法糖(其实还有匿名类&hellip;)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">//C# 使用关键字delegate,表示一个参数为(int, double) 返回值为double 的函数
-</span><span class="c1"></span><span class="k">delegate</span> <span class="kt">double</span> <span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span><span class="kt">double</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span> <span class="p">;</span> <span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="lambda表达式">lambda表达式</h2>
+<p>简化程序中使用次数少的函数,不用显式定义函数名,但编译期还是会在背后定义,是一种语法糖(其实还有匿名类…)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">//C# 使用关键字delegate,表示一个参数为(int, double) 返回值为double 的函数 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">delegate</span> <span style="color:#66d9ef">double</span> (<span style="color:#66d9ef">int</span> a,<span style="color:#66d9ef">double</span> b) { <span style="color:#66d9ef">return</span> a + b ; }
+</code></pre></div><h2 id="lambda表达式">lambda表达式</h2>
 <p>匿名函数的进步一简化</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">//与匿名函数相同,但是可以省略delegate和其他符号(有限制)
-</span><span class="c1"></span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="kt">double</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="p">*</span> <span class="n">y</span><span class="p">;</span> <span class="p">}</span>	<span class="c1">//自动推断返回值类型
-</span><span class="c1"></span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">+</span><span class="m">5</span><span class="p">;</span>
-<span class="p">()</span> <span class="p">=&gt;</span> <span class="n">PI</span><span class="p">;</span>		<span class="c1">//返回常量
-</span></code></pre></td></tr></table>
-</div>
-</div><p>用途</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">//与匿名函数相同,但是可以省略delegate和其他符号(有限制) 
+</span><span style="color:#75715e"></span>(<span style="color:#66d9ef">int</span> x,<span style="color:#66d9ef">double</span> y) =&gt; { <span style="color:#66d9ef">return</span> x * y; }	<span style="color:#75715e">//自动推断返回值类型 x =&gt; x+5; 
+</span><span style="color:#75715e"></span>() =&gt; PI;		<span style="color:#75715e">//返回常量
+</span></code></pre></div><p>用途</p>
 <ul>
 <li>委托</li>
 <li>LINQ</li>
@@ -193,108 +105,42 @@
 <h2 id="闭包">闭包</h2>
 <p>捕获变量</p>
 <p>闭包会延长它使用的外部变量的生命周期，直到闭包本身被释放,不会被垃圾回收</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">T1</span><span class="p">()</span>
-<span class="p">{</span>
-	<span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>                      <span class="c1">//i是局部变量,应该分配在栈上
-</span><span class="c1"></span>	<span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">T2</span> <span class="p">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">++</span><span class="n">i</span><span class="p">;</span>       <span class="c1">//捕获了外部变量i
-</span><span class="c1"></span>	<span class="k">return</span> <span class="n">T2</span><span class="p">;</span>
-	<span class="c1">//i的作用范围结束,i应该消失
-</span><span class="c1"></span><span class="p">}</span>
-<span class="kt">var</span> <span class="n">s</span> <span class="p">=</span> <span class="n">T1</span><span class="p">();</span>
-<span class="n">s</span><span class="p">();</span>			<span class="c1">//i = 1
-</span><span class="c1"></span><span class="n">s</span><span class="p">();</span>			<span class="c1">//i = 2
-</span></code></pre></td></tr></table>
-</div>
-</div><p>.net本身并不支持函数对象,它依然满足对象生命周期的规则,编译器在背后会生成一个类,将局部变量i 变成该类的一个属性, 从而保证了变量的生命周期不会随函数T1调用结束而结束.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#">Func&lt;<span style="color:#66d9ef">int</span>&gt; T1() { 
+    <span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>;                      <span style="color:#75715e">//i是局部变量,应该分配在栈上 
+</span><span style="color:#75715e"></span>    Func&lt;<span style="color:#66d9ef">int</span>&gt; T2 = () =&gt; ++i;       <span style="color:#75715e">//捕获了外部变量i return T2; //i的作用范围结束,i应该消失 
+</span><span style="color:#75715e"></span>} 
+<span style="color:#66d9ef">var</span> s = T1(); 
+s();			<span style="color:#75715e">//i = 1 
+</span><span style="color:#75715e"></span>s();			<span style="color:#75715e">//i = 2 
+</span></code></pre></div><p>.net本身并不支持函数对象,它依然满足对象生命周期的规则,编译器在背后会生成一个类,将局部变量i 变成该类的一个属性, 从而保证了变量的生命周期不会随函数T1调用结束而结束.</p>
 <p>C#中，闭包其实和类中其他属性、方法是一样的，它们的原则都是下一层可以调用上一层定义，但上一层则不具备访问下一层设定的能力。即类中方法里的变量可以自由访问类中的所有属性和方法，而闭包又可以访问它的上一层即方法中的各种设定。但类不可以访问方法的局部变量，同理，方法也不可以访问其内部定义的匿名函数所定义的局部变量。</p>
 <p><strong>延迟调用</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">List</span><span class="p">&lt;</span><span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;&gt;</span> <span class="n">funcs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;&gt;();</span>
-<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="m">3</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
-<span class="p">{</span>
-	<span class="n">funcs</span><span class="p">.</span><span class="n">Add</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="n">i</span><span class="p">;</span> <span class="p">});</span>
-<span class="p">}</span>
-<span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">item</span> <span class="k">in</span> <span class="n">funcs</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">item</span><span class="p">().</span><span class="n">ToString</span><span class="p">());</span>		<span class="c1">// 3,3,3
-</span><span class="c1"></span><span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="高阶函数">高阶函数</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#">List&lt;Func&lt;<span style="color:#66d9ef">int</span>&gt;&gt; funcs = <span style="color:#66d9ef">new</span> List&lt;Func&lt;<span style="color:#66d9ef">int</span>&gt;&gt;(); 
+<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">3</span>; i++) {
+    funcs.Add(() =&gt; { <span style="color:#66d9ef">return</span> i; }); 
+} 
+<span style="color:#66d9ef">foreach</span>(<span style="color:#66d9ef">var</span> item <span style="color:#66d9ef">in</span> funcs) { 
+    Console.WriteLine(item().ToString());		<span style="color:#75715e">// 3,3,3 
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h2 id="高阶函数">高阶函数</h2>
 <p>函数可以接受另一个函数作为输入参数,同时也可以返回一个函数</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">// 使用LINQ查询出数组中的奇数
-</span><span class="c1"></span><span class="kt">int</span><span class="p">[]</span> <span class="n">ints</span> <span class="p">=</span> <span class="p">{</span> <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">66</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">32</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">1</span> <span class="p">};</span>
-<span class="n">List</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">list</span> <span class="p">=</span> <span class="n">IntExtension</span><span class="p">.</span><span class="k">where</span><span class="p">(</span><span class="n">ints</span><span class="p">,</span> <span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">item</span> <span class="p">%</span> <span class="m">2</span> <span class="p">!=</span> <span class="m">0</span><span class="p">;).</span><span class="n">ToList</span><span class="p">();</span>
-
-<span class="c1">//等同与下面代码
-</span><span class="c1"></span><span class="n">List</span><span class="p">[]</span> <span class="n">Find</span><span class="p">(</span><span class="kt">int</span><span class="p">[]</span> <span class="n">ints</span><span class="p">,</span> <span class="n">Func</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">bool</span><span class="p">&gt;</span> <span class="n">check</span><span class="p">){</span>
-  <span class="n">List</span><span class="p">[]</span> <span class="n">result</span><span class="p">;</span>
-  <span class="k">foreach</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="k">in</span> <span class="n">ints</span><span class="p">){</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">check</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">==</span> <span class="k">true</span><span class="p">){</span>
-      <span class="n">result</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-	<span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">bool</span> <span class="n">Check</span><span class="p">(</span><span class="kt">int</span> <span class="n">item</span><span class="p">){</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">item</span> <span class="p">%</span> <span class="m">2</span> <span class="p">!=</span> <span class="m">0</span><span class="p">)</span> <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="n">Find</span><span class="p">(</span><span class="n">ints</span><span class="p">,</span><span class="n">Check</span><span class="p">);</span>	<span class="c1">//将函数Check传入函数Find,类似函数指针
-</span></code></pre></td></tr></table>
-</div>
-</div><h2 id="科里化">科里化</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">// 使用LINQ查询出数组中的奇数 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span>[] ints = { <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">66</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">1</span> }; 
+List&lt;<span style="color:#66d9ef">int</span>&gt; list = IntExtension.<span style="color:#66d9ef">where</span>(ints, (item) =&gt; item % <span style="color:#ae81ff">2</span> != <span style="color:#ae81ff">0</span>;).ToList(); <span style="color:#75715e">//等同与下面代码
+</span><span style="color:#75715e"></span>List[] Find(<span style="color:#66d9ef">int</span>[] ints, Func&lt;<span style="color:#66d9ef">int</span>,<span style="color:#66d9ef">bool</span>&gt; check){  
+    List[] result;  
+    <span style="color:#66d9ef">foreach</span>(<span style="color:#66d9ef">int</span> i <span style="color:#66d9ef">in</span> ints){
+        <span style="color:#66d9ef">if</span>(check(i) == <span style="color:#66d9ef">true</span>){      
+            result.Add(i);    
+        }  
+    } 
+    <span style="color:#66d9ef">return</span> result; 
+} 
+<span style="color:#66d9ef">bool</span> Check(<span style="color:#66d9ef">int</span> item){  
+    <span style="color:#66d9ef">if</span>(item % <span style="color:#ae81ff">2</span> != <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>; 
+} 
+Find(ints,Check);	<span style="color:#75715e">//将函数Check传入函数Find,类似函数指针
+</span></code></pre></div><h2 id="科里化">科里化</h2>
 <p>Currying就是将需要多个参数的函数转换为「接受一个参数；返回一个值」的函数</p>
 <p>实现方法: 当提供较少的参数时，返回一个等待剩余参数的新函数</p>
 <p>好处:</p>
@@ -304,77 +150,36 @@
 <li>延迟运行,不断的柯里化，累积传入的参数，最后执行</li>
 </ol>
 <p>这样对于讨论和优化会更加方便, 但实际上没啥用..</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 原函数
-</span><span class="c1"></span><span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="c1">// 柯里化函数
-</span><span class="c1"></span><span class="kd">function</span> <span class="nx">addCurrying</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="c1">// 调用原函数
-</span><span class="c1"></span><span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 6
-</span><span class="c1">// 调用柯里化函数
-</span><span class="c1"></span><span class="nx">addCurrying</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">// 6
-</span><span class="c1"></span>
-<span class="c1">//参数复用
-</span><span class="c1"></span><span class="kd">var</span> <span class="nx">add1</span> <span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">add2</span> <span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<span class="nx">add1</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>	<span class="c1">//1+3
-</span><span class="c1"></span><span class="nx">add2</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>	<span class="c1">//2+3
-</span><span class="c1"></span>
-<span class="c1">//延迟计算
-</span><span class="c1"></span><span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">);</span>
-<span class="nx">ad</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-<span class="nx">add</span><span class="p">();</span> <span class="c1">// 10
-</span><span class="c1"></span>
-<span class="c1">//经过修改还可以接受任意数量的参数
-</span><span class="c1"></span><span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)(</span><span class="mi">5</span><span class="p">)</span>	<span class="c1">// 15
-</span><span class="c1"></span><span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>		<span class="c1">// 10
-</span><span class="c1"></span><span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)(</span><span class="mi">4</span><span class="p">)</span>		<span class="c1">// 10
-</span></code></pre></td></tr></table>
-</div>
-</div><h2 id="纯函数">纯函数</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">// 原函数 
+</span><span style="color:#75715e"></span>function <span style="color:#66d9ef">add</span>(a, b, c) {
+    <span style="color:#66d9ef">return</span> a + b + c; 
+} 
+<span style="color:#75715e">// 柯里化函数 
+</span><span style="color:#75715e"></span>function addCurrying(a) {
+    <span style="color:#66d9ef">return</span> function (b) {
+        <span style="color:#66d9ef">return</span> function (c) {
+            <span style="color:#66d9ef">return</span> a + b + c;
+        }
+    }
+} 
+<span style="color:#75715e">// 调用原函数
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>); <span style="color:#75715e">// 6
+</span><span style="color:#75715e">// 调用柯里化函数 
+</span><span style="color:#75715e"></span>addCurrying(<span style="color:#ae81ff">1</span>)(<span style="color:#ae81ff">2</span>)(<span style="color:#ae81ff">3</span>) <span style="color:#75715e">// 6 
+</span><span style="color:#75715e">//参数复用 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> add1 = <span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>); 
+<span style="color:#66d9ef">var</span> add2 = <span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">2</span>); 
+add1(<span style="color:#ae81ff">3</span>);	
+<span style="color:#75715e">//1+3 add2(3);	//2+3 
+</span><span style="color:#75715e">//延迟计算 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>)(<span style="color:#ae81ff">3</span>); 
+ad(<span style="color:#ae81ff">4</span>); 
+<span style="color:#66d9ef">add</span>(); <span style="color:#75715e">// 10 
+</span><span style="color:#75715e">//经过修改还可以接受任意数量的参数 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)(<span style="color:#ae81ff">5</span>)	<span style="color:#75715e">// 15 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)		<span style="color:#75715e">// 10 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)(<span style="color:#ae81ff">3</span>)(<span style="color:#ae81ff">4</span>)		<span style="color:#75715e">// 10
+</span></code></pre></div><h2 id="纯函数">纯函数</h2>
 <ol>
 <li>当参数相同时,永远返回相同的结果,并且不依赖于任何外部状态或数据</li>
 <li>函数不会发生任何突变(mutation)或产生任何副作用(side effect),如修改外部状态</li>
@@ -385,43 +190,23 @@
 <li>易于并发编程,不需要考虑死锁(deadlock)</li>
 <li>测试方便</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 函数内部使用的变量是显式传递进去的
-</span><span class="c1"></span><span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span>
-  <span class="k">return</span> <span class="kd">function</span> <span class="nx">g</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span><span class="c1">//g(x)是会依靠f(x)的参数返回的,g(x)相当于拥有f(x)的闭包
-</span><span class="c1"></span>    <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p><strong>问:纯函数式的闭包和不改变函数状态的特性是否矛盾</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">// 函数内部使用的变量是显式传递进去的 
+</span><span style="color:#75715e"></span>function f(x){  
+    <span style="color:#66d9ef">return</span> function g(x){
+        <span style="color:#75715e">//g(x)是会依靠f(x)的参数返回的,g(x)相当于拥有f(x)的闭包   
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> x * x;  
+    } 
+}
+</code></pre></div><p><strong>问:纯函数式的闭包和不改变函数状态的特性是否矛盾</strong></p>
 <p>闭包虽然可以把闭包外部的变量捕获到闭包内部，但是闭包还是满足不改变状态的特性的。</p>
 <p>虽然传入了不同参数，但是闭包里面的整体算法是没有变化的。g(x)虽然每次都会由f(x)传入的x值变化而变化，但是g(x)整体算法就是计算x的平方，这个计算方法是没有变化的，不根据外部状态改变而改变的。</p>
 <h2 id="函数式编程">函数式编程</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-cs" data-lang="cs"><span class="p">(</span><span class="m">1</span> <span class="p">+</span> <span class="m">2</span><span class="p">)</span> <span class="p">*</span> <span class="m">3</span> <span class="p">-</span> <span class="m">4</span>
-<span class="n">subtract</span><span class="p">(</span><span class="n">multiply</span><span class="p">(</span><span class="k">add</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">),</span> <span class="m">3</span><span class="p">),</span> <span class="m">4</span><span class="p">)</span>
-<span class="k">add</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">).</span><span class="n">multiply</span><span class="p">(</span><span class="m">3</span><span class="p">).</span><span class="n">subtract</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
-</code></pre></td></tr></table>
-</div>
-</div><ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#">(<span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">2</span>) * <span style="color:#ae81ff">3</span> - <span style="color:#ae81ff">4</span> 
+subtract(multiply(<span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>), <span style="color:#ae81ff">3</span>), <span style="color:#ae81ff">4</span>) 
+<span style="color:#66d9ef">add</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>).multiply(<span style="color:#ae81ff">3</span>).subtract(<span style="color:#ae81ff">4</span>)
+</code></pre></div><ol>
 <li>
-<p>函数是&quot;第一等公民&rdquo;(first class)</p>
+<p>函数是&quot;第一等公民”(first class)</p>
 <p>函数与其他数据类型一样,可以赋值给其他变量，也可以作为其他函数的参数和返回值</p>
 </li>
 <li>
@@ -429,301 +214,175 @@
 <p>表达式(expression)是一个单纯的运算过程，总是有返回值 语句(statement)是执行某种操作如赋值,没有返回值。函数式编程要求每一步都是单纯的运算，而且都有返回值</p>
 </li>
 <li>
-<p>没有&quot;副作用&rdquo;</p>
-<p>函数式编程强调没有&quot;副作用&rdquo;，所有功能就是返回一个新的值，没有其他行为如修改外部变量的值。</p>
+<p>没有&quot;副作用”</p>
+<p>函数式编程强调没有&quot;副作用”，所有功能就是返回一个新的值，没有其他行为如修改外部变量的值。</p>
 </li>
 <li>
 <p>不修改“状态”</p>
-<p>通常用变量来保存&quot;状态&rdquo;(state), 但在函数式编程中常使用递归参数保存状态</p>
+<p>通常用变量来保存&quot;状态”(state), 但在函数式编程中常使用递归参数保存状态</p>
 </li>
 <li>
 <p>引用透明(Referential transparency)</p>
-<p>函数的运行不依赖于外部变量或&quot;状态&rdquo;，只依赖于输入的参数，任何时候只要参数相同，得到的返回值总是相同的</p>
+<p>函数的运行不依赖于外部变量或&quot;状态”，只依赖于输入的参数，任何时候只要参数相同，得到的返回值总是相同的</p>
 </li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="kd">function</span> <span class="nx">addC</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nx">addC</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>		<span class="c1">//1+2+10;
-</span><span class="c1"></span><span class="nx">addC</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>		<span class="c1">//3+4+10;
-</span><span class="c1"></span>
-<span class="c1">//改变c
-</span><span class="c1"></span><span class="nx">addC</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>		<span class="c1">//1+2+10
-</span><span class="c1"></span><span class="nx">c</span><span class="o">=</span><span class="mi">20</span><span class="p">;</span>
-<span class="nx">addC</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>		<span class="c1">//1+2+20
-</span><span class="c1"></span>
-<span class="c1">//C就成为了一种状态(State)，它的变化可以左右函数的输出,也就是产生副作用,再来看下面一个例子
-</span><span class="c1"></span><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="kd">function</span> <span class="nx">addC</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span>
-  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="p">(</span><span class="nx">c</span><span class="o">++</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nx">addC</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>		<span class="c1">//1+2+10;
-</span><span class="c1"></span><span class="nx">addC</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>		<span class="c1">//1+2+11;改变了状态
-</span><span class="c1">//不同时间调用add()产生的结果不同
-</span><span class="c1"></span>
-<span class="c1">//将输出仅取决于输入的参数。
-</span><span class="c1">//将语句 c = 10 变成表达式
-</span><span class="c1"></span><span class="kd">function</span> <span class="nx">getC</span><span class="p">(){</span>
-  <span class="k">return</span> <span class="mi">10</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">addC</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">getC</span><span class="p">()</span>
-  	<span class="c1">//return a + b + 10
-</span><span class="c1"></span><span class="p">}</span>
-
-<span class="c1">//输出仅取决于输入的参数。
-</span><span class="c1"></span>
-<span class="c1">//不修改状态意味着我们就不使用赋值和变量了吗?
-</span><span class="c1">//抛弃了“=”
-</span><span class="c1">//不使用状态如何控制程序运行顺序?
-</span><span class="c1"></span>
-<span class="c1">//计算累加
-</span><span class="c1"></span><span class="kd">function</span> <span class="nx">countSum</span> <span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">0</span>		<span class="c1">//var i 作为状态(state)控制了函数内部的循环,但它还是一个纯函数
-</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">num</span><span class="p">;</span> <span class="nx">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">result</span> <span class="o">+=</span> <span class="nx">i</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">result</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">countSum</span> <span class="p">(</span><span class="nx">num</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="nx">num</span> <span class="o">+</span> <span class="nx">countSum</span><span class="p">(</span><span class="nx">num</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>		<span class="c1">//通过递归,使用函数参数保存状态
-</span><span class="c1"></span><span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h1 id="模板元编程">模板元编程</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">var</span> c = <span style="color:#ae81ff">10</span>; 
+function addC(a, b) {
+    <span style="color:#66d9ef">return</span> a + b + c; 
+} 
+addC(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>)		<span style="color:#75715e">//1+2+10; 
+</span><span style="color:#75715e"></span>addC(<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>)		<span style="color:#75715e">//3+4+10; 
+</span><span style="color:#75715e">//改变c 
+</span><span style="color:#75715e"></span>addC(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>)		
+<span style="color:#75715e">//1+2+10 
+</span><span style="color:#75715e"></span>c=<span style="color:#ae81ff">20</span>; 
+addC(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>)		<span style="color:#75715e">//1+2+20 
+</span><span style="color:#75715e">//C就成为了一种状态(State)，它的变化可以左右函数的输出,也就是产生副作用,再来看下面一个例子 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> c = <span style="color:#ae81ff">10</span>; 
+function addC(a,b){
+    <span style="color:#66d9ef">return</span> a + b + (c++); 
+} 
+addC(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)	<span style="color:#75715e">//1+2+10; 
+</span><span style="color:#75715e"></span>addC(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)		<span style="color:#75715e">//1+2+11;改变了状态
+</span><span style="color:#75715e">//不同时间调用add()产生的结果不同 
+</span><span style="color:#75715e">//将输出仅取决于输入的参数。 
+</span><span style="color:#75715e">//将语句 c = 10 变成表达式 
+</span><span style="color:#75715e"></span>function getC(){
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">10</span> 
+} 
+function addC(a, b) {
+    <span style="color:#66d9ef">return</span> a + b + getC()  	
+    <span style="color:#75715e">//return a + b + 10 
+</span><span style="color:#75715e"></span>}
+<span style="color:#75715e">//输出仅取决于输入的参数。 
+</span><span style="color:#75715e">//不修改状态意味着我们就不使用赋值和变量了吗? 
+</span><span style="color:#75715e">//抛弃了“=” 
+</span><span style="color:#75715e">//不使用状态如何控制程序运行顺序? 
+</span><span style="color:#75715e">//计算累加 
+</span><span style="color:#75715e"></span>function countSum (num) {
+    <span style="color:#66d9ef">var</span> result = <span style="color:#ae81ff">0</span>		
+        <span style="color:#75715e">//var i 作为状态(state)控制了函数内部的循环,但它还是一个纯函数    
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">var</span> i = <span style="color:#ae81ff">1</span>; i &lt; num; i ++) {
+            result += i    
+        }    
+    <span style="color:#66d9ef">return</span> result 
+} 
+function countSum (num) {
+    <span style="color:#66d9ef">return</span> num = <span style="color:#ae81ff">1</span> ? <span style="color:#ae81ff">1</span> : num + countSum(num-<span style="color:#ae81ff">1</span>)		<span style="color:#75715e">//通过递归,使用函数参数保存状态 
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h1 id="模板元编程">模板元编程</h1>
 <p>C++ 模板元编程不是设计之初的功能,是意外发现的“黑魔法”,它用来编写编译期运行的程序,也就是可以将运行期间的计算转化为编译期的计算</p>
 <h2 id="数值计算">数值计算</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="kt">int</span> <span class="n">M</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="nc">meta_Add</span><span class="p">{</span>
-    <span class="k">static</span> <span class="k">const</span> <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">N</span> <span class="o">+</span> <span class="n">M</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="n">meta_Add</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">&gt;::</span><span class="n">value</span>		<span class="c1">//3
-</span></code></pre></td></tr></table>
-</div>
-</div><p>模版元程序在编译期执行，不能使用运行期间的if-else、for、while等语句, 但可以通过递归形式实现循环, 通过模板特例化实现条件判断, 这两点使得其具有和普通语言一样通用的能力（图灵完备性）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N, <span style="color:#66d9ef">int</span> M<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">meta_Add</span>{
+    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> value <span style="color:#f92672">=</span> N <span style="color:#f92672">+</span> M; 
+} 
+meta_Add<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span><span style="color:#f92672">&gt;::</span>value		<span style="color:#75715e">//3
+</span></code></pre></div><p>模版元程序在编译期执行，不能使用运行期间的if-else、for、while等语句, 但可以通过递归形式实现循环, 通过模板特例化实现条件判断, 这两点使得其具有和普通语言一样通用的能力（图灵完备性）</p>
 <p>从编程范式上来说，C++模板元编程是函数式编程</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
-<span class="k">struct</span> <span class="nc">meta_Sum</span><span class="p">{</span>
-    <span class="k">enum</span> <span class="p">{</span> <span class="n">Result</span> <span class="o">=</span> <span class="n">meta</span><span class="o">-</span><span class="n">Sum</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">Result</span> <span class="o">+</span> <span class="n">N</span> <span class="p">};</span>
-<span class="p">};</span>
-
-<span class="k">template</span> <span class="o">&lt;&gt;</span>			<span class="c1">//特化
-</span><span class="c1"></span><span class="k">struct</span> <span class="nc">meta_Sum</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">{</span>
-    <span class="k">enum</span> <span class="p">{</span> <span class="n">Result</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">};</span>
-<span class="p">};</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="类型计算">类型计算</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">meta_Sum</span>{    
+    <span style="color:#66d9ef">enum</span> { Result <span style="color:#f92672">=</span> meta<span style="color:#f92672">-</span>Sum<span style="color:#f92672">&lt;</span>N<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">&gt;::</span>Result <span style="color:#f92672">+</span> N }; 
+}; 
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;&gt;</span>			<span style="color:#75715e">//特化 struct meta_Sum&lt;1&gt;{    enum { Result = 1 }; };
+</span></code></pre></div><h2 id="类型计算">类型计算</h2>
 <p>数值计算在模板元编程中用的很少,真正有价值的是类型计算, 通过模板提供的参数化的类型，可以补充C++自带的类型，使得类型系统更加智能与完备, 在编译期就可以对类型进行检查,而运行期的错误很难发现和调试</p>
 <p>物理量计算的量纲问题, 这里略去实现上的细节</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">Length</span><span class="p">;</span><span class="c1">//长度,单位m
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">Mass</span><span class="p">;</span>	<span class="c1">//质量,单位kg
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">Time</span><span class="p">;</span>	<span class="c1">//时间,单位s
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">I</span><span class="p">;</span>			<span class="c1">//电流,单位A
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">K</span><span class="p">;</span>			<span class="c1">//热力学温度,单位K
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="o">&gt;</span> <span class="n">n</span><span class="p">;</span>			<span class="c1">//物质的量,单位mol
-</span><span class="c1"></span><span class="k">typedef</span> <span class="n">tyVector</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">&gt;</span> <span class="n">lv</span><span class="p">;</span>		<span class="c1">//发光强度,单位cd
-</span><span class="c1"></span>
-<span class="k">auto</span> <span class="n">velocity</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span>
-
-<span class="n">tymeta</span><span class="o">::</span><span class="n">quantity</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">tymeta</span><span class="o">::</span><span class="n">Length</span><span class="o">&gt;</span> <span class="n">len</span><span class="p">(</span><span class="mf">10.23</span><span class="p">);</span>	<span class="c1">//长度
-</span><span class="c1"></span><span class="n">tymeta</span><span class="o">::</span><span class="n">quantity</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">tymeta</span><span class="o">::</span><span class="n">Time</span><span class="o">&gt;</span> <span class="n">t</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>					<span class="c1">//时间
-</span><span class="c1"></span><span class="n">tymeta</span><span class="o">::</span><span class="n">quantity</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span> <span class="n">tymeta</span><span class="o">::</span><span class="n">Mass</span><span class="o">&gt;</span> <span class="n">m</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>				<span class="c1">//质量
-</span><span class="c1"></span>
-<span class="k">auto</span> <span class="n">speed</span> <span class="o">=</span> <span class="n">len</span> <span class="o">/</span> <span class="n">t</span><span class="p">;</span>			<span class="c1">//速度
-</span><span class="c1">//类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,0,-1,0,0,0,0&gt;&gt;
-</span><span class="c1"></span><span class="k">auto</span> <span class="n">a_speed</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">/</span> <span class="n">t</span><span class="p">;</span>	<span class="c1">//加速度
-</span><span class="c1">//类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,0,-2,0,0,0,0&gt;&gt;
-</span><span class="c1"></span><span class="k">auto</span> <span class="n">force</span> <span class="o">=</span> <span class="n">a_speed</span> <span class="o">*</span> <span class="n">m</span><span class="p">;</span>	<span class="c1">//力
-</span><span class="c1">//类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,1,-2,0,0,0,0&gt;&gt;
-</span><span class="c1"></span>
-<span class="c1">//但一旦出现
-</span><span class="c1"></span><span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">force</span> <span class="o">+</span> <span class="n">speed</span><span class="p">;</span>
-<span class="c1">//会得到一个编译期的错误
-</span></code></pre></td></tr></table>
-</div>
-</div>
-    </div>
-
-    
-<footer class="post-footer">
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> Length;<span style="color:#75715e">//长度,单位m 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> Mass;	<span style="color:#75715e">//质量,单位kg 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> Time;	<span style="color:#75715e">//时间,单位s 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> I;			<span style="color:#75715e">//电流,单位A 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> K;			<span style="color:#75715e">//热力学温度,单位K 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;</span> n;			<span style="color:#75715e">//物质的量,单位mol 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">typedef</span> tyVector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span><span style="color:#f92672">&gt;</span> lv;		<span style="color:#75715e">//发光强度,单位cd 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> velocity<span style="color:#f92672">=</span>{<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>}; tymeta<span style="color:#f92672">::</span>quantity<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span>, tymeta<span style="color:#f92672">::</span>Length<span style="color:#f92672">&gt;</span> len(<span style="color:#ae81ff">10.23</span>);	<span style="color:#75715e">//长度 
+</span><span style="color:#75715e"></span>tymeta<span style="color:#f92672">::</span>quantity<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span>, tymeta<span style="color:#f92672">::</span>Time<span style="color:#f92672">&gt;</span> t(<span style="color:#ae81ff">5</span>);					<span style="color:#75715e">//时间 
+</span><span style="color:#75715e"></span>tymeta<span style="color:#f92672">::</span>quantity<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span>, tymeta<span style="color:#f92672">::</span>Mass<span style="color:#f92672">&gt;</span> m(<span style="color:#ae81ff">10</span>);				<span style="color:#75715e">//质量 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> speed <span style="color:#f92672">=</span> len <span style="color:#f92672">/</span> t;			<span style="color:#75715e">//速度 //类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,0,-1,0,0,0,0&gt;&gt; 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> a_speed <span style="color:#f92672">=</span> speed <span style="color:#f92672">/</span> t;	<span style="color:#75715e">//加速度 //类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,0,-2,0,0,0,0&gt;&gt; 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> force <span style="color:#f92672">=</span> a_speed <span style="color:#f92672">*</span> m;	<span style="color:#75715e">//力 //类型为quantity&lt;float,struct tymeta::tyVector&lt;int,1,1,-2,0,0,0,0&gt;&gt; 
+</span><span style="color:#75715e">//但一旦出现 auto r = force + speed; //会得到一个编译期的错误
+</span></code></pre></div>
       
-      <nav class="post-nav">
-        <a class="prev" href="/post/raspberrypi/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">树莓派折腾</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/post/pathfinding/">
-            <span class="next-text nav-default">寻路优化</span>
-            <span class="next-text nav-mobile">Next</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="copyright">
-  
-
-  <span class="copyright-year">
-    &copy; 
-    2018 - 
-    2020
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">nagisa</span>
-  </span>
+      <div class="related">
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
+      
     </div>
+    
   </div>
-  <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
-  <script type="text/javascript">
-    window.MathJax = {
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-      TeX: {equationNumbers: {autoNumber: "AMS"}},
-      showProcessingMessages: false,
-      messageStyle: 'none'
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+</section>
+
+    <script src="/js/copycode.js"></script>
 
 
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 
 
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
 
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
 
-
-
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
 </body>
 </html>
+

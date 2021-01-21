@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Path-finding | Nostalgia</title>
+
+<meta property='og:title' content='Path-finding - Nostalgia'>
+<meta property='og:description' content='从启发式搜索算法到A*算法的优化'>
+<meta property='og:url' content='https://nagisa3113.com/post/path-finding/'>
+<meta property='og:site_name' content='Nostalgia'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/efedf700901ab9af1fc9120c9c548258?s=256'><meta property='article:section' content='Post'><meta property='article:published_time' content='2019-12-08T00:00:00Z'><meta property='article:modified_time' content='2019-12-08T00:00:00Z'><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+
+
+<link href="https://nagisa3113.com/index.xml" rel="alternate" type="application/rss+xml" title="Nostalgia">
+
+<link rel="stylesheet" href="/css/style.css"><link rel='stylesheet' href='https://nagisa3113.com/css/custom.css'><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://nagisa3113.com/post/path-finding/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://nagisa3113.com">
+          <h1 id="nav-heading" class="title is-4">Nostalgia</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/nagisa3113'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" aria-label="email" href='mailto:nagisa3113@gmail.com'
+            target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">December 8, 2019</h2>
+    <h1 class="title">Path-finding</h1>
+    
+    <div class="content">
+      <p>从启发式搜索算法到A*算法的优化</p>
+<h1 id="启发式搜索算法">启发式搜索算法</h1>
+<p>Heuristic Algorithm:</p>
+<p>f(n)=g(n)+h(n)f(n)=g(n)+h(n)</p>
+<p>n表示当前的点，g(n)为从起始点到点n的实际代价，h(n)为从点n到目标点的估价n表示当前的点，g(n)为从起始点到点n的实际代价，h(n)为从点n到目标点的估价</p>
+<ul>
+<li>BFS(Best First Search): f(n) = h(n)</li>
+<li>Dijkstra: f(n) = g(n)</li>
+<li>A: f(n) = g(n) + h(n)</li>
+<li>A*: f(n) = g*(n) + h*(n)</li>
+</ul>
+<p>A*寻路在没有障碍物时的寻路过程与BFS相同</p>
+<p>A*寻路在有障碍物时寻找的路径和Dijkstra算法寻路结果相同，找到了最短的路径且效率和BFS差不多</p>
+<ul>
+<li>一种极端情况，如果h(n)是0，则只有g(n)起作用，此时A*演变成Dijkstra算法，这保证能找到最短路径。</li>
+<li>如果h(n)经常都比从n移动到目标的实际代价小（或者相等），则A保证能找到一条最短路径。h(n)越小，A扩展的结点越多，运行就得越慢。</li>
+<li>如果h(n)精确地等于从n移动到目标的代价，则A将会仅仅寻找最佳路径而不扩展别的任何结点，这会运行得非常快。</li>
+<li>如果h(n)有时比从n移动到目标的实际代价高，则A*不能保证找到一条最短路径，但它运行得更快。</li>
+<li>另一种极端情况，如果h(n)比g(n)大很多，则只有h(n)起作用，A*演变成BFS算法。</li>
+</ul>
+<h1 id="a-优化">A* 优化</h1>
+<h2 id="审美优化">审美优化</h2>
+<h3 id="直路径">直路径</h3>
+<p>设置非直路径的处罚值,使用代价函数,如果被考虑的新一步与上一步不是直线相连,就加入一个额外代价(处罚因子)</p>
+<p><img src="/image/1.png" alt="img"></p>
+<p>多边形空间的直路径。多边形不像矩形栅格那样形状一致,可能不存在所谓的直线路径,此时可以通过后处理,即在路径计算出之后对它的直线性进行优化</p>
+<h3 id="平滑路径">平滑路径</h3>
+<p>通过A*计算出的路径通常有许多急转弯,使其看上去很不自然,此时应用 <strong>转动减幅技术</strong>(rotational dampening)可以稍微掩饰一下,但是在锐角转角处将摆动得很厉害,在计算机图形学中有一个算法可以使其变得更加平滑,那就是Catmull-Rom样条(Bezier曲线也比较平滑但不能经过所有的控制点)</p>
+<p>Catmull-Rom公式要求4个点,然后会给出一条位于第2个点和第3个点之间的光滑曲线</p>
+<p><img src="/image/2.png" alt="img"></p>
+<p>有了Catmull-Rom公式,你所需要做的就是找出A*所有经过的点,在开始时把第一个点输入2次,在结束时最后一个点也输入2次,得到的新路径的点数是原来的4倍,此时通过一个剪除路径共线点的函数可以显著减少点数量</p>
+<p><img src="/image/3.png" alt="img"></p>
+<h3 id="分级路径hierarchical-pathing">分级路径(hierarchical pathing)</h3>
+<p>该方法常用来减少大范围寻路的计算量,其思想是首先找到大范围的路径,然后再在局部进行寻路,但由此会使路径变得不自然</p>
+<p><img src="/image/4.png" alt="img"></p>
+<p>有一种简单的方法可以得到理想的路径,但会花费2倍的时间,那就是找到下下个要抵达的目标，在进入下个目标时重新执行这一过程</p>
+<p><img src="/image/5.png" alt="img"></p>
+<h3 id="优化响应率">优化响应率</h3>
+<p>当玩家发出一条寻路命令时,希望个体能够立即响应,但CPU需要花费一段时间计算路径,于是,在CPU给出答案前需要使用一些技巧给玩家提供及时响应的感觉</p>
+<ol>
+<li>播放一种确定接受到了命令的声音进行延迟</li>
+<li>播放一个“准备好移动”的动画进行延迟,表示角色即将行走,实际上它可能一步也不走,或是转向“最有可能的方向”</li>
+<li>使角色走向“最有可能猜中”的方向,但有可能完全猜错</li>
+</ol>
+<p>群体移动时的技巧</p>
+<ol>
+<li>将请求排队,使得一部分角色先走</li>
+<li>选择群体中的一个头目,其他个体跟随头目</li>
+</ol>
+<h2 id="速度优化">速度优化</h2>
+<h3 id="空间划分">空间划分</h3>
+<ul>
+<li>矩形栅格: 规则的正方形栅格</li>
+<li>四叉树: 用四叉树的方法递归地将一个正方形划分为四个更小的正方形</li>
+<li>凸多边形</li>
+<li>可见点</li>
+<li>广义圆柱体</li>
+</ul>
+<p><img src="/image/7.png" alt="img"></p>
+<h3 id="启发式函数的设计">启发式函数的设计</h3>
+<p>采用高估的启发式代价,可以通过Open表和Close表的大小进行调整估计出一个合理的值</p>
+<p><img src="/image/6.png" alt="img"></p>
+<h3 id="优化open表">优化open表</h3>
+<p>使用优先队列,优先队列可以作为一个二分堆(binary heap)实现,它是一个排序树,它的特性是双亲节点总是比它的孩子节点具有更低的值,因此插入和提取元素(删除最小元素)的时间复杂度仅为O(logn)O(logn)</p>
+<h1 id="a改进算法">A*改进算法</h1>
+<h2 id="d">D*</h2>
+<p>A*算法的动态版本</p>
+<h2 id="theta">Theta*</h2>
+<p>A* with post-smoothed paths</p>
+<p>Lazy Theta*的核心思想在于，将line of sight(LOS)检查延迟到打开该节点为止。</p>
+<h2 id="jpsjump-point-search">JPS（Jump Point Search）</h2>
+<p><a href="https://cloud.tencent.com/developer/article/1006844">参见</a></p>
+<p><img src="/image/jps.png" alt="img"> 优化</p>
+<ol>
+<li>JPS-Bit:位运算优化</li>
+<li>JPS-BitPrune:位运算与剪枝优化</li>
+<li>JPS-BitPre(JPS+):位运算与预处理</li>
+<li>提前判断可达性</li>
+</ol>
+<h2 id="参考">参考</h2>
+<p>《Game Programming Gem》</p>
+      
+      <div class="related">
+</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <div id="show_comments"><a id="load_comments" class="button is-link">Load comments</a></div>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'shortname';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      
+      var hash = window.location.hash.substr(1);
+      if ((hash.length > 8) && (hash.substring(0, 8) === "comment-")) {
+        disqus();
+        document.getElementById("show_comments").style.display = "none";
+      } else {
+        document.getElementById('load_comments').onclick = function() {
+          disqus();
+          document.getElementById("show_comments").style.display = "none";
+        };
+      }
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/nagisa3113">nagisa</a> 2020</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/matomo.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>
+  <img src="//matomo.example.com/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="">
+</noscript>
+
+<script>
+    (function(f, a, t, h, o, m){
+        a[h]=a[h]||function(){
+            (a[h].q=a[h].q||[]).push(arguments)
+        };
+        o=f.createElement('script'),
+        m=f.getElementsByTagName('script')[0];
+        o.async=1; o.src=t; o.id='fathom-script';
+        m.parentNode.insertBefore(o,m)
+    })(document, window, '\/\/fathom.example.com\/tracker.js', 'fathom');
+    fathom('trackPageview');
+</script>
+</body>
+</html>
+
