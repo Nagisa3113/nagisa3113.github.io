@@ -81,7 +81,6 @@
 <li>Obstacle Avoidance</li>
 <li>Flocking</li>
 </ul>
-<p><img src="/image/humanity.png" alt="img"></p>
 <h1 id="obstacle-avoidance">Obstacle Avoidance</h1>
 <p>障碍物躲避属于路径规划中的底层算法，与此相对的高层算法有dijkstra,A*等</p>
 <h2 id="碰撞判断">碰撞判断</h2>
@@ -131,41 +130,35 @@
 <li>窄视野容易看起来有领导核心，单位倾向排成单一纵队平滑地绕过障碍物而不会分开。</li>
 </ul>
 <p><img src="/image/02.png" alt="img"></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">//获得周围单位，伪代码实现 
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(unit in units){   
-	<span style="color:#66d9ef">if</span>(unit.distance<span style="color:#f92672">&lt;</span>radius <span style="color:#f92672">&amp;&amp;</span> unit.angle<span style="color:#f92672">&lt;</span>view){
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#75715e">//获得周围单位，伪代码实现 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(unit <span style="color:#66d9ef">in</span> units){   
+	<span style="color:#66d9ef">if</span>(unit.distance&lt;radius &amp;&amp; unit.angle&lt;view){
 		neighbors.Add(unit);<span style="color:#75715e">//使用容器存储
 </span><span style="color:#75715e"></span>	} 
 } 
 </code></pre></div><h2 id="alignment">Alignment</h2>
 <p>每个单位行动时，都要把自己对齐在其临近单位的平均方向上</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
-<span style="color:#66d9ef">for</span>(unit in neighbors){
-    Dir<span style="color:#f92672">+=</span>unit.velocity.normalized;<span style="color:#75715e">//对速度进行归一 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">for</span>(unit <span style="color:#66d9ef">in</span> neighbors){
+    Dir += unit.velocity.normalized;<span style="color:#75715e">//对速度进行归一 
 </span><span style="color:#75715e"></span>} 
-avgDir <span style="color:#f92672">=</span> Dir <span style="color:#f92672">/</span> neighbors.lengths;<span style="color:#75715e">//获得平均方向 
-</span><span style="color:#75715e"></span>direction <span style="color:#f92672">=</span> (avgPos <span style="color:#f92672">-</span> self.position).normalized; 
-self.AddForce(direction <span style="color:#f92672">-</span> self.orward); 
-
+avgDir = Dir / neighbors.lengths;<span style="color:#75715e">//获得平均方向 
+</span><span style="color:#75715e"></span>direction = (avgPos - self.position).normalized; 
+self.AddForce(direction - self.orward); 
 </code></pre></div><h2 id="cohesion">Cohesion</h2>
 <p>每个单位都往临近单位的平均位置移动</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">
-<span style="color:#66d9ef">for</span>(unit in neighbors){ 
-    pos <span style="color:#f92672">+=</span> unit.position; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">for</span> (unit <span style="color:#66d9ef">in</span> neighbors) { 
+    pos += unit.position; 
 } 
-avgPos <span style="color:#f92672">=</span> pos <span style="color:#f92672">/</span> neighbors.lengths;<span style="color:#75715e">//获得平均位置 
-</span><span style="color:#75715e"></span>direction <span style="color:#f92672">=</span> (avgPos <span style="color:#f92672">-</span> self.position).normalized;
-self.AddForce(direction <span style="color:#f92672">-</span> self.forward);
-
-
+avgPos = pos / neighbors.lengths;<span style="color:#75715e">//获得平均位置 
+</span><span style="color:#75715e"></span>direction = (avgPos - self.position).normalized;
+self.AddForce(direction - self.forward);
 </code></pre></div><h2 id="separartion">Separartion</h2>
 <p>每个单位行动时，要避免撞上其临近单位</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">for</span>(unit in neighbors){
-    distance <span style="color:#f92672">=</span> unit.position <span style="color:#f92672">-</span> self.position;
-    force <span style="color:#f92672">+=</span> Calulate(distance);<span style="color:#75715e">//通过距离计算分离力，通常成反比 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">for</span> (unit <span style="color:#66d9ef">in</span> neighbors) {
+    distance = unit.position - self.position;
+    force += Calulate(distance);<span style="color:#75715e">//通过距离计算分离力，通常成反比 
 </span><span style="color:#75715e"></span>} 
 self.AddForce(force); 
-
 </code></pre></div><h2 id="wander">Wander</h2>
 <p>有一个问题是，当一个单位和它的群组隔离了，它将什么都不做，为了防止这种情况发生，我们加入wander(徘徊)，这样所有的单位总可以保持运动。</p>
 <p>最初的做法是产生一个随机的驱动力，但这会产生抖动(事实上，一个好的随机函数如Perlin噪声可以产生光滑转弯，但CPU开销会很大)，Reynolds的解决方案是在前端凸出个圆圈，目标被限制在该圆圈上，然后每帧在目标添加一个随机的位移，通过调整圆圈半径，距离和随机位移产生一个没有抖动的往复运动</p>
@@ -183,10 +176,8 @@ self.AddForce(force);
 <ol>
 <li><a href="https://www.red3d.com/cwr/steer/gdc99/">Steering Behaviors For Autonomous Characters</a></li>
 <li>《programming-game-ai-by-example》</li>
-<li>《AI for game developers</li>
+<li>《AI for game developers》</li>
 </ol>
-<pre><code>
-</code></pre>
       
       <div class="related">
 </div>

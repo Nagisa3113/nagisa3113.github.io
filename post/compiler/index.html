@@ -88,7 +88,7 @@
 <li>编译原理</li>
 </ol>
 <h2 id="编译器只使用安全的优化">编译器只使用安全的优化</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">twiddle1</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>xp<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>yp) { xp <span style="color:#f92672">+=</span> <span style="color:#f92672">*</span>yp; xp <span style="color:#f92672">+=</span> <span style="color:#f92672">*</span>yp; } 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">twiddle1</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>xp<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>yp) { xp <span style="color:#f92672">+=</span> <span style="color:#f92672">*</span>yp; xp <span style="color:#f92672">+=</span> <span style="color:#f92672">*</span>yp; } 
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">twiddle2</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>xp<span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>yp) { xp <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span> <span style="color:#f92672">*</span>yp; } 
 </code></pre></div><ul>
 <li>似乎这两个函数具有相同的行为，但是twiddle1需要6次内存引用(2次读xp，2次读yp，2次写、xp)，而twiddle2只需要3次(读xp，读yp，写xp)显然函数twiddle2()的效率高一些.因此，我们希望编译器在编译twiddle1时，基于twiddle2会产生更有效的代码</li>
@@ -145,7 +145,7 @@
 <ul>
 <li>给定一个数据类型为data_t的抽象链表vec_rec(C++中的vector，Java中的ArrayList)，其头指针为*vec_ptr，我们要做的是对其所有数据进行求和以及求积</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">//对于求和  
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">//对于求和  
 </span><span style="color:#75715e"></span><span style="color:#75715e">#define IDENT 0 
 </span><span style="color:#75715e">#define OP +  
 </span><span style="color:#75715e"></span><span style="color:#75715e">//对于求积 
@@ -201,7 +201,7 @@
 </blockquote>
 <h3 id="消除不必要的循环">消除不必要的循环</h3>
 <p>让我们看下combine1有什么可以改进的呢(要知道这个可是最慢的!) 发现每次循环时都需要调用vec_length检查边界，我们用一个局部变量length进行存储，将函数调用移出循环，时间复杂度从O(n^2)变为O(n).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine2</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t<span style="color:#f92672">*</span> dest) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine2</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t<span style="color:#f92672">*</span> dest) {
     <span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
     <span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> IDENT;
     <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i <span style="color:#f92672">&lt;</span> length;i<span style="color:#f92672">++</span>) {
@@ -252,7 +252,7 @@
 <blockquote>
 <p>这并不一定是一个好方法，因为破坏了数据抽象</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine3</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine3</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
     <span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);
     <span style="color:#f92672">*</span>dest <span style="color:#f92672">=</span> IDENT;
     data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v);
@@ -310,7 +310,7 @@ mov %xm -&gt; (%bx)			将xm的值重新赋值给寄存器bx存储的dest  因为
 							以上代码作用为 *dest=*dest OP data[i]	 
 add 8 -&gt; %dx				指针移动，8为double的字长 cmp %dx + length， %dx 		循环结束判断 jmp L17
 </code></pre><p>每次迭代时，累积变量的数值(*dest)都要从内存中读入再写入，这样很浪费，因为每次迭代开始时读的值就是上次迭代写入的值 为了消除这种不必要的内存读写，我们引入一个临时变量acc</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine4</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine4</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
     <span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v); 
     data_t acc <span style="color:#f92672">=</span> IDENT; 
     data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v); 
@@ -373,7 +373,7 @@ jmp L25
 <h3 id="循环展开">循环展开</h3>
 <p>通过增加每次迭代计算元素的数量，减少循环次数</p>
 <p>我们称之为2x1展开</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine5</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine5</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) {
     <span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v); 
     <span style="color:#66d9ef">long</span> acc <span style="color:#f92672">=</span> IDENT; 
     data_t<span style="color:#f92672">*</span> data <span style="color:#f92672">=</span> get_vec_start(v); 
@@ -435,7 +435,7 @@ jmp L25
 <p>指令级并行:在实际的处理器中，同时对多条指令求值</p>
 <p>但在顺序操作中，处理器需要等待上一个运算的结果才能进行下一个运算</p>
 <p>我们加入一点分治的思想：使用多个累计变量 称之为2 x 2展开</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine6</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">combine6</span>(vec_ptr v<span style="color:#960050;background-color:#1e0010">，</span> data_t <span style="color:#f92672">*</span>dest) { 
     <span style="color:#66d9ef">long</span> length <span style="color:#f92672">=</span> vec_length(v);    
     <span style="color:#66d9ef">long</span> acc0 <span style="color:#f92672">=</span> IDENT;    
     <span style="color:#66d9ef">long</span> acc1 <span style="color:#f92672">=</span> IDENT; 
@@ -492,9 +492,9 @@ jmp L25
 </table>
 <p>使用k x k 循环展开 <img src="https://uploader.shimo.im/f/yGmY5hq54p4LHGAq!thumbnail" alt="图片"> 所有CPE都有所改进，.接近其吞吐量界限.</p>
 <p>现在，我们通过另一种方式提高并行性：重新结合变换 称之为2 x 1a展开</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">acc <span style="color:#f92672">=</span> (acc OP data[i]) OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]; 
-<span style="color:#960050;background-color:#1e0010">修改为</span>
-acc <span style="color:#f92672">=</span> acc OP (data[i] OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++">acc <span style="color:#f92672">=</span> (acc OP data[i]) OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]; 
+<span style="color:#75715e">//修改为
+</span><span style="color:#75715e"></span>acc <span style="color:#f92672">=</span> acc OP (data[i] OP data[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]);
 </code></pre></div><table>
 <thead>
 <tr>
