@@ -72,11 +72,11 @@
     </item>
     
     <item>
-      <title>Path-finding</title>
-      <link>https://example.com/posts/path-finding/</link>
+      <title>寻路</title>
+      <link>https://example.com/posts/%E5%AF%BB%E8%B7%AF/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/path-finding/</guid>
+      <guid>https://example.com/posts/%E5%AF%BB%E8%B7%AF/</guid>
       <description>&lt;p&gt;从启发式搜索算法到A*算法的优化&lt;/p&gt;</description>
     </item>
     
