@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>GOAP 目标导向型算法 | Nostalgia</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="GOAP，Goal-Oriented Action Planning是一个很好的AI动态规划解决方案，与之相对的是传统的硬编码，如状态机和行为树，Unity中提供了AIPlanner插件">
+<meta name="generator" content="Hugo 0.110.0">
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'your-google-analytics-id', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	
+		<a href="/"> <span class="arrow">←</span>Home</a>
+	
+	<a href="/posts">Archive</a>
+	<a href="/tags">Tags</a>
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">GOAP 目标导向型算法</h1>
+
+    <div class="tip">
+        <time datetime="2020-04-05 00:00:00 &#43;0000 UTC">Apr 5, 2020</time>
+        <span class="split">
+          ·
+        </span>
+        <span>
+          1867 words
+        </span>
+        <span class="split">
+          ·
+        </span>
+        <span>
+          4 minute read
+        </span>
+    </div>
+
+    
+    
+        
+  
+    <aside class="toc">
+      <details>
+          <summary>Table of Contents
+          </summary>
+          <div>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fsm">FSM</a></li>
+    <li><a href="#行为树">行为树</a></li>
+    <li><a href="#goap">GOAP</a></li>
+    <li><a href="#部件">部件</a>
+      <ul>
+        <li><a href="#state">State</a></li>
+        <li><a href="#actionfsm">ActionFSM</a></li>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#agent">Agent</a></li>
+        <li><a href="#trigger">Trigger</a></li>
+        <li><a href="#planner">Planner</a></li>
+      </ul>
+    </li>
+    <li><a href="#执行过程">执行过程</a></li>
+    <li><a href="#算法">算法</a></li>
+  </ul>
+</nav>
+          </div>
+      </details>
+    </aside>
+  
+
+
+    
+
+
+    <div class="content">
+      <p><a href="http://alumni.media.mit.edu/~jorkin/goap.html" target="_blank" rel="noopener">GOAP，Goal-Oriented Action Planning</a>是一个很好的AI动态规划解决方案，与之相对的是传统的硬编码，如状态机和行为树，Unity中提供了<a href="https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html" target="_blank" rel="noopener">AIPlanner</a>插件</p>
+<h2 id="fsm">FSM <a href="#fsm" class="anchor">🔗</a></h2><p>使用FSM有限状态机的弊端：当AI行为非常庞大时，很难维护，代码可读性和重用性低</p>
+<p><p class="markdown-image">
+  <img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4ba6257.com/resource/attachment/3c0c05cdb1466b156157f700e754525b" alt="AI决策算法之GOAP （一）"  />
+</p></p>
+<h2 id="行为树">行为树 <a href="#%e8%a1%8c%e4%b8%ba%e6%a0%91" class="anchor">🔗</a></h2><p>行为树节点的可复用性高，可以自由组合出行为而不用重新编码整个框架，但由于是依赖设计者的固定架构的，很不灵活，做的选择不一定是最优选择，每次都要经过大量的逻辑判断。</p>
+<p><p class="markdown-image">
+  <img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4c69dd7.com/resource/attachment/4edca0ec5f73ec225d0c9017109b498a" alt="AI决策算法之GOAP （一）"  />
+</p></p>
+<h2 id="goap">GOAP <a href="#goap" class="anchor">🔗</a></h2><p>让AI自己找到解决问题的办法，它会根据环境动态中决策出最优的选择，从而达到看起来相对智能的AI，且代码的分层相对清晰，可读性高，重用性高。</p>
+<p><p class="markdown-image">
+  <img src="http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4d670b6.com/resource/attachment/5e3a786f08a7d7ac3f7705c140ec46d5" alt="AI决策算法之GOAP （一）"  />
+</p></p>
+<p>我们只提供</p>
+<ol>
+<li>可执行的行为，包括行为的先决条件和影响效果</li>
+<li>不同目标的优先级</li>
+<li>玩家状态和世界环境的描述</li>
+</ol>
+<p>得到结果：</p>
+<p>一个行动Action的序列，通常使用队列进行存储</p>
+<h2 id="部件">部件 <a href="#%e9%83%a8%e4%bb%b6" class="anchor">🔗</a></h2><p>找到一个还不错的项目，<a href="http://github.com/nagisa3113/BlueGameAI" target="_blank" rel="noopener">BlueGameAI</a></p>
+<h3 id="state">State <a href="#state" class="anchor">🔗</a></h3><p>用于记录角色状态，Action表示某个行动</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class State{    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//当状态被改变时触发的事件    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    event <span style="color:#00a000">OnChange</span>(); 
+</span></span><span style="display:flex;"><span>} 
+</span></span><span style="display:flex;"><span>class Action{    <span style="color:#080;font-style:italic">//动作的花费，优先级和是否可以被中断    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">int</span> cost,priority    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">bool</span> canInterrupited;    <span style="color:#080;font-style:italic">//动作的先决条件    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    State PreCondition;    <span style="color:#080;font-style:italic">//动作执行后的状态    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    State Effect; 
+</span></span><span style="display:flex;"><span>} 
+</span></span><span style="display:flex;"><span>class <span style="color:#00a000">ActionHandle</span>(){    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">int</span> id;    
+</span></span><span style="display:flex;"><span>    event <span style="color:#00a000">onActionFinished</span>(); 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><h3 id="actionfsm">ActionFSM <a href="#actionfsm" class="anchor">🔗</a></h3><p>动作的状态机，其中也维护着一个动作状态（FSMState），要与人物的状态（AgentState）区别开来</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class FSMState{    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">Enter</span>();    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">Execute</span>();    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">Exit</span>() 
+</span></span><span style="display:flex;"><span>} 
+</span></span><span style="display:flex;"><span>class ActionFSM{
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//当前、上一个状态机状态    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    FSMState currentState,previousState;    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">AddState</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">ExecuteNewState</span>();    
+</span></span><span style="display:flex;"><span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">Update</span>(){
+</span></span><span style="display:flex;"><span>        currentState.<span style="color:#00a000">Execute</span>();    
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="goal">Goal <a href="#goal" class="anchor">🔗</a></h3><p>目标，比如获得武器，消灭敌人</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class Goal{    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//目标的优先级   	
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">int</span> priority;    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//激活目标的前置条件    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    State ActiveCondition;    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//完成目标后的影响    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    State Effect; 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><h3 id="agent">Agent <a href="#agent" class="anchor">🔗</a></h3><p>挂载到角色身上，它整合了其他组件</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class <span style="color:#00a000">Agent</span>(){    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//角色状态    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    State AgentState;    
+</span></span><span style="display:flex;"><span>     <span style="color:#080;font-style:italic">//Action管理对象    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    ACtionManager actionManager;    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//Goal管理对象    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    GoalManager goalManager;    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//计划管理对象，下文会提到    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Performer performer; 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="trigger">Trigger <a href="#trigger" class="anchor">🔗</a></h3><p>触发器，是影响决策改变的直接原因</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class Trigger
+</span></span><span style="display:flex;"><span>{    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//优先级    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">int</span> priority    
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic">//触发效果    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>        State effect;    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//是否被触发    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">bool</span> <span style="color:#00a000">IsTrigger</span>();    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic">//触发影响    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">void</span> Update{        
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f;font-weight:bold">if</span>(<span style="color:#00a000">Istrigger</span>())    		
+</span></span><span style="display:flex;"><span>            agent.AgentState.<span style="color:#00a000">Set</span>(effect);<span style="color:#080;font-style:italic">//改变Agent的状态    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    } 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><h3 id="planner">Planner <a href="#planner" class="anchor">🔗</a></h3><p>对需要执行的动作进行动态规划</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class <span style="color:#00a000">Planner</span>(){    <span style="color:#080;font-style:italic">//制定计划    //参数为目标    //返回值为行为的序列   
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Queue<span style="color:#666">&lt;</span>Action<span style="color:#666">&gt;</span> <span style="color:#00a000">BuildPlan</span>(Goal goal); 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>class Performer{    <span style="color:#080;font-style:italic">//plan即为上面Planner计算出的行为序列    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    Queue<span style="color:#666">&lt;</span>Action<span style="color:#666">&gt;</span> plan <span style="color:#666">=</span> Planner.<span style="color:#00a000">BuildPlan</span>(currentGoal);        <span style="color:#080;font-style:italic">//执行计划    
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>    <span style="color:#0b0;font-weight:bold">void</span> <span style="color:#00a000">Next</span>(){        <span style="color:#080;font-style:italic">//plan出栈，执行下一个Action        
+</span></span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"></span>        Agent.ActionManager.<span style="color:#00a000">ExecuteNewState</span>(plan.<span style="color:#00a000">Dequeue</span>());    
+</span></span><span style="display:flex;"><span>    } 
+</span></span><span style="display:flex;"><span>} 
+</span></span></code></pre></div><h2 id="执行过程">执行过程 <a href="#%e6%89%a7%e8%a1%8c%e8%bf%87%e7%a8%8b" class="anchor">🔗</a></h2><ol>
+<li>假设Agent初始状态为idle，ActionFSM为空</li>
+<li>某个事件触发了Trigger，改变了Agent的状态State</li>
+<li>触发State中的回调函数 event OnChange();</li>
+<li>ActionManager 更新内部元素</li>
+<li>GoalManager 获得当前目标优先级最大的目标</li>
+<li>Performer 很据目标制定新计划
+<ol>
+<li>获得Action队列</li>
+<li>让ActionFSM执行Action队列中的第一个元素</li>
+</ol>
+</li>
+<li>执行新ACtino后又改变了Agent的状态State，这时候由于已经处在某个计划中(队列中还有ACtion未完成)，先执行以下步骤进行判断并继续执行当前计划队列中的下一个动作，否则，回到第3步重新生成新的计划
+<ol>
+<li>检查计划/动作是否允许被中断</li>
+<li>检查计划/动作是否为已经完成</li>
+</ol>
+</li>
+</ol>
+<p>以上是GOAP各个部分的简要介绍，实际工程写起来要复杂很多，可以参考一下前面链接中的项目</p>
+<h2 id="算法">算法 <a href="#%e7%ae%97%e6%b3%95" class="anchor">🔗</a></h2><p>即，如何根据目标Goal得到最优的行为序列</p>
+<ol>
+<li>获得目标Goal与当前状态的差异</li>
+<li>查看哪些action可以满足这些差异</li>
+</ol>
+<p>该项目使用方式：<strong>树结构</strong>+<strong>动态规划</strong></p>
+<p>这里举个例子，林克要死了，需要补充生命值，这时候有一个目标，砍苹果树获得苹果，达到这个目标需要哪些条件呢？</p>
+<ol>
+<li>林克到苹果树下</li>
+<li>林克有一个斧头</li>
+<li>林克有体力</li>
+</ol>
+<p>这些条件与当前state有哪些差异呢？</p>
+<ol>
+<li>林克的位置(position)不在苹果树下</li>
+<li>林克的背包里没有斧头</li>
+<li>林克体力不多了</li>
+</ol>
+<p>于是，开始遍历所有可以执行的Action，查看哪些可以改变林克的位置，比如走路，走路Action有一个cost(比如消耗体力，前进速度)，把它作为一个树节点，除了走路，骑马也可以，但骑马又需要马了，于是要先遍历可以让林克骑马的Action，比如找到马，驯服马，和马培养感情，遍历了这些子节点后，将其作为骑马这个复合节点的子节点，然后计算整个cost，可以类比哈夫曼编码，不过那个是贪心算法，这个是动态规划。</p>
+<p>遍历了所有的可执行Action后，一些独立的action会成为一些综合节点的子节点，比如，最后得到一下几种方案</p>
+<ol>
+<li>找马+养马+找斧头+砍树</li>
+<li>步行+买斧头+砍树</li>
+<li>传送+爬树</li>
+<li>传送+放火烧树（没想到吧）</li>
+</ol>
+<p>显然，传送、烧树、买斧头也是由一些小的子节点(Action)构成的，此时计算出了各个行为的cost，选择最优的一种方案，比如第2个，然后将步行、买斧头、砍树这四个节点的父节点设为树的头节点，(注意，复合节点本身不包括Action)，经过一次先序遍历，便能得到对应的Action序列。</p>
+    </div>
+
+    
+    
+    
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+    
+        <div id="social">
+
+
+    <a class="symbol" href="your-github-link" rel="me" target="_blank">
+        
+        <svg fill="#bbbbbb" width="28" height="28"  viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>Github</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Social-Icons---Rounded-Black" transform="translate(-264.000000, -939.000000)">
+            <g id="Github" transform="translate(264.000000, 939.000000)">
+                <path d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" id="Rounded" fill="#bbbbbb"></path>
+                <path d="M35.9985,13 C22.746,13 12,23.7870921 12,37.096644 C12,47.7406712 18.876,56.7718301 28.4145,59.9584121 C29.6145,60.1797862 30.0525,59.4358488 30.0525,58.7973276 C30.0525,58.2250681 30.0315,56.7100863 30.0195,54.6996482 C23.343,56.1558981 21.9345,51.4693938 21.9345,51.4693938 C20.844,48.6864054 19.2705,47.9454799 19.2705,47.9454799 C17.091,46.4500754 19.4355,46.4801943 19.4355,46.4801943 C21.843,46.6503662 23.1105,48.9634994 23.1105,48.9634994 C25.2525,52.6455377 28.728,51.5823398 30.096,50.9649018 C30.3135,49.4077535 30.9345,48.3460615 31.62,47.7436831 C26.2905,47.1352808 20.688,45.0691228 20.688,35.8361671 C20.688,33.2052792 21.6225,31.0547881 23.1585,29.3696344 C22.911,28.7597262 22.0875,26.3110578 23.3925,22.9934585 C23.3925,22.9934585 25.4085,22.3459017 29.9925,25.4632101 C31.908,24.9285993 33.96,24.6620468 36.0015,24.6515052 C38.04,24.6620468 40.0935,24.9285993 42.0105,25.4632101 C46.5915,22.3459017 48.603,22.9934585 48.603,22.9934585 C49.9125,26.3110578 49.089,28.7597262 48.8415,29.3696344 C50.3805,31.0547881 51.309,33.2052792 51.309,35.8361671 C51.309,45.0917119 45.6975,47.1292571 40.3515,47.7256117 C41.2125,48.4695491 41.9805,49.9393525 41.9805,52.1877301 C41.9805,55.4089489 41.9505,58.0067059 41.9505,58.7973276 C41.9505,59.4418726 42.3825,60.1918338 43.6005,59.9554002 C53.13,56.7627944 60,47.7376593 60,37.096644 C60,23.7870921 49.254,13 35.9985,13" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
+    </a>
+
+
+</div>
+
+    
+
+    <div class="copyright">
+    
+       © Copyright 
+       2023 
+       <span class="split">
+        <svg fill="#bbbbbb" width="15" height="15" version="1.1" id="heart-15" xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 15 15">
+  <path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75&#xA;&#x9;C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+</svg>
+       </span>
+       nagisa
+    
+    </div>
+
+    
+</footer>
+
+
+
+  </body>
+</html>

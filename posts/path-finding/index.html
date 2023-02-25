@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Path-finding | Nostalgia</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="从启发式搜索算法到A*算法的优化">
+<meta name="generator" content="Hugo 0.110.0">
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'your-google-analytics-id', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	
+		<a href="/"> <span class="arrow">←</span>Home</a>
+	
+	<a href="/posts">Archive</a>
+	<a href="/tags">Tags</a>
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Path-finding</h1>
+
+    <div class="tip">
+        <time datetime="2019-12-08 00:00:00 &#43;0000 UTC">Dec 8, 2019</time>
+        <span class="split">
+          ·
+        </span>
+        <span>
+          1674 words
+        </span>
+        <span class="split">
+          ·
+        </span>
+        <span>
+          4 minute read
+        </span>
+    </div>
+
+    
+    
+        
+  
+    <aside class="toc">
+      <details>
+          <summary>Table of Contents
+          </summary>
+          <div>
+              <nav id="TableOfContents">
+  <ul>
+    <li><a href="#审美优化">审美优化</a>
+      <ul>
+        <li><a href="#直路径">直路径</a></li>
+        <li><a href="#平滑路径">平滑路径</a></li>
+        <li><a href="#分级路径hierarchical-pathing">分级路径(hierarchical pathing)</a></li>
+        <li><a href="#优化响应率">优化响应率</a></li>
+      </ul>
+    </li>
+    <li><a href="#速度优化">速度优化</a>
+      <ul>
+        <li><a href="#空间划分">空间划分</a></li>
+        <li><a href="#启发式函数的设计">启发式函数的设计</a></li>
+        <li><a href="#优化open表">优化open表</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#d">D*</a></li>
+    <li><a href="#theta">Theta*</a></li>
+    <li><a href="#jpsjump-point-search">JPS（Jump Point Search）</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+          </div>
+      </details>
+    </aside>
+  
+
+
+    
+
+
+    <div class="content">
+      <p>从启发式搜索算法到A*算法的优化</p>
+<h1 id="启发式搜索算法">启发式搜索算法 <a href="#%e5%90%af%e5%8f%91%e5%bc%8f%e6%90%9c%e7%b4%a2%e7%ae%97%e6%b3%95" class="anchor">🔗</a></h1><p>Heuristic Algorithm:</p>
+<p>$f(n)=g(n)+h(n)f(n)=g(n)+h(n)$</p>
+<p>n表示当前的点，g(n)为从起始点到点n的实际代价，h(n)为从点n到目标点的估价n表示当前的点，g(n)为从起始点到点n的实际代价，h(n)为从点n到目标点的估价</p>
+<ul>
+<li>BFS(Best First Search): $f(n) = h(n)$</li>
+<li>Dijkstra: $f(n) = g(n)$</li>
+<li>A: f(n) = $g(n) + h(n)$</li>
+<li>A*: f(n) = $g^<em>(n) + h^</em>(n)$</li>
+</ul>
+<p>A*寻路在没有障碍物时的寻路过程与BFS相同</p>
+<p>A*寻路在有障碍物时寻找的路径和Dijkstra算法寻路结果相同，找到了最短的路径且效率和BFS差不多</p>
+<ul>
+<li>一种极端情况，如果h(n)是0，则只有g(n)起作用，此时A*演变成Dijkstra算法，这保证能找到最短路径。</li>
+<li>如果h(n)经常都比从n移动到目标的实际代价小（或者相等），则A保证能找到一条最短路径。h(n)越小，A扩展的结点越多，运行就得越慢。</li>
+<li>如果h(n)精确地等于从n移动到目标的代价，则A将会仅仅寻找最佳路径而不扩展别的任何结点，这会运行得非常快。</li>
+<li>如果h(n)有时比从n移动到目标的实际代价高，则A*不能保证找到一条最短路径，但它运行得更快。</li>
+<li>另一种极端情况，如果h(n)比g(n)大很多，则只有h(n)起作用，A*演变成BFS算法。</li>
+</ul>
+<h1 id="a-优化">A* 优化 <a href="#a-%e4%bc%98%e5%8c%96" class="anchor">🔗</a></h1><h2 id="审美优化">审美优化 <a href="#%e5%ae%a1%e7%be%8e%e4%bc%98%e5%8c%96" class="anchor">🔗</a></h2><h3 id="直路径">直路径 <a href="#%e7%9b%b4%e8%b7%af%e5%be%84" class="anchor">🔗</a></h3><p>设置非直路径的处罚值,使用代价函数,如果被考虑的新一步与上一步不是直线相连,就加入一个额外代价(处罚因子)</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/1.png" alt="img"  />
+</p></p>
+<p>多边形空间的直路径。多边形不像矩形栅格那样形状一致,可能不存在所谓的直线路径,此时可以通过后处理,即在路径计算出之后对它的直线性进行优化</p>
+<h3 id="平滑路径">平滑路径 <a href="#%e5%b9%b3%e6%bb%91%e8%b7%af%e5%be%84" class="anchor">🔗</a></h3><p>通过A*计算出的路径通常有许多急转弯,使其看上去很不自然,此时应用 <strong>转动减幅技术</strong>(rotational dampening)可以稍微掩饰一下,但是在锐角转角处将摆动得很厉害,在计算机图形学中有一个算法可以使其变得更加平滑,那就是Catmull-Rom样条(Bezier曲线也比较平滑但不能经过所有的控制点)</p>
+<p>Catmull-Rom公式要求4个点,然后会给出一条位于第2个点和第3个点之间的光滑曲线</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/2.png" alt="img"  />
+</p></p>
+<p>有了Catmull-Rom公式,你所需要做的就是找出A*所有经过的点,在开始时把第一个点输入2次,在结束时最后一个点也输入2次,得到的新路径的点数是原来的4倍,此时通过一个剪除路径共线点的函数可以显著减少点数量</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/3.png" alt="img"  />
+</p></p>
+<h3 id="分级路径hierarchical-pathing">分级路径(hierarchical pathing) <a href="#%e5%88%86%e7%ba%a7%e8%b7%af%e5%be%84hierarchical-pathing" class="anchor">🔗</a></h3><p>该方法常用来减少大范围寻路的计算量,其思想是首先找到大范围的路径,然后再在局部进行寻路,但由此会使路径变得不自然</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/4.png" alt="img"  />
+</p></p>
+<p>有一种简单的方法可以得到理想的路径,但会花费2倍的时间,那就是找到下下个要抵达的目标，在进入下个目标时重新执行这一过程</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/5.png" alt="img"  />
+</p></p>
+<h3 id="优化响应率">优化响应率 <a href="#%e4%bc%98%e5%8c%96%e5%93%8d%e5%ba%94%e7%8e%87" class="anchor">🔗</a></h3><p>当玩家发出一条寻路命令时,希望个体能够立即响应,但CPU需要花费一段时间计算路径,于是,在CPU给出答案前需要使用一些技巧给玩家提供及时响应的感觉</p>
+<ol>
+<li>播放一种确定接受到了命令的声音进行延迟</li>
+<li>播放一个“准备好移动”的动画进行延迟,表示角色即将行走,实际上它可能一步也不走,或是转向“最有可能的方向”</li>
+<li>使角色走向“最有可能猜中”的方向,但有可能完全猜错</li>
+</ol>
+<p>群体移动时的技巧</p>
+<ol>
+<li>将请求排队,使得一部分角色先走</li>
+<li>选择群体中的一个头目,其他个体跟随头目</li>
+</ol>
+<h2 id="速度优化">速度优化 <a href="#%e9%80%9f%e5%ba%a6%e4%bc%98%e5%8c%96" class="anchor">🔗</a></h2><h3 id="空间划分">空间划分 <a href="#%e7%a9%ba%e9%97%b4%e5%88%92%e5%88%86" class="anchor">🔗</a></h3><ul>
+<li>矩形栅格: 规则的正方形栅格</li>
+<li>四叉树: 用四叉树的方法递归地将一个正方形划分为四个更小的正方形</li>
+<li>凸多边形</li>
+<li>可见点</li>
+<li>广义圆柱体</li>
+</ul>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/7.png" alt="img"  />
+</p></p>
+<h3 id="启发式函数的设计">启发式函数的设计 <a href="#%e5%90%af%e5%8f%91%e5%bc%8f%e5%87%bd%e6%95%b0%e7%9a%84%e8%ae%be%e8%ae%a1" class="anchor">🔗</a></h3><p>采用高估的启发式代价,可以通过Open表和Close表的大小进行调整估计出一个合理的值</p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/6.png" alt="img"  />
+</p></p>
+<h3 id="优化open表">优化open表 <a href="#%e4%bc%98%e5%8c%96open%e8%a1%a8" class="anchor">🔗</a></h3><p>使用优先队列,优先队列可以作为一个二分堆(binary heap)实现,它是一个排序树,它的特性是双亲节点总是比它的孩子节点具有更低的值,因此插入和提取元素(删除最小元素)的时间复杂度仅为O(logn)O(logn)</p>
+<h1 id="a改进算法">A*改进算法 <a href="#a%e6%94%b9%e8%bf%9b%e7%ae%97%e6%b3%95" class="anchor">🔗</a></h1><h2 id="d">D* <a href="#d" class="anchor">🔗</a></h2><p>A*算法的动态版本</p>
+<h2 id="theta">Theta* <a href="#theta" class="anchor">🔗</a></h2><p>A* with post-smoothed paths</p>
+<p>Lazy Theta*的核心思想在于，将line of sight(LOS)检查延迟到打开该节点为止。</p>
+<h2 id="jpsjump-point-search">JPS（Jump Point Search） <a href="#jpsjump-point-search" class="anchor">🔗</a></h2><p><a href="https://cloud.tencent.com/developer/article/1006844" target="_blank" rel="noopener">参见</a></p>
+<p><p class="markdown-image">
+  <img src="/image/pathfinding/jps.png" alt="img"  />
+</p> 优化</p>
+<ol>
+<li>JPS-Bit:位运算优化</li>
+<li>JPS-BitPrune:位运算与剪枝优化</li>
+<li>JPS-BitPre(JPS+):位运算与预处理</li>
+<li>提前判断可达性</li>
+</ol>
+<h2 id="参考">参考 <a href="#%e5%8f%82%e8%80%83" class="anchor">🔗</a></h2><p>《Game Programming Gem》</p>
+    </div>
+
+    
+    
+    
+
+</section>
+
+
+    </main>
+    
+    <footer id="footer">
+    
+        <div id="social">
+
+
+    <a class="symbol" href="your-github-link" rel="me" target="_blank">
+        
+        <svg fill="#bbbbbb" width="28" height="28"  viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>Github</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Social-Icons---Rounded-Black" transform="translate(-264.000000, -939.000000)">
+            <g id="Github" transform="translate(264.000000, 939.000000)">
+                <path d="M8,72 L64,72 C68.418278,72 72,68.418278 72,64 L72,8 C72,3.581722 68.418278,-8.11624501e-16 64,0 L8,0 C3.581722,8.11624501e-16 -5.41083001e-16,3.581722 0,8 L0,64 C5.41083001e-16,68.418278 3.581722,72 8,72 Z" id="Rounded" fill="#bbbbbb"></path>
+                <path d="M35.9985,13 C22.746,13 12,23.7870921 12,37.096644 C12,47.7406712 18.876,56.7718301 28.4145,59.9584121 C29.6145,60.1797862 30.0525,59.4358488 30.0525,58.7973276 C30.0525,58.2250681 30.0315,56.7100863 30.0195,54.6996482 C23.343,56.1558981 21.9345,51.4693938 21.9345,51.4693938 C20.844,48.6864054 19.2705,47.9454799 19.2705,47.9454799 C17.091,46.4500754 19.4355,46.4801943 19.4355,46.4801943 C21.843,46.6503662 23.1105,48.9634994 23.1105,48.9634994 C25.2525,52.6455377 28.728,51.5823398 30.096,50.9649018 C30.3135,49.4077535 30.9345,48.3460615 31.62,47.7436831 C26.2905,47.1352808 20.688,45.0691228 20.688,35.8361671 C20.688,33.2052792 21.6225,31.0547881 23.1585,29.3696344 C22.911,28.7597262 22.0875,26.3110578 23.3925,22.9934585 C23.3925,22.9934585 25.4085,22.3459017 29.9925,25.4632101 C31.908,24.9285993 33.96,24.6620468 36.0015,24.6515052 C38.04,24.6620468 40.0935,24.9285993 42.0105,25.4632101 C46.5915,22.3459017 48.603,22.9934585 48.603,22.9934585 C49.9125,26.3110578 49.089,28.7597262 48.8415,29.3696344 C50.3805,31.0547881 51.309,33.2052792 51.309,35.8361671 C51.309,45.0917119 45.6975,47.1292571 40.3515,47.7256117 C41.2125,48.4695491 41.9805,49.9393525 41.9805,52.1877301 C41.9805,55.4089489 41.9505,58.0067059 41.9505,58.7973276 C41.9505,59.4418726 42.3825,60.1918338 43.6005,59.9554002 C53.13,56.7627944 60,47.7376593 60,37.096644 C60,23.7870921 49.254,13 35.9985,13" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
+    </a>
+
+
+</div>
+
+    
+
+    <div class="copyright">
+    
+       © Copyright 
+       2023 
+       <span class="split">
+        <svg fill="#bbbbbb" width="15" height="15" version="1.1" id="heart-15" xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 15 15">
+  <path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75&#xA;&#x9;C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+</svg>
+       </span>
+       nagisa
+    
+    </div>
+
+    
+</footer>
+
+
+
+  </body>
+</html>
