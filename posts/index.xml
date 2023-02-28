@@ -5,96 +5,96 @@
     <link>https://example.com/posts/</link>
     <description>Recent content in Posts on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en</language>
     <lastBuildDate>Tue, 12 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>测试驱动开发</title>
-      <link>https://example.com/posts/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/</link>
+      <link>https://example.com/posts/tdd/</link>
       <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/</guid>
+      <guid>https://example.com/posts/tdd/</guid>
       <description>&lt;p&gt;在软件工程中，绕不开的一个过程就是测试。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>网络游戏同步</title>
-      <link>https://example.com/posts/%E7%BD%91%E7%BB%9C%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/</link>
+      <link>https://example.com/posts/network/</link>
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E7%BD%91%E7%BB%9C%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/</guid>
+      <guid>https://example.com/posts/network/</guid>
       <description>&lt;p&gt;浅谈网络游戏开发中的TCP/UDP、帧同步/状态同步以及预测、快照和回滚&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>GOAP 目标导向型算法</title>
-      <link>https://example.com/posts/goap-%E7%9B%AE%E6%A0%87%E5%AF%BC%E5%90%91%E5%9E%8B%E7%AE%97%E6%B3%95/</link>
+      <link>https://example.com/posts/goap/</link>
       <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/goap-%E7%9B%AE%E6%A0%87%E5%AF%BC%E5%90%91%E5%9E%8B%E7%AE%97%E6%B3%95/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://alumni.media.mit.edu/~jorkin/goap.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GOAP，Goal-Oriented Action Planning&lt;/a&gt;是一个很好的AI动态规划解决方案，与之相对的是传统的硬编码，如状态机和行为树，Unity中提供了&lt;a href=&#34;https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;AIPlanner&lt;/a&gt;插件&lt;/p&gt;</description>
+      <guid>https://example.com/posts/goap/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://alumni.media.mit.edu/~jorkin/goap.html&#34;&gt;GOAP，Goal-Oriented Action Planning&lt;/a&gt;是一个很好的AI动态规划解决方案，与之相对的是传统的硬编码，如状态机和行为树，Unity中提供了&lt;a href=&#34;https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html&#34;&gt;AIPlanner&lt;/a&gt;插件&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>为什么要学计算机</title>
-      <link>https://example.com/posts/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA/</link>
+      <link>https://example.com/posts/computer/</link>
       <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA/</guid>
-      <description>&lt;p&gt;Unix 是简单的，你不需要成为一个天才或是计算机专家。但是在这个冲斥着 Windows 错误观念的世界，你需要信念和勇气才能理解它的简单 ————&lt;a href=&#34;https://www.douban.com/group/topic/12121637/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;王垠：《完全用Linux工作》&lt;/a&gt;&lt;/p&gt;</description>
+      <guid>https://example.com/posts/computer/</guid>
+      <description>&lt;p&gt;Unix 是简单的，你不需要成为一个天才或是计算机专家。但是在这个冲斥着 Windows 错误观念的世界，你需要信念和勇气才能理解它的简单 ————&lt;a href=&#34;https://www.douban.com/group/topic/12121637/&#34;&gt;王垠：《完全用Linux工作》&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>树莓派</title>
-      <link>https://example.com/posts/%E6%A0%91%E8%8E%93%E6%B4%BE/</link>
+      <link>https://example.com/posts/raspberrypi/</link>
       <pubDate>Mon, 10 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E6%A0%91%E8%8E%93%E6%B4%BE/</guid>
+      <guid>https://example.com/posts/raspberrypi/</guid>
       <description>&lt;p&gt;树莓派（raspberriPi）是一个微型的，信用卡大小的可以运行Linux的单板机。它使用的是基于精简指令集（RISC）的ARM架构的处理器，相比于Intel采用的x86的复杂指令集（CISC），它的结构简单，功耗低，价格低，非常适合(穷)学生。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>给ThinkPad-X220安装ArchLinux</title>
-      <link>https://example.com/posts/%E7%BB%99thinkpad-x220%E5%AE%89%E8%A3%85archlinux/</link>
+      <link>https://example.com/posts/arch/</link>
       <pubDate>Mon, 10 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E7%BB%99thinkpad-x220%E5%AE%89%E8%A3%85archlinux/</guid>
+      <guid>https://example.com/posts/arch/</guid>
       <description>&lt;p&gt;最近在某海鲜市场淘了台ThinkPad X220，记录一下ArchLinux的配置过程&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>函数式编程</title>
-      <link>https://example.com/posts/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</link>
+      <link>https://example.com/posts/functional-programming/</link>
       <pubDate>Sat, 14 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</guid>
+      <guid>https://example.com/posts/functional-programming/</guid>
       <description>&lt;p&gt;先提出一个问题: &lt;strong&gt;为什么C语言可以嵌套定义类,但是不能嵌套定义函数?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;反过来我们可以想想: &lt;strong&gt;如果可以在函数中定义函数会发生什么?&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>寻路</title>
-      <link>https://example.com/posts/%E5%AF%BB%E8%B7%AF/</link>
+      <link>https://example.com/posts/pathfinding/</link>
       <pubDate>Sun, 08 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E5%AF%BB%E8%B7%AF/</guid>
+      <guid>https://example.com/posts/pathfinding/</guid>
       <description>&lt;p&gt;从启发式搜索算法到A*算法的优化&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>自治的可移动游戏智能体</title>
-      <link>https://example.com/posts/%E8%87%AA%E6%B2%BB%E7%9A%84%E5%8F%AF%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F%E6%99%BA%E8%83%BD%E4%BD%93/</link>
+      <link>https://example.com/posts/flocking/</link>
       <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E8%87%AA%E6%B2%BB%E7%9A%84%E5%8F%AF%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F%E6%99%BA%E8%83%BD%E4%BD%93/</guid>
-      <description>&lt;p&gt;在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中&lt;a href=&#34;https://youtu.be/ouHaVvmZ5uw&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;《Humanity》&lt;/a&gt;展现了模拟人类集体行为，效果非常震撼。&lt;/p&gt;</description>
+      <guid>https://example.com/posts/flocking/</guid>
+      <description>&lt;p&gt;在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中&lt;a href=&#34;https://youtu.be/ouHaVvmZ5uw&#34;&gt;《Humanity》&lt;/a&gt;展现了模拟人类集体行为，效果非常震撼。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>控制反转与依赖注入</title>
-      <link>https://example.com/posts/%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/</link>
+      <link>https://example.com/posts/ioc/</link>
       <pubDate>Sat, 25 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/</guid>
+      <guid>https://example.com/posts/ioc/</guid>
       <description>&lt;p&gt;控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。&lt;/p&gt;
 &lt;p&gt;它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。&lt;/p&gt;
 &lt;p&gt;通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)。&lt;/p&gt;</description>
@@ -102,30 +102,31 @@
     
     <item>
       <title>射箭艺术中的禅</title>
-      <link>https://example.com/posts/%E5%B0%84%E7%AE%AD%E8%89%BA%E6%9C%AF%E4%B8%AD%E7%9A%84%E7%A6%85/</link>
+      <link>https://example.com/posts/zen/</link>
       <pubDate>Thu, 25 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E5%B0%84%E7%AE%AD%E8%89%BA%E6%9C%AF%E4%B8%AD%E7%9A%84%E7%A6%85/</guid>
+      <guid>https://example.com/posts/zen/</guid>
       <description>&lt;p&gt;禅是纯粹的体验，不存在于任何言语文字之中。一位追求生命意义的德国哲学教授，远渡重洋来学习禅的真义。处处碰壁之后，透过了箭术，他体验到最活生生的禅。在禅的描述上，他的追寻记录达到了文字的极至。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>传播学原理</title>
-      <link>https://example.com/posts/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</link>
+      <link>https://example.com/posts/communication/</link>
       <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</guid>
+      <guid>https://example.com/posts/communication/</guid>
       <description>&lt;p&gt;记录一下原专业学习的内容&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>失传的屠龙术</title>
-      <link>https://example.com/posts/%E5%A4%B1%E4%BC%A0%E7%9A%84%E5%B1%A0%E9%BE%99%E6%9C%AF/</link>
+      <link>https://example.com/posts/dragon/</link>
       <pubDate>Sat, 05 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E5%A4%B1%E4%BC%A0%E7%9A%84%E5%B1%A0%E9%BE%99%E6%9C%AF/</guid>
+      <guid>https://example.com/posts/dragon/</guid>
       <description>&lt;p&gt;文: 赵皓阳&lt;/p&gt;
-&lt;h2 id=&#34;引子&#34;&gt;引子 &lt;a href=&#34;#%e5%bc%95%e5%ad%90&#34; class=&#34;anchor&#34;&gt;🔗&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;有这样一个故事：&lt;/p&gt;
+&lt;h2 id=&#34;引子&#34;&gt;引子&lt;/h2&gt;
+&lt;p&gt;有这样一个故事：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;有一条恶龙,附近的村民深受其害,每年这个村庄都会有一个少年英雄去与恶龙搏斗,但无人生还.又一个英雄出发时,有人悄悄尾随.龙穴铺满金银财宝,看到英雄用剑刺死恶龙,然后坐在尸身上,看着闪烁的珠宝,慢慢地长出鱗片、尾巴和触角,最终变成恶龙.&lt;/p&gt;
 &lt;/blockquote&gt;</description>
@@ -133,10 +134,10 @@
     
     <item>
       <title>理解编译器优化</title>
-      <link>https://example.com/posts/%E7%90%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/</link>
+      <link>https://example.com/posts/compiler/</link>
       <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/%E7%90%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/</guid>
+      <guid>https://example.com/posts/compiler/</guid>
       <description>&lt;p&gt;来自《深入理解计算机系统》第五、六章，主要讨论如何理解编译器的能力和局限性。&lt;/p&gt;
 &lt;p&gt;我们将会发现，对源代码进行非常微小的修改会对程序性能产生很大的影响。&lt;/p&gt;</description>
     </item>

@@ -1,0 +1,219 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'><head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href='/favicon.ico' type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>测试驱动开发 - Nostalgia</title>
+
+    
+
+    
+
+    
+
+    
+        <meta property="og:title" content="测试驱动开发" />
+<meta property="og:description" content="在软件工程中，绕不开的一个过程就是测试。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/tdd/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-05-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-12T00:00:00+00:00" />
+
+    
+
+    
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="测试驱动开发"/>
+<meta name="twitter:description" content="在软件工程中，绕不开的一个过程就是测试。"/>
+
+    <link rel="stylesheet" href="/style.min.5297c96c59a52afaa5bcda4a6cedf3813081f64025c209b25b2ee6d0c8f74d462b625ad3404a92a14d7a51b4ec0a420337ae70f426fa4bce2d5f7459a3ca7274.css" integrity="sha512-UpfJbFmlKvqlvNpKbO3zgTCB9kAlwgmyWy7m0Mj3TUYrYlrTQEqSoU16UbTsCkIDN65w9Cb6S84tX3RZo8pydA==">
+
+
+
+
+
+    
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-theme", "light");
+        }
+    </script>
+<script defer src="/js/header.7a2a109ec3782c57bad0332b662f8a5f41765505936b69868eb8bd5241de9daf23c388e82ca1831f6d09935013dcb9f71bfa7face3975880c1076028b7b0a6e1.js" integrity="sha512-eioQnsN4LFe60DMrZi&#43;KX0F2VQWTa2mGjri9UkHena8jw4joLKGDH20Jk1AT3Ln3G/p/rOOXWIDBB2Aot7Cm4Q=="></script>
+
+
+
+    <script defer src="/js/zooming.684b5d075bf94d0adfa21a7e7eb9acec1ddfb2e7b47d6657981617f0db0cf50949f1172801595afa3051f51b28d67f6a2d0c41be677b59b564307d9dbe4a4fd2.js" integrity="sha512-aEtdB1v5TQrfohp&#43;frms7B3fsue0fWZXmBYX8NsM9QlJ8RcoAVla&#43;jBR9Rso1n9qLQxBvmd7WbVkMH2dvkpP0g=="></script>
+
+
+
+
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="/js/math.d7efde37b2eb8879651e1f4489bcd4d8203b8c2bf8ca12c9e1b8cd11bfd6395b172f4999fff43ce0d047889a2bdb71ee74aebbae5327590192d1144e790fcd7b.js" integrity="sha512-1&#43;/eN7LriHllHh9EibzU2CA7jCv4yhLJ4bjNEb/WOVsXL0mZ//Q84NBHiJor23HudK67rlMnWQGS0RROeQ/New=="></script>
+
+
+
+
+
+
+
+
+
+</head><body>
+        <main><header>
+    <div class="brand">
+        <div id="sidebar_btn">
+            <svg id="menu_icon" width="26px" height="26px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></svg>
+        </div>
+
+        <div>
+            <a href="/">Nostalgia</a>
+        </div>
+    </div>
+
+    <div class="toolbox">
+        <div id="theme_tool">
+            <svg id="dark_mode_btn" class="hidden toolbox-btn" width="18px" height="18px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></svg>
+            <svg id="light_mode_btn" class="hidden toolbox-btn" width="18px" height="18px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></svg>
+        </div>
+
+        
+
+        
+    </div>
+</header>
+<nav id="navbar" class="pure-menu"><ul class="pure-menu-list"></ul>
+</nav>
+<div id="sidebar_canvas_overlay" class="hidden"></div>
+<div id="sidebar" class="close">
+    <ul></ul>
+</div><div id="content" class="content-margin">
+                
+    
+    <div class="collapsible-menu-wrapper"><div class="collapsible-menu-type"><span>Table of contents</span></div><div class="collapsible-menu">
+        
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#为什么需要测试">为什么需要测试？</a></li>
+    <li><a href="#什么是测试驱动开发">什么是测试驱动开发</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#为什么要单元测试">为什么要单元测试</a></li>
+    <li><a href="#由谁来编写">由谁来编写</a></li>
+    <li><a href="#什么时候编写测试">什么时候编写测试</a></li>
+    <li><a href="#什么需要测试">什么需要测试</a></li>
+    <li><a href="#单元测试必须自动化">单元测试必须自动化</a></li>
+    <li><a href="#弊端">弊端</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#核心">核心</a></li>
+    <li><a href="#过程">过程</a></li>
+    <li><a href="#原因">原因</a></li>
+    <li><a href="#tdd是银弹silver-bullet吗">TDD是银弹（Silver Bullet）吗</a></li>
+  </ul>
+</nav>
+        
+    </div></div>
+
+
+
+    <div class="content-margin">
+
+<article class="line-numbers">
+    
+    
+    <p>在软件工程中，绕不开的一个过程就是测试。</p>
+<h2 id="为什么需要测试">为什么需要测试？</h2>
+<p>避免写出耦合度高难以维护的烂代码，当然，这与设计模式也有密不可分的关系</p>
+<p>当出现以下情况时，就需要考虑是否需要添加测试</p>
+<ul>
+<li>看不懂以前写的代码</li>
+<li>频繁改动已有的代码</li>
+<li>出现难以复现的bug</li>
+<li>不知道从哪里开始调试</li>
+<li>改动一处后引起一系列bug</li>
+</ul>
+<h2 id="什么是测试驱动开发">什么是测试驱动开发</h2>
+<blockquote>
+<p>Kent Beck：“测试驱动开发不是一种测试技术。它是一种分析技术、设计技术，更是一种组织所有开发活动的技术”。</p>
+</blockquote>
+<p>TDD（Test Driven Development），通常指的是UTDD（Unit Test Driven Development）单元测试驱动开发，原理是在开发功能代码前，先编写单元测试用例代码，再进行实现。</p>
+<h1 id="什么是单元测试">什么是单元测试</h1>
+<p>Unit Test ，是针对程序设计中的最小模块进行正确性检验的测试工作</p>
+<p>通常是使用断言（Assert）对单个函数功能进行测试</p>
+<h2 id="为什么要单元测试">为什么要单元测试</h2>
+<p>保证代码质量，主要体现在当代码被修改后功能依然正常，实际上就是维护API</p>
+<h2 id="由谁来编写">由谁来编写</h2>
+<p>测试工程师还是软件开发人员？实际上，凡是修改了代码的人都需要编写单元测试</p>
+<h2 id="什么时候编写测试">什么时候编写测试</h2>
+<p>TDD提倡在实现具体代码之前编写测试</p>
+<h2 id="什么需要测试">什么需要测试</h2>
+<p>主要针对复杂的、容易出错的功能。较少的测试意味着对代码足够自信，比如get set不需要测试</p>
+<h2 id="单元测试必须自动化">单元测试必须自动化</h2>
+<p>每修改一次程序就要进行一次单元测试，使用脚本或自动化工具节省人力成本</p>
+<h2 id="弊端">弊端</h2>
+<p>显然，编写测试会增加负担，额外的代码量是人们不愿意写测试的最大原因，但这并不是测试的弊端，一些不好的测试会带来很多隐患。相反，一个良好的测试代码应该做到足够简单，否则不仅维护时要修改功能代码，还要修改测试代码。</p>
+<h1 id="为什么需要测试驱动开发">为什么需要测试驱动开发</h1>
+<blockquote>
+<p>Kent Beck: “<strong>代码简洁可用</strong>这句言简意赅的话，正是 TDD 所追求的目标”。</p>
+</blockquote>
+<h2 id="核心">核心</h2>
+<p>拆分任务，一次只关注一件事，小步前进</p>
+<h2 id="过程">过程</h2>
+<p><img src="https://marsner.com/wp-content/uploads/test-driven-development-TDD.png" alt="img"></p>
+<ol>
+<li>编写一个<strong>功能最小</strong>的单元测试，运行时当然会失败</li>
+<li>编写实现代码，使其<strong>刚好</strong>可以通过测试</li>
+<li><strong>重构</strong>，消除代码的smell，再次运行测试</li>
+</ol>
+<h2 id="原因">原因</h2>
+<ul>
+<li>
+<p>为什么不能先写功能实现代码？</p>
+<p>无法确定这段代码是为了实现什么功能，以及是否真的实现了</p>
+</li>
+<li>
+<p>为什么明知道会报错，还要运行</p>
+<p>报错有很多种可能，目的是看看是不是期望的错误</p>
+</li>
+<li>
+<p>为什么要编写刚好可以通过的代码</p>
+<p>如果超出了测试的功能，这部分代码就不知道是否正确，需要手工测试，如果是后面新增的功能，那么后面编写的测试就会直接通过</p>
+</li>
+<li>
+<p>如何重构？</p>
+<p>这是另外一个领域的事情了</p>
+</li>
+</ul>
+<p>一个好的实例: <a href="https://my.oschina.net/xbl/blog/3107866">测试驱动开发（TDD）入门</a></p>
+<h2 id="tdd是银弹silver-bullet吗">TDD是银弹（Silver Bullet）吗</h2>
+<p>TDD并不能解决所有的问题，不能保证程序一定不出错。</p>
+</article>
+</div>
+
+
+                
+                    
+                
+            </div>
+</main>
+    </body>
+</html>

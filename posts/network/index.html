@@ -1,0 +1,284 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'><head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href='/favicon.ico' type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>网络游戏同步 - Nostalgia</title>
+
+    
+
+    
+
+    
+
+    
+        <meta property="og:title" content="网络游戏同步" />
+<meta property="og:description" content="浅谈网络游戏开发中的TCP/UDP、帧同步/状态同步以及预测、快照和回滚" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/network/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-04-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-04-16T00:00:00+00:00" />
+
+    
+
+    
+        <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="网络游戏同步"/>
+<meta name="twitter:description" content="浅谈网络游戏开发中的TCP/UDP、帧同步/状态同步以及预测、快照和回滚"/>
+
+    <link rel="stylesheet" href="/style.min.5297c96c59a52afaa5bcda4a6cedf3813081f64025c209b25b2ee6d0c8f74d462b625ad3404a92a14d7a51b4ec0a420337ae70f426fa4bce2d5f7459a3ca7274.css" integrity="sha512-UpfJbFmlKvqlvNpKbO3zgTCB9kAlwgmyWy7m0Mj3TUYrYlrTQEqSoU16UbTsCkIDN65w9Cb6S84tX3RZo8pydA==">
+
+
+
+
+
+    
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-theme", "light");
+        }
+    </script>
+<script defer src="/js/header.7a2a109ec3782c57bad0332b662f8a5f41765505936b69868eb8bd5241de9daf23c388e82ca1831f6d09935013dcb9f71bfa7face3975880c1076028b7b0a6e1.js" integrity="sha512-eioQnsN4LFe60DMrZi&#43;KX0F2VQWTa2mGjri9UkHena8jw4joLKGDH20Jk1AT3Ln3G/p/rOOXWIDBB2Aot7Cm4Q=="></script>
+
+
+
+    <script defer src="/js/zooming.684b5d075bf94d0adfa21a7e7eb9acec1ddfb2e7b47d6657981617f0db0cf50949f1172801595afa3051f51b28d67f6a2d0c41be677b59b564307d9dbe4a4fd2.js" integrity="sha512-aEtdB1v5TQrfohp&#43;frms7B3fsue0fWZXmBYX8NsM9QlJ8RcoAVla&#43;jBR9Rso1n9qLQxBvmd7WbVkMH2dvkpP0g=="></script>
+
+
+
+
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="/js/math.d7efde37b2eb8879651e1f4489bcd4d8203b8c2bf8ca12c9e1b8cd11bfd6395b172f4999fff43ce0d047889a2bdb71ee74aebbae5327590192d1144e790fcd7b.js" integrity="sha512-1&#43;/eN7LriHllHh9EibzU2CA7jCv4yhLJ4bjNEb/WOVsXL0mZ//Q84NBHiJor23HudK67rlMnWQGS0RROeQ/New=="></script>
+
+
+
+
+
+
+
+
+
+</head><body>
+        <main><header>
+    <div class="brand">
+        <div id="sidebar_btn">
+            <svg id="menu_icon" width="26px" height="26px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></svg>
+        </div>
+
+        <div>
+            <a href="/">Nostalgia</a>
+        </div>
+    </div>
+
+    <div class="toolbox">
+        <div id="theme_tool">
+            <svg id="dark_mode_btn" class="hidden toolbox-btn" width="18px" height="18px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></svg>
+            <svg id="light_mode_btn" class="hidden toolbox-btn" width="18px" height="18px" viewBox="0 0 24 24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></svg>
+        </div>
+
+        
+
+        
+    </div>
+</header>
+<nav id="navbar" class="pure-menu"><ul class="pure-menu-list"></ul>
+</nav>
+<div id="sidebar_canvas_overlay" class="hidden"></div>
+<div id="sidebar" class="close">
+    <ul></ul>
+</div><div id="content" class="content-margin">
+                
+    
+    <div class="collapsible-menu-wrapper"><div class="collapsible-menu-type"><span>Table of contents</span></div><div class="collapsible-menu">
+        
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#网络拓扑结构">网络拓扑结构</a></li>
+    <li><a href="#网络传输协议">网络传输协议</a></li>
+    <li><a href="#tcp">TCP</a></li>
+    <li><a href="#udp">UDP</a></li>
+    <li><a href="#网络同步模型network-model">网络同步模型(Network Model)</a></li>
+    <li><a href="#帧同步">帧同步</a>
+      <ul>
+        <li><a href="#优点">优点</a></li>
+        <li><a href="#缺点">缺点</a></li>
+        <li><a href="#帧同步buffer">帧同步buffer</a></li>
+      </ul>
+    </li>
+    <li><a href="#状态同步">状态同步</a>
+      <ul>
+        <li><a href="#优点-1">优点</a></li>
+        <li><a href="#缺点-1">缺点</a></li>
+      </ul>
+    </li>
+    <li><a href="#预测回滚与快照">预测、回滚与快照</a></li>
+    <li><a href="#逻辑表示分离与插值">逻辑表示分离与插值</a></li>
+    <li><a href="#守望先锋">《守望先锋》</a></li>
+    <li><a href="#王者荣耀">《王者荣耀》</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+        
+    </div></div>
+
+
+
+    <div class="content-margin">
+
+<article class="line-numbers">
+    
+    
+    <p>浅谈网络游戏开发中的TCP/UDP、帧同步/状态同步以及预测、快照和回滚</p>
+<h2 id="网络拓扑结构">网络拓扑结构</h2>
+<ul>
+<li>Peer-to-Peer P2P 网状结构，一般是所有客户端两两链接，传统的局域网游戏</li>
+<li>Client-Server CS 星状结构，至少有一部服务器，客户端只与服务器连接</li>
+</ul>
+<h2 id="网络传输协议">网络传输协议</h2>
+<p>UDP/TCP属于传输层（Transport Layer）</p>
+<h2 id="tcp">TCP</h2>
+<ul>
+<li>保序可靠传输（Sequenced Reliable Transmission）</li>
+<li>传输慢，因为要保证正确性</li>
+<li>连接慢，首次通信需要进行著名的三次握手连接，复杂且黑盒，难扩展，</li>
+<li>报头大，不适用于数据包数量多的情况</li>
+</ul>
+<h2 id="udp">UDP</h2>
+<ul>
+<li>不可靠不保序传输（Unsequenced Unreliable Transmission），即传输不保序，也不确保可达，某个具体数据包在传输的过程中，是可能丢失的；也可能数据包到达了，但数据出错从而校验失败，也被Socket丢弃掉</li>
+<li>传输快，Socket不会浪费时间和带宽，对丢失的数据包进行重传</li>
+<li>不需要建立连接，收发双方每次通信都是无状态的</li>
+<li>简单，上层应用能按需实现额外的传输特性（QoS），很多游戏会自己开发可靠传输、冗余的UDP</li>
+<li>报头小，节省带宽</li>
+</ul>
+<p>大部分游戏使用的都是UDP，而TCP适合节奏慢的游戏，如炉石传说等回合制游戏，值得一提的是魔兽世界用的是TCP</p>
+<h2 id="网络同步模型network-model">网络同步模型(Network Model)</h2>
+<ul>
+<li>确定性帧同步(deterministic lockstep) 常用于格斗、竞速、即时战略游戏。如星际争霸、魔兽争霸</li>
+<li>快照插值(snapshot interpolation) FPS经典同步模型，《Quake》最早采用，后续众多FPS在之上做了改进</li>
+<li>状态同步(state synchronization) 有点像是快照插值的改进版，Overwatch所采用的</li>
+</ul>
+<p>一般情况下我们谈论的只有两类：帧同步(lockstep)和状态同步(state synchronization)</p>
+<h2 id="帧同步">帧同步</h2>
+<p>是锁步同步(LockStep)的改进版本，它只同步状态变化的原因，如玩家的按键输入，服务器以固定的帧率收集每个客户端的输入，然后把这些输入广播给所有的客户端，由于每个操作指令到达所有客户端的时间（帧）是一样的，所以每个客户端运算结果也是一样的。为了保证游戏的公平性，如果一个玩家掉线了，其他玩家就会等待，例如有的外挂会等待其他客户端的帧都到达后才发送自己的帧。</p>
+<p>它要求各个客户端的运算逻辑严格相同，否则一点的误差将会导致蝴蝶效应，解决方法：</p>
+<ul>
+<li>使用定点数代替浮点数，通常会使用第三方库</li>
+<li>使用统一的随机数种子</li>
+<li>确定性的容器算法，如保证排序的稳定性</li>
+</ul>
+<h3 id="优点">优点</h3>
+<ol>
+<li>开发效率高</li>
+<li>更强的打击感 客户端接受指令后就可以单独进行画面渲染，格斗游戏使用的都是帧同步</li>
+<li>流量消耗稳定 魔兽争霸的录像只有几百k，因为只记录了输入序列</li>
+</ol>
+<h3 id="缺点">缺点</h3>
+<ol>
+<li>网络要求高，一般都使用UDP保证更低的延迟， 帧同步是锁帧的，如果有网络的抖动，一段时间调用次数不稳定，网络的延迟就会挤压，引起卡顿</li>
+<li>安全性低，反外挂能力弱，所有玩家的数据都会被发送到客户端，逻辑运算在客户端里，可以轻易的进行内存修改</li>
+<li>断线重连时间长，需要将游戏开始到当前时间的全部帧数据进行计算</li>
+<li>性能优化难</li>
+</ol>
+<h3 id="帧同步buffer">帧同步buffer</h3>
+<p>每个玩家的输入会发给所有客户端，服务器会按照一定的频率给帧编号，只有之后某一帧数据来到时才能执行当前帧，</p>
+<p>buffer是一个帧队列的缓冲区，它可以根据网络情况动态改变大小</p>
+<ul>
+<li>buffer很小时，得到帧数据时可以立即执行，不需要等待，延迟就低，但如果下一帧一直不来，就不能执行当前帧，就会产生抖动</li>
+<li>buffer很大时，画面不抖动了，但延迟会增加</li>
+</ul>
+<h2 id="状态同步">状态同步</h2>
+<p>所有逻辑运算在某个权威主机上执行，再下发到各个客户端中，考虑具体的网络拓扑结构，通常在服务器(Server)进行状态计算，在也称为C-S同步(Client-Server)</p>
+<h3 id="优点-1">优点</h3>
+<ul>
+<li>安全性高，所有计算在服务器端执行</li>
+<li>网络要求宽松，抖动包适应性强</li>
+<li>断线重连快，只需要将最新状态下发给客户端</li>
+<li>利于性能优化，在客户端中看不到的角色可以不用创建</li>
+</ul>
+<h3 id="缺点-1">缺点</h3>
+<ul>
+<li>开发效率低</li>
+<li>动作类游戏打击感和精确性差</li>
+<li>流量随着游戏复杂度而逐渐增长</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-5a11925f93130d3c315300b9055baac0_1440w.jpg" alt="img"></p>
+<h2 id="预测回滚与快照">预测、回滚与快照</h2>
+<p>前面说到，帧同步要等待服务器的回包，这就会严重影响游戏的体验，所以即使在延迟高的网络条件下,玩家在按下按键后，客户端也要立即做出响应，保证本地玩家感觉不卡</p>
+<p>于是很多FPS游戏会对玩家的操作进行预测，不用每次都等待服务器的回包，玩家按下按键就会立刻有反应，无论网络情况，这会使得客户端永远领先服务器。</p>
+<p>举个例子，当客户端运行至41帧时，若网络延迟，未能收到服务器传来的第41帧数据客户端会通过最后几帧的信息，“预测”玩家在下一个时刻位置状态，例如让玩家保持之前的速度，动画继续“预测”运行一段时间，同时缓存此“预测”结果留做比对。</p>
+<p>倘若当前客户端运行到第45帧，此时收到了服务器下发的第41帧信息，客户端会将之前“预测”的41帧信息与之做比对，确定预测是否正确</p>
+<ul>
+<li>若预测成功便抛弃这一帧的信息。</li>
+<li>若预测失败，意味着之后的41到45帧都是错误的，则需要回滚到40帧，覆盖41帧重新运行这段时间更新数据更新画面表现，并追上当前时间</li>
+</ul>
+<p>既然要回滚到之前某一帧，就要保存当时玩家的操作和状态信息，被称作“快照(snapshot)”，某种程度上可以说是状态同步</p>
+<p>不是所以信息客户端都需要进行预测，如UI血量等，需要预测的信息可以是击中特效，这对打击感的实现尤为重要</p>
+<p><em>PS：想起以前玩CF，卡的时候对着僵尸突突突还有特效，几秒后角色便瞬移到另一个地方的。</em></p>
+<h2 id="逻辑表示分离与插值">逻辑表示分离与插值</h2>
+<p>帧有两种定义</p>
+<ol>
+<li>逻辑帧 Tick</li>
+<li>渲染帧 Frame</li>
+</ol>
+<p>逻辑帧率和渲染帧率是互相独立的可以理解为Unity中Update和FixedUpdate的关系</p>
+<p>一般服务器只同步逻辑帧，在客户端进行渲染帧的计算</p>
+<p>由于客户端只负责一些模型、动画、位置信息，当收到服务器发送来的帧序列时，会根据该帧信息和当前状态进行插值，例如在速度、方向上进行插值。这样可以做到逻辑帧率和渲染帧率不一样，画面抖动和延迟感觉会降低</p>
+<h2 id="守望先锋">《守望先锋》</h2>
+<p>ECS架构</p>
+<ul>
+<li>Entity： Component的集合</li>
+<li>Component： 只有数据，没有函数</li>
+<li>System只： 有函数，没有状态</li>
+</ul>
+<p>通过ECS架构，可以尽量将网络同步和引擎部分解耦，System只需要遍历含有需要回滚的Component的Entity， 例如 NetworkEvent只遍历含有MovementState的Entity</p>
+<ul>
+<li>对需要回滚的组件进行快照式存储</li>
+<li>通过这些组件实现对实体的增量式存储</li>
+</ul>
+<p><em>PS：守望先锋中维护了一个“脏”状态集合，我还没搞懂和ECS有什么联系。。。</em></p>
+<h2 id="王者荣耀">《王者荣耀》</h2>
+<ul>
+<li>基于Unity 4.6</li>
+<li>重新编写可靠传输的UDP</li>
+<li>不使用帧buffer，收到帧数据后立即执行</li>
+<li>逻辑与表现分离，逻辑部分使用C++重新编写</li>
+<li>本地插值</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://mauve.mizuumi.net/2012/07/05/understanding-fighting-game-networking/">Understanding Fighting Game Networking</a></li>
+<li><a href="http://youxiputao.com/articles/11842">《王者荣耀》复盘</a></li>
+<li><a href="https://gameinstitute.qq.com/community/detail/114516">《守望先锋》架构设计与网络同步</a></li>
+<li><a href="https://mp.weixin.qq.com/s/cOGn8-rHWLIxdDz-R3pXDg">《守望先锋》回放技术</a></li>
+<li><a href="http://www.skywind.me/blog/archives/1343#more-1343">再谈网游同步技术</a></li>
+<li><a href="https://gafferongames.com/tags/networking/">Glenn Fiedler</a></li>
+</ul>
+</article>
+</div>
+
+
+                
+                    
+                
+            </div>
+</main>
+    </body>
+</html>

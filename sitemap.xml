@@ -8,52 +8,51 @@
     <loc>https://example.com/posts/</loc>
     <lastmod>2020-05-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91/</loc>
+    <loc>https://example.com/posts/tdd/</loc>
     <lastmod>2020-05-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E7%BD%91%E7%BB%9C%E6%B8%B8%E6%88%8F%E5%90%8C%E6%AD%A5/</loc>
+    <loc>https://example.com/posts/network/</loc>
     <lastmod>2020-04-16T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/goap-%E7%9B%AE%E6%A0%87%E5%AF%BC%E5%90%91%E5%9E%8B%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://example.com/posts/goap/</loc>
     <lastmod>2020-04-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%AD%A6%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
+    <loc>https://example.com/posts/computer/</loc>
     <lastmod>2020-03-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
+    <loc>https://example.com/posts/raspberrypi/</loc>
     <lastmod>2020-02-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E7%BB%99thinkpad-x220%E5%AE%89%E8%A3%85archlinux/</loc>
+    <loc>https://example.com/posts/arch/</loc>
     <lastmod>2020-02-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</loc>
+    <loc>https://example.com/posts/functional-programming/</loc>
     <lastmod>2019-12-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E5%AF%BB%E8%B7%AF/</loc>
+    <loc>https://example.com/posts/pathfinding/</loc>
     <lastmod>2019-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E8%87%AA%E6%B2%BB%E7%9A%84%E5%8F%AF%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F%E6%99%BA%E8%83%BD%E4%BD%93/</loc>
+    <loc>https://example.com/posts/flocking/</loc>
     <lastmod>2019-09-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/</loc>
+    <loc>https://example.com/posts/ioc/</loc>
     <lastmod>2019-05-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E5%B0%84%E7%AE%AD%E8%89%BA%E6%9C%AF%E4%B8%AD%E7%9A%84%E7%A6%85/</loc>
+    <loc>https://example.com/posts/zen/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/about/</loc>
-    <lastmod>2019-02-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://example.com/posts/%E4%BC%A0%E6%92%AD%E5%AD%A6%E5%8E%9F%E7%90%86/</loc>
+    <loc>https://example.com/posts/communication/</loc>
     <lastmod>2018-09-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E5%A4%B1%E4%BC%A0%E7%9A%84%E5%B1%A0%E9%BE%99%E6%9C%AF/</loc>
+    <loc>https://example.com/posts/dragon/</loc>
     <lastmod>2018-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/posts/%E7%90%86%E8%A7%A3%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96/</loc>
+    <loc>https://example.com/posts/compiler/</loc>
     <lastmod>2018-02-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://example.com/categories/</loc>
+  </url><url>
+    <loc>https://example.com/series/</loc>
   </url><url>
     <loc>https://example.com/tags/</loc>
   </url>
