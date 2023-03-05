@@ -6,7 +6,17 @@
     <description>Recent content on Nostalgia</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 12 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>逃避自由</title>
+      <link>https://example.com/posts/%E9%80%83%E9%81%BF%E8%87%AA%E7%94%B1/</link>
+      <pubDate>Tue, 01 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/%E9%80%83%E9%81%BF%E8%87%AA%E7%94%B1/</guid>
+      <description>&lt;p&gt;“美” E.弗洛姆 著&lt;/p&gt;
+&lt;p&gt;北方文艺出版社1987年6月第一版&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>测试驱动开发</title>
       <link>https://example.com/posts/tdd/</link>
