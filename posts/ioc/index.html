@@ -36,11 +36,11 @@
 <meta property="article:published_time" content="2019-05-25T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-05-25T00:00:00+00:00" />
 
+
     
 
     
-        <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="控制反转与依赖注入"/>
+        <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="控制反转与依赖注入"/>
 <meta name="twitter:description" content="控制反转(Inversion of Control，IoC），是面向对象编程中的一种设计原则，可以用来减低计算机代码之间的耦合度。常用于Web开发,如Spring MVC。
 它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。
 通过控制反转，对象在被创建的时候，由一个调控系统内所有对象的外界实体(容器)。"/>
@@ -192,11 +192,11 @@
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>[Inject]注入的是实现接口的类而不是特定的类,在这个例子中，我们就可以不再依赖具体的Facebook或Twitter，我们只用知道需要一个社交服务。</p>
 <p>最后，我们需要将他们绑定起来</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#75715e">#if UNITY_ANDROID </span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c#" data-lang="c#"><span style="display:flex;"><span><span style="color:#75715e">#if</span> UNITY_ANDROID 
 </span></span><span style="display:flex;"><span>    injectionBinder.Bind&lt;ISocialService&gt;().To&lt;GoogleService&gt;().AsSingleton(); 
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#else </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else</span> 
 </span></span><span style="display:flex;"><span>    injectionBinder.Bind&lt;ISocialService&gt;().To&lt;FacebookService().AsSingleton(); 
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif //...or... </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif</span> <span style="color:#75715e">//...or... </span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">//injectionBinder.Bind&lt;ISocialService&gt;().To&lt;MultiServiceResolver&gt;().AsSingleton();  </span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>injectionBinder.Bind&lt;IScoreModel&gt;().To&lt;ScoreModel&gt;().AsSingleton(); 
