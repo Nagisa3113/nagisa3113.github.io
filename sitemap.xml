@@ -11,6 +11,9 @@
     <loc>https://nagisa3113.github.io/posts/work/</loc>
     <lastmod>2024-01-10T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://nagisa3113.github.io/posts/zuopin/</loc>
+    <lastmod>2024-01-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://nagisa3113.github.io/posts/tdd/</loc>
     <lastmod>2020-05-12T00:00:00+00:00</lastmod>
   </url><url>
@@ -58,7 +61,5 @@
     <loc>https://nagisa3113.github.io/series/</loc>
   </url><url>
     <loc>https://nagisa3113.github.io/tags/</loc>
-  </url><url>
-    <loc>https://nagisa3113.github.io/posts/zuopin/</loc>
   </url>
 </urlset>
