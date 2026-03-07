@@ -1,0 +1,259 @@
+---
+title: "给ThinkPad-X220安装ArchLinux"
+date: 2020-02-10
+---
+
+最近在某海鲜市场淘了台ThinkPad X220，记录一下ArchLinux的配置过程
+
+<!--more-->
+
+ThinkPad向来有着笔记本界最好的键盘手感，其余配置如下
+
+- CPU 2520M 双核
+- Memory: 4+4GB
+- Storage: 500G Samsung 860evo msata
+- Display: 1366*768
+
+为什么使用 Linux
+
+- 避免Windows在老设备上的高资源消耗，比如偷偷更新
+
+为什么使用Arch
+
+- 精简、高度自定义，完善的包管理pacman
+
+为什么使用i3wm窗口管理器
+
+- 分屏很方便，完全键盘操作，很geek
+
+
+## 安装Archlinux
+
+参考[官方中文安装教程](https://wiki.archlinux.org/title/Installation_guide_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))
+
+前往[官网](https://archlinux.org/download)下载镜像，使用rufus将镜像写入U盘，并从U盘启动
+
+以下为UEFI引导，单sata硬盘，全盘安装方法，
+
+ArchLinux使用滚动更新，也就是说时刻都保持最新版，所以需要联网安装
+
+这里使用有线网安装
+```
+dhcpcd
+```
+更新系统时间
+```
+timedatectl set-ntp true
+```
+分区与格式化
+
+1. 查看目前分区
+```
+fdisk -l
+```
+2. 创建引导分区，sda表示第一块sata硬盘，也有可能是其他
+```
+fdisk /dev/sda
+```
+1. 如果是新硬盘，输入g创建全新的gpt分区表
+2. 输入n创建一个新的分区，选择起始扇区和分区大小，前者默认，后者输入+512M
+4. 输入t并选择新创建的分区序号来更改分区的类型，输入l查看所有支持的类型，输入ef更改分区的类型为EFI
+5. 输入w写入磁盘，输入p来确认分区表
+6. 格式化刚刚创建的引导分区
+```
+mkfs.fat -F32 /dev/sda1
+```
+创建根分区
+
+1. 输入n创建一个新的分区，选择起始扇区和分区大小，全部默认表示使用全盘安装。
+2. 输入w写入磁盘
+3. 格式化根分区
+```
+mkfs.ext4 /dev/sda2
+```
+
+挂载分区
+```
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1/ mnt/boot
+```
+
+选择镜像
+```
+vim /etc/pacman.d/mirrorlist
+```
+在文件首加入
+```
+Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+```
+安装基本软件
+```
+pacstrap /mnt base base-devel linux linux-firmware dhcpcd
+```
+生成自动挂载分区的fstab文件
+```
+genfstab -L /mnt >> /mnt/etc/fstab
+```
+将权限切换到新安装的系统
+```
+arch-chroot /mnt
+```
+设置时区
+```
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock --systohc
+```
+
+安装其他软件
+```
+pacman -S vim dialog wpa_supplicant ntfs-3g networkmanager netctl
+```
+
+设置语言，找到zh-CN和en_US行，取消注释
+```
+vim /etc/locale.gen
+```
+生成
+```
+locale-gen
+```
+设置系统语言
+```
+vim /etc/locale.conf
+```
+写入
+```
+LANG=en_US.UTF-8
+```
+设置主机名，在首行输入主机名，这里是ThinkPad-X220
+```
+vim /etc/hostname
+```
+同样
+```
+vim /etc/hosts
+```
+写入
+```
+127.0.0.1		  localhost
+::1				localhost
+127.0.1.1		ThinkPad-X220.localdomain	ThinkPad-X220
+```
+
+设置Root密码
+```
+passwd
+```
+
+安装微码，此处为因特尔处理器
+```
+pacman -S intel-ucode
+```
+
+安装Bootloader
+```
+pacman -S os-prober ntfs-3g
+pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+重新部署linux内核
+```
+pacman -S linux
+```
+
+退出
+```
+exit
+```
+取消挂载
+```
+umount /mnt/boot
+umount /mnt
+```
+重启
+```
+reboot
+```
+然后就进入了Archlinux的命令行界面，用户名是root，密码是刚才设置的密码，到此安装结束
+
+## 新建用户
+
+设置用户名和组
+```
+useradd -m -G wheel nagisa
+```
+设置用户密码
+```
+passwd nagsia
+```
+切换到root用户
+```
+su
+```
+安装sudo
+```
+pacman -S sudo
+```
+将vi链接到vim
+```
+ln -s /usr/bin/vim /usr/bin/vi
+visudo
+```
+
+取消```%wheel ALL=(ALL)ALL```前的#注释
+
+退出root
+
+```
+exit
+```
+
+
+## 桌面环境
+联网
+
+
+```
+dhcpcd//有线网
+wifi-menu//无线网
+```
+安装显卡驱动，参考[这里](https://wiki.archlinux.org/index.php/Xorg#Driver_installation)，此处为intel集成显卡
+
+```
+sudo pacman -S xf86-video-intel
+```
+安装Xorg
+```
+sudo pacman -S xorg
+```
+安装桌面管理器，此处为lightdm
+```
+sudo pacman -S lightdm
+```
+设置开机自动启动
+```
+sudo systemctl enable lightdm
+```
+安装桌面环境, 比较著名的有Gnome、KDE(Plasma)、Xfce，此处使用i3wm
+
+```
+sudo pacman -S i3wm
+```
+如果安装了桌面管理器，重启的时候就有图形界面可以选择了
+
+第一次进入i3，非常简陋，但是不要慌
+
+安装各种软件
+
+- terminal	st
+- 输入法	fcitx fcitx-config-tool
+- 字体		ttf-dejavu
+- 浏览器		firefox
+- 文件管理器	pcmanfm ranger
+- 命令行工具	zsh neofetch htop
+
+其余的配置文件保存在我的github中，如i3快捷键，字体缩放比例，个性化bar等
+

@@ -1,0 +1,203 @@
+---
+title: "GOAP 目标导向型算法"
+date: 2020-04-05
+---
+
+[GOAP，Goal-Oriented Action Planning](http://alumni.media.mit.edu/~jorkin/goap.html)是一个很好的AI动态规划解决方案，与之相对的是传统的硬编码，如状态机和行为树，Unity中提供了[AIPlanner](https://docs.unity3d.com/Packages/com.unity.ai.planner@0.0/manual/index.html)插件
+
+
+
+<!--more-->
+
+## FSM
+
+使用FSM有限状态机的弊端：当AI行为非常庞大时，很难维护，代码可读性和重用性低
+
+![AI决策算法之GOAP （一）](http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4ba6257.com/resource/attachment/3c0c05cdb1466b156157f700e754525b)
+
+## 行为树
+
+行为树节点的可复用性高，可以自由组合出行为而不用重新编码整个框架，但由于是依赖设计者的固定架构的，很不灵活，做的选择不一定是最优选择，每次都要经过大量的逻辑判断。
+
+![AI决策算法之GOAP （一）](http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4c69dd7.com/resource/attachment/4edca0ec5f73ec225d0c9017109b498a)
+
+## GOAP
+
+让AI自己找到解决问题的办法，它会根据环境动态中决策出最优的选择，从而达到看起来相对智能的AI，且代码的分层相对清晰，可读性高，重用性高。
+
+![AI决策算法之GOAP （一）](http://gadimg-10045137.image.myqcloud.com/20180226/5a93af4d670b6.com/resource/attachment/5e3a786f08a7d7ac3f7705c140ec46d5)
+
+我们只提供
+
+1. 可执行的行为，包括行为的先决条件和影响效果
+2. 不同目标的优先级
+3. 玩家状态和世界环境的描述
+
+得到结果：
+
+ 一个行动Action的序列，通常使用队列进行存储
+
+## 部件
+
+找到一个还不错的项目，[BlueGameAI](http://github.com/nagisa3113/BlueGameAI)
+
+### State
+
+用于记录角色状态，Action表示某个行动
+
+```c
+class State{    
+    //当状态被改变时触发的事件    
+    event OnChange(); 
+} 
+class Action{    //动作的花费，优先级和是否可以被中断    
+    int cost,priority    
+    bool canInterrupited;    //动作的先决条件    
+    State PreCondition;    //动作执行后的状态    
+    State Effect; 
+} 
+class ActionHandle(){    
+    int id;    
+    event onActionFinished(); 
+} 
+```
+
+### ActionFSM
+
+动作的状态机，其中也维护着一个动作状态（FSMState），要与人物的状态（AgentState）区别开来
+
+```c
+class FSMState{    
+    void Enter();    
+    void Execute();    
+    void Exit() 
+} 
+class ActionFSM{
+    //当前、上一个状态机状态    
+    FSMState currentState,previousState;    
+    void AddState();
+    void ExecuteNewState();    
+    void Update(){
+        currentState.Execute();    
+    } 
+}
+```
+### Goal
+
+目标，比如获得武器，消灭敌人
+
+```c
+class Goal{    
+    //目标的优先级   	
+    int priority;    
+    //激活目标的前置条件    
+    State ActiveCondition;    
+    //完成目标后的影响    
+    State Effect; 
+} 
+
+```
+### Agent
+
+挂载到角色身上，它整合了其他组件
+
+```c
+class Agent(){    
+    //角色状态    
+    State AgentState;    
+     //Action管理对象    
+    ACtionManager actionManager;    
+    //Goal管理对象    
+    GoalManager goalManager;    
+    //计划管理对象，下文会提到    
+    Performer performer; 
+}
+```
+
+### Trigger
+
+触发器，是影响决策改变的直接原因
+
+```c
+class Trigger
+{    
+    //优先级    
+    int priority    
+        //触发效果    
+        State effect;    
+    //是否被触发    
+    bool IsTrigger();    
+    //触发影响    
+    void Update{        
+        if(Istrigger())    		
+            agent.AgentState.Set(effect);//改变Agent的状态    
+    } 
+} 
+```
+
+### Planner
+
+对需要执行的动作进行动态规划
+
+```c
+class Planner(){    //制定计划    //参数为目标    //返回值为行为的序列   
+    Queue<Action> BuildPlan(Goal goal); 
+} 
+```
+
+```c
+class Performer{    //plan即为上面Planner计算出的行为序列    
+    Queue<Action> plan = Planner.BuildPlan(currentGoal);        //执行计划    
+    void Next(){        //plan出栈，执行下一个Action        
+        Agent.ActionManager.ExecuteNewState(plan.Dequeue());    
+    } 
+} 
+```
+
+## 执行过程
+
+1. 假设Agent初始状态为idle，ActionFSM为空
+2. 某个事件触发了Trigger，改变了Agent的状态State
+3. 触发State中的回调函数 event OnChange();
+4. ActionManager 更新内部元素
+5. GoalManager 获得当前目标优先级最大的目标
+6. Performer 很据目标制定新计划
+   1. 获得Action队列
+   2. 让ActionFSM执行Action队列中的第一个元素
+7. 执行新ACtino后又改变了Agent的状态State，这时候由于已经处在某个计划中(队列中还有ACtion未完成)，先执行以下步骤进行判断并继续执行当前计划队列中的下一个动作，否则，回到第3步重新生成新的计划
+   1. 检查计划/动作是否允许被中断
+   2. 检查计划/动作是否为已经完成
+
+以上是GOAP各个部分的简要介绍，实际工程写起来要复杂很多，可以参考一下前面链接中的项目
+
+## 算法
+
+即，如何根据目标Goal得到最优的行为序列
+
+1. 获得目标Goal与当前状态的差异
+2. 查看哪些action可以满足这些差异
+
+该项目使用方式：**树结构**+**动态规划**
+
+这里举个例子，林克要死了，需要补充生命值，这时候有一个目标，砍苹果树获得苹果，达到这个目标需要哪些条件呢？
+
+1. 林克到苹果树下
+2. 林克有一个斧头
+3. 林克有体力
+
+这些条件与当前state有哪些差异呢？
+
+1. 林克的位置(position)不在苹果树下
+2. 林克的背包里没有斧头
+3. 林克体力不多了
+
+于是，开始遍历所有可以执行的Action，查看哪些可以改变林克的位置，比如走路，走路Action有一个cost(比如消耗体力，前进速度)，把它作为一个树节点，除了走路，骑马也可以，但骑马又需要马了，于是要先遍历可以让林克骑马的Action，比如找到马，驯服马，和马培养感情，遍历了这些子节点后，将其作为骑马这个复合节点的子节点，然后计算整个cost，可以类比哈夫曼编码，不过那个是贪心算法，这个是动态规划。
+
+遍历了所有的可执行Action后，一些独立的action会成为一些综合节点的子节点，比如，最后得到一下几种方案
+
+1. 找马+养马+找斧头+砍树
+2. 步行+买斧头+砍树
+3. 传送+爬树
+4. 传送+放火烧树（没想到吧）
+
+显然，传送、烧树、买斧头也是由一些小的子节点(Action)构成的，此时计算出了各个行为的cost，选择最优的一种方案，比如第2个，然后将步行、买斧头、砍树这四个节点的父节点设为树的头节点，(注意，复合节点本身不包括Action)，经过一次先序遍历，便能得到对应的Action序列。
