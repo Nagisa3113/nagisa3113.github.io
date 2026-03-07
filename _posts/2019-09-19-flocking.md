@@ -1,0 +1,172 @@
+---
+title: "自治的可移动游戏智能体"
+date: 2019-09-19
+---
+
+在近日的索尼 PlayStation “State of Play”上公布了许多新游戏，其中[《Humanity》](https://youtu.be/ouHaVvmZ5uw)展现了模拟人类集体行为，效果非常震撼。 
+
+<!--more-->
+
+主要内容
+
+- Obstacle Avoidance
+- Flocking
+
+
+# Obstacle Avoidance
+
+障碍物躲避属于路径规划中的底层算法，与此相对的高层算法有dijkstra,A*等
+
+## 碰撞判断
+
+为了便于计算，我们将角色视为质点，于此同时让障碍物的碰撞半径扩大角色自身宽度的一半
+
+![img](/assets/img/posts//flocking/geogebra-export-2.png)
+
+判断是否相交，其中$\vec{v}$ 为当前速度与预测时间$t$的乘积，$t$越大，感知的范围也越大，可以更早地避开障碍物，但更消耗性能
+
+![img](/assets/img/posts//flocking/geogebra-export-3.png)
+
+$\vec{p}$为向量$\vec{a}$在速度$\vec{v}$上的投影，$\vec{b}=\vec{p}-\vec{a}$
+
+当$|\vec{b}|-|\vec{r}|<0$时，代表未来可能发生碰撞，这时需要给其添加两个力的作用，侧向操控力使其远离障碍物，与$\vec{b}$的大小成负相关，制动力使其减速，方向与当前速度相反，大小正比于$\vec{a}$
+
+![img](/assets/img/posts//flocking/geogebra-export-5.png)
+
+上述方法是通过施加力的作用避开障碍物，下面介绍的方法是改变速度
+
+## VO(Velocity Obstacle)
+
+即：排除未来有可能会发生碰撞的速度
+
+![img](/assets/img/posts//flocking/geogebra-export-4.png)
+
+VO是指速度方向与B相交的部分，即会发生碰撞的部分（图中灰色部分)，VO会排除未来所有可能会发生碰撞的速度(例如$\vec{v_2}$在短时间内不会发生碰撞，但被舍弃了)
+
+遇到可移动的障碍物时,直接求$\vec{V_A}$绝对速度的VO而不是$\vec{V_A-V_B}$相对速度的VO，将相对速度下的VO延$\vec{V_B}$方向平移，新的VO为右深色三角形区域
+
+![img](/assets/img/posts//flocking/vo.png)
+
+## RVO(Reciprocal Velocity Obstacle)
+
+VO的一个缺点是，当存在大量障碍物或可移动的障碍物时，会频繁改变速度产生抖动现象，例如当两个使用VO的物体相遇时，会产生左图的现象，RVO则是在VO基础上的优化(右图)
+
+![img](/assets/img/posts//flocking/oscillation.png)
+
+RVO的解决方案：缩小VO的大小以减少速度的突变
+
+![img](/assets/img/posts//flocking/rvo.png)
+
+从另一个方面会更好理解，不直接选择VO外的速度，而是选择当前速度与新速度的平均值，从某种程度上认为，对方也会做出相应回避行为，详细推导证明过程见[Reciprocal Velocity Obstacles for Real-Time Multi-Agent Navigation](http://gamma.cs.unc.edu/RVO//)有个有趣的问题是，当双方直面相遇时，如何避免双方选择相同的躲避方向？
+
+还有一个优化算法是[ORCA](http://gamma.cs.unc.edu/ORCA/)
+
+## 触角(Feeler)
+
+模仿动物，我们还可以在物体前添加三根触角，分别测试他们是否和障碍物相交，其转向力与渗透深度成正比
+
+![img](/assets/img/posts//flocking/01.png)
+
+# Flocking
+
+群聚算法最早由Craig Reynolds 于1987 在SIGGRAPH上提出
+
+> Flocks,Herds,and Schools: A Distributed Behavior Model
+
+其image是三个组行为的组合: separation(分离),alignment(对齐),cohesion(聚合)，你需要仔细调节它们间的权重以获得满意的群组行为，一个好的方法是使用势函数(potential function),在物理学中，它根据分子的接近程度产生引力和斥力，我们同样可以用在游戏单位身上
+
+Lenard−Jones:U=−Arn+Brm
+
+![Lenard-Jones](/assets/img/posts//flocking/05.png)
+
+## FOV(field of view)
+
+首先，在一个组群中，每个单位都需要感知周围局部环境的情况，感知范围(视野)的确定对群体行为的影响很大
+
+![img](/assets/img/posts//flocking/04.png)
+
+### 半径
+
+- 大半径容易产生凝聚性更强的群体，不容易发生落单现象
+- 小半径容易让整个群体分裂，在绕过障碍物之后容易形成小群体
+
+### 视野
+
+- 宽视角容易得到组织良好的群体,遇到障碍物时，群聚会倾向分开，从两边绕过障碍物，在某些情况下，他们会迅速重组，但某些情况下不会。
+- 窄视野容易看起来有领导核心，单位倾向排成单一纵队平滑地绕过障碍物而不会分开。
+
+![img](/assets/img/posts//flocking/02.png)
+
+```c#
+//获得周围单位，伪代码实现 
+for(unit in units){   
+	if(unit.distance<radius && unit.angle<view){
+		neighbors.Add(unit);//使用容器存储
+	} 
+} 
+```
+
+
+## Alignment
+
+每个单位行动时，都要把自己对齐在其临近单位的平均方向上
+
+```c#
+for(unit in neighbors){
+    Dir += unit.velocity.normalized;//对速度进行归一 
+} 
+avgDir = Dir / neighbors.lengths;//获得平均方向 
+direction = (avgPos - self.position).normalized; 
+self.AddForce(direction - self.orward); 
+```
+
+## Cohesion
+
+每个单位都往临近单位的平均位置移动
+
+```c#
+for (unit in neighbors) { 
+    pos += unit.position; 
+} 
+avgPos = pos / neighbors.lengths;//获得平均位置 
+direction = (avgPos - self.position).normalized;
+self.AddForce(direction - self.forward);
+```
+
+## Separartion
+
+每个单位行动时，要避免撞上其临近单位
+
+```c#
+for (unit in neighbors) {
+    distance = unit.position - self.position;
+    force += Calulate(distance);//通过距离计算分离力，通常成反比 
+} 
+self.AddForce(force); 
+```
+
+## Wander
+
+有一个问题是，当一个单位和它的群组隔离了，它将什么都不做，为了防止这种情况发生，我们加入wander(徘徊)，这样所有的单位总可以保持运动。
+
+最初的做法是产生一个随机的驱动力，但这会产生抖动(事实上，一个好的随机函数如Perlin噪声可以产生光滑转弯，但CPU开销会很大)，Reynolds的解决方案是在前端凸出个圆圈，目标被限制在该圆圈上，然后每帧在目标添加一个随机的位移，通过调整圆圈半径，距离和随机位移产生一个没有抖动的往复运动
+
+![img](/assets/img/posts//flocking/03.png)
+
+## 领头者
+
+通过当前单位前方视野内的其他单位数量判断是否是领头者，也可以使用tag标记领头者，给他赋予单独的AI，一般领头者不太需要遵循上述群聚规则。
+
+综合以上便可产生一些有趣的战术行为，例如，大半径窄视野并带有领头者的群组，就像秩序良好的突击队在半夜执行机密任务
+
+事实上我们还有很多可以优化的地方，例如：
+
+1. 对于突变的速度与方向，如何实现自然的转向
+2. 如何处理运动中不能后退和停止的物体，如飞行中的鸟
+3. 对于大量的群体，可以通过空间划分优化对临近单位的查找
+
+## 参考
+
+1. [Steering Behaviors For Autonomous Characters](https://www.red3d.com/cwr/steer/gdc99/)
+2. 《programming-game-ai-by-example》
+3. 《AI for game developers》
